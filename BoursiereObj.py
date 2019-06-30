@@ -22,7 +22,7 @@ class Boursiere:
 
     def add_conso(self, beer_name, number):
         self._verify_beer_exists(beer_name)
-        self.db['q_current_qarder'] += number
+        self.db[beer_name]['q_current_qarder'] += number
 
     @staticmethod
     def _compute_price(q_current_beer, q_last_beer, coef_down, coef_up, price):
@@ -42,7 +42,7 @@ class Boursiere:
             price = self.db[beer_name]['price']
             buy_price = self.db[beer_name]['buy_price']
 
-            self.db['history'][beer_name].append((self.current_qarder-1, q_current_beer, price))
+            self.db[beer_name]['history'].append((self.current_qarder-1, q_current_beer, price))
             new_price = self._compute_price(q_current_beer, q_last_beer, coef_down, coef_up, price)
             self.db[beer_name]['stock'] -= q_current_beer
 
@@ -53,11 +53,13 @@ class Boursiere:
 
             if new_price > (coef_max * buy_price):  # check for avoid too many growth in the price
                 self.db[beer_name]['price'] = coef_max * buy_price
-                return
+                return coef_max * buy_price
             if do_round:
                 self.db[beer_name]['price'] = round(new_price, 1)
+                return round(new_price, 1)
             else:
                 self.db[beer_name]['price'] = new_price
+                return new_price
 
     def _verify_beer_exists(self, beer_name):
         if beer_name not in self.db:
