@@ -34,6 +34,7 @@ class Boursiere:
     def update_prices(self, do_round=True):
         self.current_qarder += 1
         for beer_name in self.db:
+
             q_current_beer = self.db[beer_name]['q_current_qarder']
             q_last_beer = self.db[beer_name]['q_qarder']
             coef_max = self.db[beer_name]['coef_max']
@@ -48,8 +49,15 @@ class Boursiere:
 
             # TODO : Cas stock est vide? Bouger le dict de la beer vers un autre dict pour plus qu'il ne soit utilisé ?
 
+
+
+            if self.db[beer_name]['stock'] <= 0: # check if the stock is empty
+                self.out_of_stock[beer_name] = self.db[beer_name] # add the db part of beer to out_of_stock (line:70)
+                continue
+
             self.db[beer_name]['q_qarder'] = q_current_beer
             self.db[beer_name]['q_current_qarder'] = 0
+
 
             if new_price > (coef_max * buy_price):  # check for avoid too many growth in the price
                 self.db[beer_name]['price'] = coef_max * buy_price
@@ -60,6 +68,11 @@ class Boursiere:
             else:
                 self.db[beer_name]['price'] = new_price
                 return new_price
+
+        for beer_name in self.out_of_stock: #
+            del(self.db[beer_name])         # del from db all the beer out of stocks
+
+        return -1                           #  add default return value for out_of_stock case
 
     def _verify_beer_exists(self, beer_name):
         if beer_name not in self.db:
