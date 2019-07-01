@@ -1,4 +1,6 @@
-from pprint import pprint
+import json
+import math
+
 class Boursiere:
     def __init__(self):
         self.db = {}
@@ -34,7 +36,7 @@ class Boursiere:
 
     def update_prices(self, do_round=True):
         self.current_qarder += 1
-        pprint(self.db)
+
         for beer_name in self.db:
             q_current_beer = self.db[beer_name]['q_current_qarder']
             q_last_beer = self.db[beer_name]['q_qarder']
@@ -44,7 +46,7 @@ class Boursiere:
             price = self.db[beer_name]['price']
             buy_price = self.db[beer_name]['buy_price']
 
-            self.db[beer_name]['history'].append({'qarder':self.current_qarder-1, 'q_beer':q_current_beer, 'price':price})
+            self.db[beer_name]['history'].append((self.current_qarder-1, q_current_beer, price))
             new_price = self._compute_price(q_current_beer, q_last_beer, coef_down, coef_up, price)
             self.db[beer_name]['stock'] -= q_current_beer
 
@@ -70,8 +72,36 @@ class Boursiere:
             del(self.db[beer_name])         # del from db all the beer out of stocks
 
     def _verify_beer_exists(self, beer_name):
+
+        # TODO: Gerer quand ça raise ?
+
         if beer_name not in self.db:
             raise Exception('Beer does not exists in the database')
 
+    def get_trend(self, beer_name):
+        if self.db[beer_name]['q_current_qarder'] > self.db[beer_name]['q_qarder']:
+            return 'UP'
+        elif self.db[beer_name]['q_current_qarder'] ==  self.db[beer_name]['q_qarder']:
+            return 'EQUAL'
+        else:
+            return 'DOWN'
+
+
     def to_json(self):
-        print(self.db)
+        dic = {}
+        worth_beer = [math.inf,'']
+        for beer_name in self.db:
+
+
+            price = self.db[beer_name]['price']
+            stock = self.db[beer_name]['stock']
+            trend = self.get_trend(beer_name)
+
+            if worth_beer[0] >= price:
+                worth_beer[0] = price
+                worth_beer[1] = beer_name
+
+            dic[beer_name] = {'price':price, 'stock':stock, 'trend':trend}
+
+        dic['worth_beer'] = worth_beer[1]
+        return json.dumps(dic)
