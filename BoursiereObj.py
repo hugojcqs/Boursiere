@@ -1,6 +1,4 @@
-
-import json
-
+from pprint import pprint
 class Boursiere:
     def __init__(self):
         self.db = {}
@@ -36,8 +34,8 @@ class Boursiere:
 
     def update_prices(self, do_round=True):
         self.current_qarder += 1
+        pprint(self.db)
         for beer_name in self.db:
-
             q_current_beer = self.db[beer_name]['q_current_qarder']
             q_last_beer = self.db[beer_name]['q_qarder']
             coef_max = self.db[beer_name]['coef_max']
@@ -46,7 +44,7 @@ class Boursiere:
             price = self.db[beer_name]['price']
             buy_price = self.db[beer_name]['buy_price']
 
-            self.db[beer_name]['history'].append((self.current_qarder-1, q_current_beer, price))
+            self.db[beer_name]['history'].append({'qarder':self.current_qarder-1, 'q_beer':q_current_beer, 'price':price})
             new_price = self._compute_price(q_current_beer, q_last_beer, coef_down, coef_up, price)
             self.db[beer_name]['stock'] -= q_current_beer
 
@@ -56,7 +54,6 @@ class Boursiere:
 
             if self.db[beer_name]['stock'] <= 0: # check if the stock is empty
                 self.out_of_stock[beer_name] = self.db[beer_name] # add the db part of beer to out_of_stock (line:70)
-                continue
 
             self.db[beer_name]['q_qarder'] = q_current_beer
             self.db[beer_name]['q_current_qarder'] = 0
@@ -64,19 +61,13 @@ class Boursiere:
 
             if new_price > (coef_max * buy_price):  # check for avoid too many growth in the price
                 self.db[beer_name]['price'] = coef_max * buy_price
-                return coef_max * buy_price
             if do_round:
                 self.db[beer_name]['price'] = round(new_price, 1)
-                return round(new_price, 1)
             else:
                 self.db[beer_name]['price'] = new_price
-                return new_price
 
         for beer_name in self.out_of_stock: #
             del(self.db[beer_name])         # del from db all the beer out of stocks
-
-
-        return -1                           #  add default return value for out_of_stock case
 
     def _verify_beer_exists(self, beer_name):
         if beer_name not in self.db:
