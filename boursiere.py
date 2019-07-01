@@ -1,4 +1,7 @@
 """
+
+Prémice de code :
+
 reflexion algo:
 ---------------
 
@@ -46,5 +49,3 @@ def update(dico, beer_name):
         current_qarder += 1
     else:
         print('--- beer not found. ---')                               # beer is not in the dico
-
-

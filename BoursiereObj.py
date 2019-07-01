@@ -1,3 +1,6 @@
+
+import json
+
 class Boursiere:
     def __init__(self):
         self.db = {}
@@ -72,6 +75,7 @@ class Boursiere:
         for beer_name in self.out_of_stock: #
             del(self.db[beer_name])         # del from db all the beer out of stocks
 
+
         return -1                           #  add default return value for out_of_stock case
 
     def _verify_beer_exists(self, beer_name):
@@ -79,4 +83,4 @@ class Boursiere:
             raise Exception('Beer does not exists in the database')
 
     def to_json(self):
-        pass  # used to transform de db to json for frontend processing
+        print(self.db)

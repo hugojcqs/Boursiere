@@ -2,6 +2,7 @@ from BoursiereObj import Boursiere
 
 b = Boursiere()
 b.add_beer('Orval', 96, 1.5, 0.08, 0.05, 2.5)
+b.add_beer('Bush', 96, 1.5, 0.08, 0.05, 2.5)
 print(b.update_prices(do_round=True))
 b.add_conso('Orval', 5)
 print(b.update_prices(do_round=True))
@@ -29,11 +30,12 @@ b.add_conso('Orval', 20)
 print(b.update_prices(do_round=True))
 b.add_conso('Orval', 26)
 print(b.update_prices(do_round=True))
-
+b.to_json()
 # raise Error because beer is out of stock
 
-b.add_conso('Orval', 27)
-print(b.update_prices(do_round=True))
+#b.add_conso('Orval', 27)
+#print(b.update_prices(do_round=True))
 
-b.add_conso('Orval', 28)
-print(b.update_prices(do_round=True))
+
+#b.add_conso('Orval', 28)
+#print(b.update_prices(do_round=True).to_json())
