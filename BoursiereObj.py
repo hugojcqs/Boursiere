@@ -86,8 +86,10 @@ class Boursiere:
         else:
             return 'DOWN'
 
+    def log(self, message):
+        print('[BOURSIERE] '+str(message))
 
-    def to_json(self):
+    def get_info(self):
         dic = {}
         worth_beer = [math.inf,'']
         for beer_name in self.db:
@@ -104,4 +106,23 @@ class Boursiere:
             dic[beer_name] = {'price':price, 'stock':stock, 'trend':trend}
 
         dic['worth_beer'] = worth_beer[1]
-        return json.dumps(dic)
+        return dic
+
+
+    def to_json(self):
+        return json.dumps(self.get_info())
+
+
+    def save(self):
+        with open('db.json', 'w') as dbfile:
+            json.dump(self.db, dbfile, indent=4)
+        with open('out_stock.json', 'w') as stockfile:
+            json.dump(self.out_of_stock, stockfile, indent=4)
+        self.log('data saved.')
+
+    def load(self):
+        with open('db.json') as dbfile:
+            self.db = json.load(dbfile)
+        with open('out_stock.json') as stockfile:
+            self.out_of_stock = json.load(stockfile)
+        self.log('data loaded.')
