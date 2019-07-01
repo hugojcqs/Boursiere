@@ -26,6 +26,7 @@ class Boursiere:
     def add_conso(self, beer_name, number):
         self._verify_beer_exists(beer_name)
         self.db[beer_name]['q_current_qarder'] += number
+        self.log('- '+str(number) +' '+ beer_name)
 
     @staticmethod
     def _compute_price(q_current_beer, q_last_beer, coef_down, coef_up, price):
