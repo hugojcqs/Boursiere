@@ -9,5 +9,6 @@ def beer_ordering_view(request):
 
 def add_beer(request):
     beer_form = BeerForm()
-    messages.add_message(request, messages.SUCCESS, 'Test')
+    if beer_form.is_valid():
+        pass  # TODO add beer to the database and process the image.
     return render(request, 'add_beer.html', {'form':beer_form})
