@@ -11,4 +11,5 @@ class Beer(models.Model):
     coef_max = models.FloatField(null=False)
     q_qarder = models.IntegerField(null=False)
     q_current_qarder = models.IntegerField(null=False)
-    
+    small_image = models.ImageField()
+    large_image = models.ImageField()
