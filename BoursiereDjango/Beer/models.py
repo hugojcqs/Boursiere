@@ -13,3 +13,5 @@ class Beer(models.Model):
     q_current_qarder = models.IntegerField(null=False)
     small_image = models.ImageField()
     large_image = models.ImageField()
+
+    #  TODO : Validateur pour la verification des données

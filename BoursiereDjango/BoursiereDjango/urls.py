@@ -15,7 +15,9 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-
+from Beer import views as BeerViews
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('beer_ordering/', BeerViews.beer_ordering_view),
+    path('add_beer/', BeerViews.add_beer),
 ]
