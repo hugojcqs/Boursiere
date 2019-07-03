@@ -9,9 +9,8 @@ class Beer(models.Model):
     coef_up = models.FloatField(null=False)
     coef_down = models.FloatField(null=False)
     coef_max = models.FloatField(null=False)
-    q_qarder = models.IntegerField(null=False)
-    q_current_qarder = models.IntegerField(null=False)
-    small_image = models.ImageField()
-    large_image = models.ImageField()
+    q_qarder = models.IntegerField(null=False, default=0)
+    q_current_qarder = models.IntegerField(null=False, default=0)
+    image = models.ImageField()
 
     #  TODO : Validateur pour la verification des données
