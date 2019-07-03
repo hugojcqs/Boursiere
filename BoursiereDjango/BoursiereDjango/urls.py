@@ -22,4 +22,5 @@ urlpatterns = [
     path('add_beer/', BeerViews.add_beer, name='add_beer'),
     path('', BeerViews.root),
     path('login/', BeerViews.login_page, name='login_page'),
+    path('logout/', BeerViews.logout_page, name='logout_page'),
 ]
