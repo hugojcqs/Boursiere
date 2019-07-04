@@ -20,4 +20,5 @@ class Beer(models.Model):
 class History(models.Model):
     id_str = models.CharField(max_length=25, null=False)
     time = models.TimeField(null=False)
+    total_price = models.FloatField(null=False)
     history_json = models.TextField()  # to save data as json

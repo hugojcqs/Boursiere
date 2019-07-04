@@ -58,6 +58,7 @@ function make_order()
         async: true,
         dataType: 'json',
         success: function (data) {
+                _add_history(data);
                 $(".input-number").val(0);
                 $("#total_price").text('Prix : 0 €');
                 db = {}
@@ -81,4 +82,13 @@ function minus(i, beer_name)
     input.val(new_v_input);
     db[beer_name] = new_v_input;
     calculate_price();
+}
+
+function _add_history(json_) {
+    time = json_['time'];
+    token = json_['token'];
+    text = json_['text'];
+    total_price = json_['total_price'];
+    raw_html = `<a class="list-group-item list-group-item-action flex-column align-items-start text-white bg-secondary"><div class="d-flex w-100 justify-content-between"><h5 class="mb-1">Commande n°${token}</h5><div class="btn-sm btn-danger" onclick="delete_histo(${token})">Supprimer</div></div><p class="mb-1">${text}</p><small>Prix total : ${total_price}</small></a>`;
+    $('#histo').append(raw_html)
 }
