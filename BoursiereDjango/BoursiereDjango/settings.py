@@ -51,9 +51,18 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'csp.middleware.CSPMiddleware',
 ]
 
 ROOT_URLCONF = 'BoursiereDjango.urls'
+
+
+CSP_DEFAULT_SRC = ("'none'",)
+CSP_STYLE_SRC = ("'self'", "'unsafe-inline'", 'use.fontawesome.com')
+CSP_SCRIPT_SRC = ("'self'", "'unsafe-inline'", 'cdnjs.cloudflare.com', 'stackpath.bootstrapcdn.com')
+CSP_FONT_SRC = ("'self'", 'use.fontawesome.com')
+CSP_IMG_SRC = ("'self'",)
+
 
 TEMPLATES = [
     {
@@ -83,6 +92,7 @@ DATABASES = {
         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     }
 }
+
 
 # Password validation
 # https://docs.djangoproject.com/en/2.2/ref/settings/#auth-password-validators
@@ -135,3 +145,6 @@ MESSAGE_TAGS = {
     messages.WARNING: 'warning',
     messages.ERROR: 'danger',
 }
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')

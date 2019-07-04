@@ -13,4 +13,6 @@ class Beer(models.Model):
     q_current_qarder = models.IntegerField(null=False, default=0)
     image = models.ImageField()
 
+    def __str__(self):
+        return self.beer_name
     #  TODO : Validateur pour la verification des données

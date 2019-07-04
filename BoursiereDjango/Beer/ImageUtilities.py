@@ -16,10 +16,10 @@ class ImageUtilities:
                             "This image is only %d by %d"
                             % (large_height, large_width, height, width))
 
+
         file_name = ImageUtilities.hash_file(image_file_binary)
-        file_path = os.path.join(os.getcwd(), 'app/static/images/items_pictures/%s%s')
-        file_path_large = file_path % ('large', file_name, '.jpg')
-        db_file_path_large = 'static/images/items_pictures/%s_%s%s' % ('large', file_name, '.jpg')
+        file_path = os.path.join(os.getcwd(), 'static\\images\\beers\\%s%s')
+        file_path_large = file_path % (file_name, '.jpg')
         size = (large_width, large_height)
 
         fit_and_resized_image = ImageOps.fit(image, size, Image.ANTIALIAS)
@@ -28,7 +28,7 @@ class ImageUtilities:
             fit_and_resized_image.save(file_path_large)
         except IOError as e:
             raise Exception("The image could not be saved to the database, please contact the administrator")
-        return db_file_path_large
+        return file_path_large
 
     @staticmethod
     def hash_file(file_binary):

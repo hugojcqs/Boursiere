@@ -1,38 +1,24 @@
 {%extends 'main_template.html' %}
-{%block head%}
 {% load static %}
-  <script src="{%static '/scripts/integer_picker.js' %}"></script>
-{%endblock%}
 {%block content%}
 <div class="container-fluid">
-    <div class="row">
-        <div class="container-fluid col-8">
-            <div class="card mt-2 ml-2" style="width: 18rem;">
-  <div class="card-body">
-    <h5 class="card-title">Orval</h5>
-       <img class="card-img-top" src="{%static '/images/orval.png' %}" alt="Card image cap">
-            <div class="row">
-		<div class="col-xs-3 col-xs-offset-3">
-			<div class="input-group number-spinner">
-				<span class="input-group-btn">
-					<button class="btn btn-danger" data-dir="dwn"><i class="fas fa-minus"></i></button>
-				</span>
-				<input type="text" class="form-control text-center" value="1">
-				<span class="input-group-btn">
-					<button class="btn btn-success" data-dir="up"><i class="fas fa-plus"></i></button>
-				</span>
-			</div>
-		</div>
-	</div>
-  </div>
-</div>
-        </div>
-        <div class="container-fluid col-4">
-            <div style="border:2px solid blue; height: 500px">History feed
-                <i class="fas fa-plus"></i>
-                <i class="fas fa-minus"></i>
-            </div>
+<div class="row">
+  <div class="col-sm-9">
+    {% include 'beer_card.html' with beers=beers%}
+    <div class="card text-white bg-secondary mt-3 ml-3" style="max-width: 13rem;">
+        <div class="card-header">Prix total & Commande</div>
+        <div class="card-body">
+            <h5 class="card-title">Prix : </h5>
+            <div class="text-center">
+        <div class="btn btn-success">Commander!</div>
+                </div>
         </div>
     </div>
+
+  <div class="col-sm-3">
+
+  </div>
+</div>
+</div>
 </div>
 {%endblock%}
