@@ -50,8 +50,8 @@ function calculate_price()
 
 function make_order()
 {
-    let elem = $(".input-number");
-    elem.val(0);
+    $(".input-number").val(0);
+    $("#total_price").text('Prix : 0 €');
     db = {}
 }
 
