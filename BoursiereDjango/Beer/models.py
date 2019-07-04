@@ -1,6 +1,6 @@
 from django.db import models
 
-# Create your models here.
+
 class Beer(models.Model):
     beer_name = models.CharField(max_length=100)
     price = models.FloatField(null=False)
@@ -11,8 +11,13 @@ class Beer(models.Model):
     coef_max = models.FloatField(null=False)
     q_qarder = models.IntegerField(null=False, default=0)
     q_current_qarder = models.IntegerField(null=False, default=0)
-    image = models.ImageField()
 
     def __str__(self):
         return self.beer_name
     #  TODO : Validateur pour la verification des données
+
+
+class History(models.Model):
+    id_str = models.CharField(max_length=25, null=False)
+    time = models.TimeField(null=False)
+    history_json = models.TextField()  # to save data as json

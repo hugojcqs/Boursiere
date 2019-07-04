@@ -1,10 +1,12 @@
-<div class="list-group overflow-auto">
-  <a class="list-group-item list-group-item-action flex-column align-items-start text-white bg-secondary">
-    <div class="d-flex w-100 justify-content-between">
-      <h5 class="mb-1">Commande n°12</h5>
-      <div class="btn-sm btn-danger">Supprimer</div>
-    </div>
+<div class="list-group">
+    {% for histo in history %}
+    <a class="list-group-item list-group-item-action flex-column align-items-start text-white bg-secondary">
+        <div class="d-flex w-100 justify-content-between">
+            <h5 class="mb-1">Commande n°</h5>
+            <div class="btn-sm btn-danger">Supprimer</div>
+        </div>
     <p class="mb-1">2 orval + 5 bush + 2 verres d'eau</p>
-    <small>Prix total : </small>
-  </a>
+    <small id="total_price">Prix total : </small>
+    </a>
+    {% endfor %}
 </div>

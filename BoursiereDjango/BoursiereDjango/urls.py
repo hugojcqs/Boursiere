@@ -16,6 +16,8 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from Beer import views as BeerViews
+#from AJAXModule import views
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('beer_ordering/', BeerViews.beer_ordering_view, name='beer_ordering'),
@@ -23,4 +25,5 @@ urlpatterns = [
     path('', BeerViews.root),
     path('login/', BeerViews.login_page, name='login_page'),
     path('logout/', BeerViews.logout_page, name='logout_page'),
+    #path('calculate_price/', AJAXModule.calculate_price, name='calculate_price'),
 ]

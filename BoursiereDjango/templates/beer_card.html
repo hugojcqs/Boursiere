@@ -3,15 +3,15 @@
 {% for beer in beers %}
     <div class="card ml-3 mt-3" style="width: 13rem;">
       <div class="card-body">
-        <h5 class="card-title text-center">{{ beer.beer_name }}t</h5>
+        <h5 class="card-title text-center">{{ beer.beer_name }}</h5>
         <div class="input-group col-sm-12">
           <span class="input-group-btn">
-              <div class="btn btn-danger" onclick="minus({{ forloop.counter }})">
+              <div class="btn btn-danger" onclick="minus({{ forloop.counter }}, '{{ beer.beer_name }}')">
                   <i class="fas fa-minus"></i>
               </div>
           </span>
           <input type="text" id="input{{ forloop.counter }}" class="form-control input-number" value="0">
-          <span class="input-group-btn" onclick="plus({{ forloop.counter }})">
+          <span class="input-group-btn" onclick="plus({{ forloop.counter }}, '{{ beer.beer_name }}')">
               <button type="button" class="btn btn-success">
                   <i class="fas fa-plus"></i>
               </button>
@@ -19,7 +19,5 @@
       </div>
       </div>
     </div>
-
-
 {% endfor %}
 </div>
