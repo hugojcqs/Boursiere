@@ -19,16 +19,19 @@ def add_beer(request):
     if request.method == 'POST':
         beer_form = BeerForm(request.POST, request.FILES )
     if beer_form.is_valid():
-        beer = BeerModel.objects.create(beer_name=beer_form.cleaned_data['beer_name'],
-                                        price = beer_form.cleaned_data['price'],
-                                        buy_price = beer_form.cleaned_data['price'],
-                                        coef_down = beer_form.cleaned_data['coef_down'],
-                                        coef_up = beer_form.cleaned_data['coef_up'],
-                                        stock = beer_form.cleaned_data['stock'],
-                                        coef_max = beer_form.cleaned_data['coef_max']
-                                        )
         #beer.image = ImageUtilities.resize_save_image(beer_form.cleaned_data['image'].read(), 100, 100)
-        beer.save()
+        if beer_form.cleaned_data['beer_name'].upper() in [beer.beer_name.upper() for beer in BeerModel.objects.all()]: # check if the beer is already saved.
+            messages.add_message(request, messages.ERROR, 'Cette bière à déjà été enregistré !')
+
+        else:
+            beer = BeerModel.objects.create(beer_name=beer_form.cleaned_data['beer_name'],
+                                            price = beer_form.cleaned_data['price'],
+                                            buy_price = beer_form.cleaned_data['price'],
+                                            coef_down = beer_form.cleaned_data['coef_down'],
+                                            coef_up = beer_form.cleaned_data['coef_up'],
+                                            stock = beer_form.cleaned_data['stock'],
+                                            coef_max = beer_form.cleaned_data['coef_max'])
+            messages.add_message(request, messages.SUCCESS, 'La bière à bien été ajouté à la liste !')
     else:
         messages.error(request, beer_form.errors)
     return render(request, 'add_beer.html', {'form':beer_form})
