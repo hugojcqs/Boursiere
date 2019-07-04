@@ -26,4 +26,5 @@ urlpatterns = [
     path('login/', BeerViews.login_page, name='login_page'),
     path('logout/', BeerViews.logout_page, name='logout_page'),
     path('calculate_price/', AJAXModuleViews.calculate_price, name='calculate_price'),
+    path('make_order/', AJAXModuleViews.make_order, name='make_order'),
 ]

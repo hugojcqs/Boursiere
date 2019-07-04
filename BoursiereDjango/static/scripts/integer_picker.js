@@ -30,18 +30,18 @@ $(document).ready(function() {
 
 });
 
+
 function calculate_price()
 {
     console.log(JSON.stringify(db));
     $.post({
         url: '/calculate_price/',
         data: {
-          'json_': JSON.stringify(db)
+          'data': JSON.stringify(db)
         },
         async: true,
         dataType: 'json',
         success: function (data) {
-            console.log(data['price']);
             let elem = $("#total_price");
             elem.text('Prix : '+ String(data['price']) + " €");
         }
@@ -50,9 +50,19 @@ function calculate_price()
 
 function make_order()
 {
-    $(".input-number").val(0);
-    $("#total_price").text('Prix : 0 €');
-    db = {}
+        $.post({
+        url: '/make_order/',
+        data: {
+          'data': JSON.stringify(db)
+        },
+        async: true,
+        dataType: 'json',
+        success: function (data) {
+                $(".input-number").val(0);
+                $("#total_price").text('Prix : 0 €');
+                db = {}
+        }
+      });
 }
 
 function plus(i, beer_name)
