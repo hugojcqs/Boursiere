@@ -1,9 +1,10 @@
 {% load static %}
+{% load filter_extra %}
 <div class="row col-sm">
 {% for beer in beers %}
     <div class="card ml-3 mt-3" style="width: 13rem;">
+      <div class="card-body" style='background-color: {{beer.beer_name|rcolors}};'>
       <div class="card-body">
-        <h5 class="card-title text-center">{{ beer.beer_name }}</h5>
         <div class="input-group col-sm-12">
           <span class="input-group-btn">
               <div class="btn btn-danger" onclick="minus({{ forloop.counter }}, '{{ beer.beer_name }}')">
