@@ -63,6 +63,8 @@ CSP_STYLE_SRC = ("'self'", "'unsafe-inline'", 'use.fontawesome.com')
 CSP_SCRIPT_SRC = ("'self'", "'unsafe-inline'", 'cdnjs.cloudflare.com', 'stackpath.bootstrapcdn.com')
 CSP_FONT_SRC = ("'self'", 'use.fontawesome.com')
 CSP_IMG_SRC = ("'self'",)
+CSP_CONNECT_SRC = ("'self'",)
+
 
 
 TEMPLATES = [

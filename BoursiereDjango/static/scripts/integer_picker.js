@@ -32,17 +32,27 @@ $(document).ready(function() {
 
 function calculate_price()
 {
+    console.log(JSON.stringify(db));
     $.post({
         url: '/calculate_price/',
         data: {
           'json_': JSON.stringify(db)
         },
-        async: false,
+        async: true,
         dataType: 'json',
-        success: function (price) {
-            $("#total_price").val('Prix total : '+ String(price));
+        success: function (data) {
+            console.log(data['price']);
+            let elem = $("#total_price");
+            elem.text('Prix : '+ String(data['price']) + " €");
         }
       });
+}
+
+function make_order()
+{
+    let elem = $(".input-number");
+    elem.val(0);
+    db = {}
 }
 
 function plus(i, beer_name)
