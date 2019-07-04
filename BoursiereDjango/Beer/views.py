@@ -56,4 +56,5 @@ def login_page(request):
 
 def logout_page(request):
     logout(request)
-    return render(request, 'logout_page.html')
+    print('logout with success !!')
+    return redirect('login_page')
