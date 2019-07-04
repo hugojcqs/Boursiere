@@ -50,3 +50,7 @@ def make_order(request):
         return JsonResponse({'statut': 'ok', 'time': time, 'token': token, 'text': item_str, 'total_price': total})
     return JsonResponse({'statut': 'ko'})
 
+
+def delete_histo(request):
+    return JsonResponse({'statut': 'ok'}, safe=False)
+

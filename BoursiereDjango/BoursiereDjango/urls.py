@@ -27,4 +27,5 @@ urlpatterns = [
     path('logout/', BeerViews.logout_page, name='logout_page'),
     path('calculate_price/', AJAXModuleViews.calculate_price, name='calculate_price'),
     path('make_order/', AJAXModuleViews.make_order, name='make_order'),
+    path('delete_histo/', AJAXModuleViews.delete_histo, name='delete_histo')
 ]
