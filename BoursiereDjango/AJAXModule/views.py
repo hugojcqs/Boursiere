@@ -32,7 +32,6 @@ def _random_string(string_length=10):
 @login_required
 def make_order(request):
     if request.method == 'POST':
-        print(request.POST.get('data'))
         json_ = json.loads(request.POST.get('data'))
         item_str = ''
         total = 0
@@ -53,7 +52,7 @@ def make_order(request):
         h.id_str = token
         h.time = time
         h.total_price = total
-        h.history_json = json_.dumps(json_)
+        h.history_json = request.POST.get('data')
         h.text = item_str
         h.save()
 
@@ -64,7 +63,7 @@ def delete_histo(request):
     if request.method == 'POST':
         token = request.POST.get('data')
         hist = History.objects.get(id_str=token)
-        json_ = json.loads(hist.text)
+        json_ = json.loads(hist.history_json)
         for beer in json_:
             beer_db = Beer.objects.get(beer_name=beer)
             beer_db.stock += json_[beer]
