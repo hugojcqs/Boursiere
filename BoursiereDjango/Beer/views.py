@@ -3,14 +3,14 @@ from django.shortcuts import redirect
 from django.contrib.auth import authenticate, login, logout
 from .forms import BeerForm, LoginForm
 from .models import Beer as BeerModel
+from .models import History
 from django.contrib.auth.decorators import login_required
 # Create your views here.
 from django.contrib import messages
 from .ImageUtilities import ImageUtilities
 @login_required
 def beer_ordering_view(request):
-    beers = BeerModel.objects.all()
-    return render(request, 'ordering_beer_page.html', {'beers':beers})
+    return render(request, 'ordering_beer_page.html', {'beers':BeerModel.objects.all(), 'history':History.objects.all()})
 
 @login_required
 def add_beer(request):

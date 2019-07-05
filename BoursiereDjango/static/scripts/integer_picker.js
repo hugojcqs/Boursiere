@@ -89,7 +89,7 @@ function _add_history(json_) {
     token = json_['token'];
     text = json_['text'];
     total_price = json_['total_price'];
-    raw_html = `<a class="list-group-item list-group-item-action flex-column align-items-start text-white bg-secondary" id="${token}"><div class="d-flex w-100 justify-content-between"><h5 class="mb-1">Commande n°${token}</h5><div class="btn-sm btn-danger" onclick="delete_histo(${token})">Supprimer</div></div><p class="mb-1">${text}</p><small>Prix total : ${total_price}</small></a>`;
+    raw_html = `<a class="list-group-item list-group-item-action flex-column align-items-start text-white bg-secondary" id="${token}"><div class="d-flex w-100 justify-content-between"><h5 class="mb-1">Commande n°${token}</h5><small>${time}</small><div class="btn-sm btn-danger" onclick="delete_histo(${token})">Supprimer</div></div><p class="mb-1">${text}</p><small>Prix total : ${total_price} €</small></a>`;
     $('#histo').prepend(raw_html)
 }
 
@@ -98,7 +98,7 @@ function delete_histo(token){
         $.post({
         url: '/delete_histo/',
         data: {
-          'data': token,
+          'data': String(token),
         },
         async: true,
         dataType: 'json',

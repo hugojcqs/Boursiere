@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
-from Beer.models import Beer
+from Beer.models import Beer, History
 import json
 from datetime import datetime
 import random
@@ -47,10 +47,22 @@ def make_order(request):
             item_str += '%d %s -' % (nb_beer, beer)
             beer_db.save()
         item_str = item_str[0:len(item_str)-1]
+
+        h = History.objects.create()
+        h.id_str = token
+        h.time = time
+        h.total_price = total
+        h.history_json = json_
+        h.text = item_str
+        h.save()
+
         return JsonResponse({'statut': 'ok', 'time': time, 'token': token, 'text': item_str, 'total_price': total})
     return JsonResponse({'statut': 'ko'})
 
 def delete_histo(request):
+    if request.method == 'POST':
+        token = request.POST.get('data')
+        History.objects.get(id_str=token).delete()
     return JsonResponse({'statut': 'ok'}, safe=False)
 
 def update_price(request):

@@ -1,5 +1,5 @@
 from django.db import models
-
+import datetime
 
 class Beer(models.Model):
     beer_name = models.CharField(max_length=100)
@@ -19,6 +19,7 @@ class Beer(models.Model):
 
 class History(models.Model):
     id_str = models.CharField(max_length=25, null=False)
-    time = models.TimeField(null=False)
-    total_price = models.FloatField(null=False)
+    time = models.CharField(null=False, max_length=25)
+    total_price = models.FloatField(null=False, default=0)
     history_json = models.TextField()  # to save data as json
+    text = models.TextField(null=False, default="")
