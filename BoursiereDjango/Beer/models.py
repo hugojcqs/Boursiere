@@ -73,7 +73,7 @@ class Beer(models.Model):
 
     @staticmethod
     def get_worth_beers():
-        worth_beers = Beer.objects.annotate(Min('price'))   # get QuerySet with all minus price beers
+        worth_beers = Beer.objects.filter(price=Beer.objects.all().aggregate(Min('price'))['price__min'])  # get QuerySet with all minus price beers
         return worth_beers
 
     def __str__(self):

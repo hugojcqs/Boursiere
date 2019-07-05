@@ -36,6 +36,8 @@ def add_beer(request):
         messages.error(request, beer_form.errors)
     return render(request, 'add_beer.html', {'form':beer_form})
 
+def stock_page(request):
+    return render(request, 'stock_page.html', {'beers':BeerModel.objects.all(), 'worth_beers':BeerModel.get_worth_beers()})
 
 def root(request):
     return redirect('beer_ordering')

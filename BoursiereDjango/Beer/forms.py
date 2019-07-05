@@ -8,7 +8,7 @@ class BeerForm(forms.Form):
     coef_up = forms.FloatField(required=True)
     coef_down = forms.FloatField(required=True)
     coef_max = forms.FloatField(required=True)
-    image = forms.ImageField(required=True)
+    image = forms.ImageField(required=False)
 
 
 class LoginForm(forms.Form):

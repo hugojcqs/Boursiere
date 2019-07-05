@@ -29,4 +29,5 @@ urlpatterns = [
     path('make_order/', AJAXModuleViews.make_order, name='make_order'),
     path('delete_histo/', AJAXModuleViews.delete_histo, name='delete_histo'),
     path('update_price/', AJAXModuleViews.update_price, name='update_price'),
+    path('stock_page/', BeerViews.stock_page, name='stock_page'),
 ]
