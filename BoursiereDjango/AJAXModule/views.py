@@ -69,6 +69,7 @@ def delete_histo(request):
             beer_db = Beer.objects.get(beer_name=beer)
             beer_db.stock += json_[beer]
             beer_db.q_qarder -= json_[beer]
+            #TODO: test beer_db.add_conso(-json_[beer])
             beer_db.save()
         hist.delete()
 
