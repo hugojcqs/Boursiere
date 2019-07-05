@@ -12,7 +12,11 @@ class Beer(models.Model):
     coef_max = models.FloatField(null=False)
     q_qarder = models.IntegerField(null=False, default=0)
     q_current_qarder = models.IntegerField(null=False, default=0)
+    alcohol_percentage = models.FloatField(null=False, default=0)
     out_of_stock = False
+
+    def change_percentage_alchohol(self, percentage):
+        self.alcohol_percentage = percentage
 
     def change_coef_down(self, coef_down):
         self.coef_down = coef_down
