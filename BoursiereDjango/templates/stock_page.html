@@ -3,7 +3,7 @@
 {% load filter_extra %}
 {%block content%}
 <div class="container border rounded">
-  <table class="table table-striped table-bordered table-sm mt-3">
+  <table class="table table-light table-bordered table-sm mt-3">
 
     <thead>
       <tr>
@@ -37,11 +37,11 @@
           <td class="text-center align-middle"> {{beer.price}} € </td>
           <td class="text-center align-middle" >
           {% if beer.get_trend == 'UP' %}
-          <i class="fas fa-caret-up fa-2x" style="color: green;"></i>
+          <i class="fas fa-caret-up fa-2x" style="color: red;"></i>
           {% elif beer.get_trend == 'EQUAL' %}
           <i class="fas fa-caret-left fa-2x" style="color: orange;"></i>
           {% else %}
-          <i class="fas fa-caret-down fa-2x" style="color: red;"></i>
+          <i class="fas fa-caret-down fa-2x" style="color: green;"></i>
           {% endif %}
           </td>
 
