@@ -37,7 +37,7 @@ def make_order(request):
         total = 0
         time = datetime.now().strftime('%H:%M:%S')
         token = _random_string(10)
-        
+
         for beer in json_:
             nb_beer = json_[beer]
             beer_db = Beer.objects.get(beer_name=beer)
@@ -59,10 +59,20 @@ def make_order(request):
         return JsonResponse({'statut': 'ok', 'time': time, 'token': token, 'text': item_str, 'total_price': total})
     return JsonResponse({'statut': 'ko'})
 
-
 def delete_histo(request):
     if request.method == 'POST':
         token = request.POST.get('data')
         History.objects.get(id_str=token).delete()
     return JsonResponse({'statut': 'ok'}, safe=False)
 
+def update_price(request):
+
+    TOKEN = 'CABB74F774DD3ACB'
+
+    if request.method == 'POST':
+        token = json.loads(request.POST.get('data'))
+
+        if token == TOKEN:
+            print(token)
+            return JsonResponse({'statut':'ok'})
+    return JsonResponse({'statut':'ko'})
