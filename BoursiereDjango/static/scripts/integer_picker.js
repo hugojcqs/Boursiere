@@ -108,3 +108,13 @@ function delete_histo(token){
         }
       });
 }
+
+function hide_bar(bar)
+{
+    $(".bar"+bar.toString()).hide();
+}
+
+function show_bar(bar)
+{
+    $(".bar"+bar.toString()).show();
+}

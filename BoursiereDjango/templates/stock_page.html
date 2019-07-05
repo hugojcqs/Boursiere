@@ -20,7 +20,7 @@
       {% for beer in beers %}
 
 
-        <tr id="tr-{{beer.beer_name|lower}}-{{beer.bar}}">
+        <tr class="bar{{beer.bar}}">
 
 
           {% if beer in worth_beers %}
@@ -46,7 +46,6 @@
           </td>
 
         </tr>
-        {% endif %}
       {% endfor %}
 
     </tbody>
@@ -55,8 +54,8 @@
 
 <nav aria-label="Page navigation example">
   <ul class="pagination justify-content-center mt-5">
-    <li class="page-item"><a class="page-link" href="#">Bar 1</a></li>
-    <li class="page-item"><a class="page-link" href="#">Bar 2</a></li>
+    <li class="page-item"><a class="page-link" onclick="show_bar(1);hide_bar(2)">Bar 1</a></li>
+    <li class="page-item"><a class="page-link" onclick="show_bar(2);hide_bar(1)">Bar 2</a></li>
   </ul>
 </nav>
 
