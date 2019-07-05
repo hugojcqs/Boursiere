@@ -13,6 +13,7 @@ class Beer(models.Model):
     q_qarder = models.IntegerField(null=False, default=0)
     q_current_qarder = models.IntegerField(null=False, default=0)
     alcohol_percentage = models.FloatField(null=False, default=0)
+    bar = models.IntegerField(null=False, default=1)
     out_of_stock = False
 
     def change_percentage_alchohol(self, percentage):

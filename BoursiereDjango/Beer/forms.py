@@ -8,7 +8,8 @@ class BeerForm(forms.Form):
     coef_up = forms.FloatField(required=True)
     coef_down = forms.FloatField(required=True)
     coef_max = forms.FloatField(required=True)
-    alcohol_percentage = forms.FloatField(required=True)
+    alcohol_percentage = forms.FloatField(label='% d\'alccol', required=True)
+    bar = forms.IntegerField(label='Bar (1 ou 2)',required=True)
     image = forms.ImageField(required=False)
 
 

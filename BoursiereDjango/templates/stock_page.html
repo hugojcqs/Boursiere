@@ -18,31 +18,35 @@
     <tbody>
 
       {% for beer in beers %}
-      <tr>
 
-        {% if beer in worth_beers %}
-        <th class="text-center align-middle" scope="row">
-          <div class="container" style="">
-                  <a class="text-center">{{beer.beer_name}}</a>
-                  <span class="badge badge-success">worth</span>
-          </div>
-        </th>
-        {% else %}
-        <th class="text-center align-middle" scope="row"> {{beer.beer_name}} </th>
-        {% endif %}
-        <td class="text-center align-middle">{{beer.stock}}</td>
-        <td class="text-center align-middle"> {{beer.price}} € </td>
-        <td class="text-center align-middle" >
-        {% if beer.get_trend == 'UP' %}
-        <i class="fas fa-caret-up fa-2x" style="color: green;"></i>
-        {% elif beer.get_trend == 'EQUAL' %}
-        <i class="fas fa-caret-left fa-2x" style="color: orange;"></i>
-        {% else %}
-        <i class="fas fa-caret-down fa-2x" style="color: red;"></i>
-        {% endif %}
-        </td>
 
-      </tr>
+        <tr id="tr-{{beer.beer_name|lower}}-{{beer.bar}}">
+
+
+          {% if beer in worth_beers %}
+          <th class="text-center align-middle" scope="row">
+            <div class="container" style="">
+                    <a class="text-center">{{beer.beer_name}}</a>
+                    <span class="badge badge-success">worth</span>
+            </div>
+          </th>
+          {% else %}
+          <th class="text-center align-middle" scope="row"> {{beer.beer_name}} </th>
+          {% endif %}
+          <td class="text-center align-middle">{{beer.stock}}</td>
+          <td class="text-center align-middle"> {{beer.price}} € </td>
+          <td class="text-center align-middle" >
+          {% if beer.get_trend == 'UP' %}
+          <i class="fas fa-caret-up fa-2x" style="color: green;"></i>
+          {% elif beer.get_trend == 'EQUAL' %}
+          <i class="fas fa-caret-left fa-2x" style="color: orange;"></i>
+          {% else %}
+          <i class="fas fa-caret-down fa-2x" style="color: red;"></i>
+          {% endif %}
+          </td>
+
+        </tr>
+        {% endif %}
       {% endfor %}
 
     </tbody>
