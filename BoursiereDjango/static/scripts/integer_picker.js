@@ -34,7 +34,6 @@ setInterval(function(){ update_stock(); }, 5000);
 
 function calculate_price()
 {
-    console.log(JSON.stringify(db));
     $.post({
         url: '/calculate_price/',
         data: {
@@ -95,7 +94,6 @@ function _add_history(json_) {
 }
 
 function delete_histo(token){
-        console.log(token);
         $.post({
         url: '/delete_histo/',
         data: {
@@ -110,10 +108,10 @@ function delete_histo(token){
       });
 }
 
-
+/////TODO : Verify the way that the page is updated is good enough
+///// Solution bourrin
 function update_stock()
 {
-    console.log('Update stock');
     $.post({
         url: '/update_stock/',
                 data: {
@@ -122,7 +120,6 @@ function update_stock()
         async: true,
         dataType: 'json',
         success: function(data) {
-            console.log(data.data);
                 for(var beer in data.data){
 
                     if (data.data.hasOwnProperty(beer)) {
@@ -146,10 +143,8 @@ function update_stock()
 
                 }
                 $('.worth').remove();
-                 console.log(data.data.worth.length);
                 for (var i = 0; i < data.data.worth.length; i++) {
                     let elem = $('#beer_name_'+data.data.worth[i]);
-                    console.log(elem);
                      elem.append(`<span class="badge badge-success worth">worth</span>`);
                     // ...
                 }
