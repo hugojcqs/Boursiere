@@ -8,6 +8,13 @@ from django.contrib.auth.decorators import login_required
 # Create your views here.
 from django.contrib import messages
 from .ImageUtilities import ImageUtilities
+from background_task import background
+
+
+@background(schedule=5)
+def notify_user():
+    print('Here is a notification', 'You have been notified')
+
 @login_required
 def beer_ordering_view(request):
     return render(request, 'ordering_beer_page.html', {'beers':BeerModel.objects.all(), 'history':History.objects.all()})
@@ -60,6 +67,5 @@ def login_page(request):
 
 
 def logout_page(request):
-    logout(request)
     print('logout with success !!')
     return redirect('login_page')

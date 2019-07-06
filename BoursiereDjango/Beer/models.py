@@ -32,10 +32,10 @@ class Beer(models.Model):
         self.q_current_qarder += number
 
     def compute_price(self):
-        if self.current_qarder > self.q_qarder:
-            return self.price + self.coef_up * (self.current_qarder - self.q_qarder)
+        if self.q_current_qarder > self.q_qarder:
+            return self.price + self.coef_up * (self.q_current_qarder - self.q_qarder)
         else:
-            return self.price + self.coef_down * (self.current_qarder - self.q_qarder)
+            return self.price + self.coef_down * (self.q_current_qarder - self.q_qarder)
 
     def change_stock(self, number):
         self.stock -= number
@@ -66,7 +66,7 @@ class Beer(models.Model):
         for out_beer in out_stock:   #for each beer out_of_stock
             #TODO: remove it from beer
             beer.out_of_stock = True
-
+        print('update finished !')
 
     def get_trend(self):
         if self.q_current_qarder > self.q_qarder:
