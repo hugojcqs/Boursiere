@@ -16,7 +16,6 @@
 
 
     <tbody>
-
       {% for beer in beers %}
 
 
@@ -24,18 +23,16 @@
 
 
           {% if beer in worth_beers %}
-          <th class="text-center align-middle" scope="row">
-            <div class="container" style="">
-                    <a class="text-center">{{beer.beer_name}}</a>
-                    <span class="badge badge-success">worth</span>
-            </div>
+          <th class="text-center align-middle" id="beer_name_{{ beer.id }}" scope="row">
+                    <a class="text-center">{{beer.beer_name}} <span class="badge badge-success worth">worth</span> </a>
           </th>
           {% else %}
-          <th class="text-center align-middle" scope="row"> {{beer.beer_name}} </th>
+                <th class="text-center align-middle" id="beer_name_{{ beer.id }}" scope="row"> {{beer.beer_name}} </th>
           {% endif %}
-          <td class="text-center align-middle">{{beer.stock}}</td>
-          <td class="text-center align-middle"> {{beer.price}} € </td>
-          <td class="text-center align-middle" >
+
+          <td class="text-center align-middle" id="beer_stock_{{ beer.id }}">{{beer.stock}}</td>
+          <td class="text-center align-middle" id="beer_price_{{ beer.id }}"> {{beer.price}} € </td>
+          <td class="text-center align-middle" id="beer_trend_image_{{ beer.id }}">
           {% if beer.get_trend == 'UP' %}
           <i class="fas fa-caret-up fa-2x" style="color: red;"></i>
           {% elif beer.get_trend == 'EQUAL' %}
@@ -44,13 +41,12 @@
           <i class="fas fa-caret-down fa-2x" style="color: green;"></i>
           {% endif %}
           </td>
-
         </tr>
       {% endfor %}
 
     </tbody>
   </table>
-</div>
+</div>,
 
 <nav aria-label="Page navigation example">
   <ul class="pagination justify-content-center mt-5">

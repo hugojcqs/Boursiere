@@ -30,6 +30,7 @@ $(document).ready(function() {
 
 });
 
+setInterval(function(){ update_stock(); }, 5000);
 
 function calculate_price()
 {
@@ -105,6 +106,53 @@ function delete_histo(token){
         success: function(data) {
             let elem = $('#'+String(token));
             elem.remove();
+        }
+      });
+}
+
+
+function update_stock()
+{
+    console.log('Update stock');
+    $.post({
+        url: '/update_stock/',
+                data: {
+          'data': 'empty_request',
+        },
+        async: true,
+        dataType: 'json',
+        success: function(data) {
+            console.log(data.data);
+                for(var beer in data.data){
+
+                    if (data.data.hasOwnProperty(beer)) {
+                    $('#beer_price_'+beer).text(data.data[beer]['price'] + ' €');
+                    $('#beer_stock_'+beer).text(data.data[beer]['stock']);
+                    trend_elem = $('#beer_trend_image_'+beer);
+                    trend_elem.empty();
+                    if(data.data[beer]['trend'] == 'UP')
+                    {
+                        trend_elem.append(`<i class="fas fa-caret-up fa-2x" style="color: red;"></i>`);
+                    }
+                    else if(data.data[beer]['trend'] == 'EQUAL')
+                    {
+                        trend_elem.append(`<i class="fas fa-caret-left fa-2x" style="color: orange;"></i>`);
+                    }
+                    else
+                    {
+                        trend_elem.append(`<i class="fas fa-caret-down fa-2x" style="color: green;"></i>`);
+                    }
+                    }
+
+                }
+                $('.worth').remove();
+                 console.log(data.data.worth.length);
+                for (var i = 0; i < data.data.worth.length; i++) {
+                    let elem = $('#beer_name_'+data.data.worth[i]);
+                    console.log(elem);
+                     elem.append(`<span class="badge badge-success worth">worth</span>`);
+                    // ...
+                }
         }
       });
 }

@@ -59,6 +59,7 @@ def make_order(request):
         return JsonResponse({'statut': 'ok', 'time': time, 'token': token, 'text': item_str, 'total_price': total})
     return JsonResponse({'statut': 'ko'})
 
+
 def delete_histo(request):
     if request.method == 'POST':
         token = request.POST.get('data')
@@ -73,6 +74,22 @@ def delete_histo(request):
         hist.delete()
 
     return JsonResponse({'statut': 'ok'}, safe=False)
+
+
+def update_stock(request):  # TODO : Passer le processus dans le model beer pour la creation du json
+    #  TODO : Known bug - si une biere est ajouter sans mise a jour de la page de stock, celle ci ne sera pas afficher par l'ajax
+    beers = {}
+    for beer in Beer.objects.all():
+        beer_name = beer.id
+        beers[beer_name] = {}
+        beers[beer_name]['price'] = beer.price
+        beers[beer_name]['stock'] = beer.stock
+        beers[beer_name]['trend'] = beer.get_trend()
+    beers['worth'] = []
+    for beer in Beer.get_worth_beers():
+        beers['worth'].append(beer.id)
+    return JsonResponse({'statut':'ok', 'data':beers})
+
 
 def update_price(request):
 
