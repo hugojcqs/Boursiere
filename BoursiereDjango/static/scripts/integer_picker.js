@@ -127,6 +127,7 @@ function update_stock()
                     $('#beer_stock_'+beer).text(data.data[beer]['stock']);
                     trend_elem = $('#beer_trend_image_'+beer);
                     trend_elem.empty();
+
                     if(data.data[beer]['trend'] == 'UP')
                     {
                         trend_elem.append(`<i class="fas fa-caret-up fa-2x" style="color: red;"></i>`);
@@ -141,6 +142,10 @@ function update_stock()
                     }
                     }
 
+                    if(data.data[beer]['out_of_stock'] == true){
+                      $('#beer_tr_'+beer).hide();
+                    }
+
                 }
                 $('.worth').remove();
                 for (var i = 0; i < data.data.worth.length; i++) {
@@ -151,6 +156,7 @@ function update_stock()
         }
       });
 }
+
 
 function hide_bar(bar)
 {

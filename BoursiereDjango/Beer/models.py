@@ -14,7 +14,7 @@ class Beer(models.Model):
     q_current_qarder = models.IntegerField(null=False, default=0)
     alcohol_percentage = models.FloatField(null=False, default=0)
     bar = models.IntegerField(null=False, default=1)
-    out_of_stock = False
+    out_of_stock = models.BooleanField(null=False, default=False)
 
     def change_percentage_alchohol(self, percentage):
         self.alcohol_percentage = percentage
@@ -59,13 +59,15 @@ class Beer(models.Model):
                 new_price = beer.coef_max * beer.buy_price
 
             if do_round:                               # if round is need
-                beer.price = round(new_price, 1)       # round new price with 1 comma
+                beer.price = round(new_price, 1)       # round new price with 1 comma (roundup)
             else:
                 beer.price = new_price
+            beer.save()
 
         for out_beer in out_stock:   #for each beer out_of_stock
             #TODO: remove it from beer
-            beer.out_of_stock = True
+            out_beer.out_of_stock = True
+            out_beer.save()
         print('update -> done.')
 
     def get_trend(self):

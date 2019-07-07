@@ -19,7 +19,7 @@
       {% for beer in beers %}
 
 
-        <tr class="bar{{beer.bar}}">
+        <tr class="bar{{beer.bar}}" id="beer_tr_{{ beer.id }}">
 
 
           {% if beer in worth_beers %}

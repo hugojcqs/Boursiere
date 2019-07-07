@@ -69,7 +69,8 @@ def delete_histo(request):
         for beer in json_:
             beer_db = Beer.objects.get(beer_name=beer)
             beer_db.stock += json_[beer]
-            beer_db.q_qarder -= json_[beer]
+            if(beer_db.q_qarder - json_[beer]) > 0:
+                beer_db.q_qarder -= json_[beer]
             #TODO: test beer_db.add_conso(-json_[beer])
             beer_db.save()
         hist.delete()
@@ -86,6 +87,7 @@ def update_stock(request):  # TODO : Passer le processus dans le model beer pour
         beers[beer_name]['price'] = beer.price
         beers[beer_name]['stock'] = beer.stock
         beers[beer_name]['trend'] = beer.get_trend()
+        beers[beer_name]['out_of_stock'] = beer.out_of_stock
     beers['worth'] = []
     for beer in Beer.get_worth_beers():
         beers['worth'].append(beer.id)
