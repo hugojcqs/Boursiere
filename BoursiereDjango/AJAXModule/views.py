@@ -6,6 +6,7 @@ import json
 from datetime import datetime
 import random
 import string
+from django.views.decorators.csrf import csrf_exempt
 
 @login_required
 def calculate_price(request):
@@ -90,15 +91,15 @@ def update_stock(request):  # TODO : Passer le processus dans le model beer pour
         beers['worth'].append(beer.id)
     return JsonResponse({'statut':'ok', 'data':beers})
 
-
+@csrf_exempt
 def update_price(request):
 
     TOKEN = 'CABB74F774DD3ACB'
 
     if request.method == 'POST':
-        token = json.loads(request.POST.get('data'))
-
+        token = request.POST.get('token')
         if token == TOKEN:
-            print(token)
-            return JsonResponse({'statut':'ok'})
+           Beer._update_prices(do_round=True)
+           print('price has been just updated.. (token: %s)'%token)
+           return JsonResponse({'statut':'ok'})
     return JsonResponse({'statut':'ko'})
