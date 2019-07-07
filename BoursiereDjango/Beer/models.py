@@ -66,7 +66,7 @@ class Beer(models.Model):
         for out_beer in out_stock:   #for each beer out_of_stock
             #TODO: remove it from beer
             beer.out_of_stock = True
-        print('update finished !')
+        print('update -> done.')
 
     def get_trend(self):
         if self.q_current_qarder > self.q_qarder:

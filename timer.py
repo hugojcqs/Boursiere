@@ -5,12 +5,12 @@ sched = BlockingScheduler()
 TOKEN = 'CABB74F774DD3ACB'
 
 
-@sched.scheduled_job('interval', seconds=15)        # timer function , can replace seconds with minutes, hours, etc...
+@sched.scheduled_job('interval', seconds=30)        # timer function , can replace seconds with minutes, hours, etc...
 def timed_job():
-    data = {'data':TOKEN}
+    data = {'token':'CABB74F774DD3ACB'}
     r = requests.post(url='http://127.0.0.1:8000/update_price/', data=data)
-    print(r.text)
-    print('send http request to url , (token: %s)' % TOKEN)
+    #print(r.text)
+    print('POST : (token: %s)' % TOKEN)
 
 sched.start()       # launch timer
 
