@@ -1,5 +1,5 @@
 $( document ).ready(function() {
-    console.log( "ready!" );
+    console.log( "integer picker ready!" );
 });
 
 var db = {};
@@ -166,4 +166,39 @@ function hide_bar(bar)
 function show_bar(bar)
 {
     $(".bar"+bar.toString()).show();
+}
+
+
+function start_timer(){
+
+  var hour = document.getElementById("timer_hour").innerHTML;
+  var min = document.getElementById("timer_min").innerHTML;
+  var sec = document.getElementById("timer_sec").innerHTML;
+
+  if(sec == 0){
+    if(min == 0){
+      if(hour == 0){
+        alert("Time out !");
+        window.location.reload();
+        return;
+      }
+      hour --;
+      min = 60;
+      if(hour < 10) hour = "0" + hour;
+    }
+    min --;
+    if(min < 10) min = "0" + sec;
+    sec = 59;
+
+  }else sec--;
+
+  if (sec < 10) sec = "0" + sec;
+
+  document.getElementById("timer_hour").innerHTML = hour;
+  document.getElementById("timer_min").innerHTML = min;
+  document.getElementById("timer_sec").innerHTML = sec;
+
+
+  setTimeout(start_timer, 1000);
+
 }

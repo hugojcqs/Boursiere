@@ -102,6 +102,5 @@ def update_price(request):
         token = request.POST.get('token')
         if token == TOKEN:
            Beer._update_prices(do_round=True)
-           print('price has been just updated.. (token: %s)'%token)
            return JsonResponse({'statut':'ok'})
     return JsonResponse({'statut':'ko'})

@@ -31,4 +31,5 @@ urlpatterns = [
     path('update_price/', AJAXModuleViews.update_price, name='update_price'),
     path('stock_page/', BeerViews.stock_page, name='stock_page'),
     path('update_stock/', AJAXModuleViews.update_stock, name='update_stock'),
+    path('dashboard/', BeerViews.dashboard, name='dashboard'),
 ]

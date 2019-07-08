@@ -2,6 +2,13 @@
 {% load static %}
 {% load filter_extra %}
 {%block content%}
+
+<div class="container text-center mt-4 mb-4 ">
+  <h2 class="font-weight-bold d-inline p-2 bg-dark text-white rounded"><span id="timer_hour">00</span></h2>
+  <h2 class="font-weight-bold d-inline p-2 bg-dark text-white rounded"><span id="timer_min">15</span></h2>
+  <h2 class="font-weight-bold d-inline p-2 bg-dark text-white rounded"><span id="timer_sec">00</span></h2>
+</div>
+
 <div class="container border rounded">
   <table class="table table-light table-bordered table-sm mt-3">
 
@@ -50,9 +57,10 @@
 
 <nav aria-label="Page navigation example">
   <ul class="pagination justify-content-center mt-5">
-    <li class="page-item"><a class="page-link" onclick="show_bar(1);hide_bar(2)">Bar 1</a></li>
+    <li class="page-item"><a class="page-link" onclick="show_bar(1);hide_bar(2);">Bar 1</a></li>
     <li class="page-item"><a class="page-link" onclick="show_bar(2);hide_bar(1)">Bar 2</a></li>
   </ul>
 </nav>
+
 
 {%endblock%}
