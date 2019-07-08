@@ -3,5 +3,37 @@
 {% load filter_extra %}
 {%block content%}
 
+<div class="row">
+  <div class="col-sm-4 table-responsive-sm ml-3">
+    <table class="table table-light table-bordered table-striped  table-sm mt-3">
+
+      <thead>
+        <tr class="">
+          <th class="text-center align-middle" scope="col">Bière <i class="fas fas fa-beer"></i></th>
+          <th class="text-center" scope="col">Prix €</th>
+        </tr>
+      </thead>
+
+
+      <tbody>
+        {% for beer in beers %}
+
+
+          <tr class="">
+            <th class="text-center align-middle" scope="row" style="width: 50%"> {{beer.beer_name}} </th>
+            <td class="text-center align-middle" id="treso_price_{{ beer.id }}" contenteditable="true" style="width: 50%"> {{beer.price}} € </td>
+          </tr>
+
+        {% endfor %}
+
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div class="col-md-4 text-center">
+    <button type="submit" class="btn btn-success">Save price!</button>
+</div>
+
 
 {%endblock%}

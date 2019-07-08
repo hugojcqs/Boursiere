@@ -48,7 +48,7 @@ def add_beer(request):
 
 @login_required
 def dashboard(request):
-    return render(request, 'dashboard.html', locals())
+    return render(request, 'dashboard.html', {'beers':BeerModel.objects.all()})
 
 def stock_page(request):
     return render(request, 'stock_page.html', {'beers':BeerModel.objects.all(), 'worth_beers':BeerModel.get_worth_beers()})
