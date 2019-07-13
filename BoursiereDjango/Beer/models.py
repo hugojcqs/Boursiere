@@ -65,10 +65,9 @@ class Beer(models.Model):
             beer.save()
 
         for out_beer in out_stock:   #for each beer out_of_stock
-            #TODO: remove it from beer
+            # TODO: remove it from beer
             out_beer.out_of_stock = True
             out_beer.save()
-        print('update -> done.')
 
     def get_trend(self):
         if self.q_current_qarder > self.q_qarder:
@@ -86,7 +85,6 @@ class Beer(models.Model):
     def __str__(self):
         return self.beer_name
 
-
     #  TODO : CHECK IF IT WORKS !!
     def verify_exist(self):
         beer = Beer.objects.get(self)
@@ -94,10 +92,10 @@ class Beer(models.Model):
             raise Exception('Beer does not exists in the database')
 
 
-
 class History(models.Model):
     id_str = models.CharField(max_length=25, null=False)
     time = models.CharField(null=False, max_length=25)
     total_price = models.FloatField(null=False, default=0)
-    history_json = models.TextField()  # to save data as json
+    buy_total_price = models.FloatField(null=False, default=0)
+    history_json = models.TextField()
     text = models.TextField(null=False, default="")

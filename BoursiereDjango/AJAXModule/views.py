@@ -22,6 +22,8 @@ def _calculate_price(json_):
     total = 0
     for beer in json_:
         beer_db = Beer.objects.get(beer_name=beer)
+        if beer_db is None:
+            return -1
         total += beer_db.price * json_[beer]
     return total
 
@@ -37,23 +39,28 @@ def make_order(request):
         json_ = json.loads(request.POST.get('data'))
         item_str = ''
         total = 0
+        total_buy_price = 0
         time = datetime.now().strftime('%H:%M:%S')
         token = _random_string(10)
 
         for beer in json_:
             nb_beer = json_[beer]
             beer_db = Beer.objects.get(beer_name=beer)
-            beer_db.q_current_qarder += nb_beer
-            beer_db.stock -= nb_beer
-            total += beer_db.price * nb_beer
-            item_str += '%d %s -' % (nb_beer, beer)
-            beer_db.save()
-        item_str = item_str[0:len(item_str)-1]
+            if beer_db is not None:
+                beer_db.q_current_qarder += nb_beer
+                beer_db.stock -= nb_beer
+                total += beer_db.price * nb_beer
+                total_buy_price += beer_db.buy_price * nb_beer
+                item_str += '%d %s -' % (nb_beer, beer)
+                beer_db.save()
+
+        item_str = item_str[0:len(item_str)-1]  # remove the last '-' from the string
 
         h = History.objects.create()
         h.id_str = token
         h.time = time
         h.total_price = total
+        h.buy_total_price = total_buy_price
         h.history_json = request.POST.get('data')
         h.text = item_str
         h.save()
@@ -66,9 +73,14 @@ def delete_histo(request):
     if request.method == 'POST':
         token = request.POST.get('data')
         hist = History.objects.get(id_str=token)
+        if hist is None:
+            return JsonResponse({'statut': 'ko', 'reason': 'History object not found!'})
+
         json_ = json.loads(hist.history_json)
         for beer in json_:
             beer_db = Beer.objects.get(beer_name=beer)
+            if beer_db is None:
+                return JsonResponse({'statut':'ko', 'reason':'The beer %s does not exist!' % beer})
             beer_db.stock += json_[beer]
             if(beer_db.q_qarder - json_[beer]) > 0:
                 beer_db.q_qarder -= json_[beer]

@@ -4,7 +4,7 @@
         <div class="d-flex w-100 justify-content-between">
             <h5 class="mb-1">Commande n°{{ histo.id_str }}</h5>
             <small>{{ histo.time }}</small>
-            <button class="btn-sm btn-danger" onclick="delete_histo({{ histo.id_str }})">Supprimer</button>
+            <div class="btn btn-sm btn-danger" onclick="delete_histo({{ histo.id_str }})">Supprimer</div>
         </div>
     <p class="mb-1">{{ histo.text }}</p>
     <small id="">Prix total : {{ histo.total_price }} €</small>

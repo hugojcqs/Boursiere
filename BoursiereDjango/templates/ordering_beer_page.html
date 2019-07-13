@@ -1,5 +1,8 @@
 {%extends 'main_template.html' %}
 {% load static %}
+{%block head%}
+    <script src="{%static '/scripts/order_page.js' %}"></script>
+{% endblock %}
 {%block content%}
 <div class="container-fluid">
 <div class="row">
@@ -10,7 +13,7 @@
         <div class="card-body">
             <h5 class="card-title" id="total_price">Prix : 0 €</h5>
             <div class="text-center">
-        <div class="btn btn-success" onclick="make_order()">Commander!</div>
+        <div class="btn btn-success disabled" id="order_btn" onclick="make_order()">Commander!</div>
                 </div>
         </div>
     </div>
