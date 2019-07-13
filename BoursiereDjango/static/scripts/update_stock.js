@@ -1,15 +1,11 @@
-<<<<<<< HEAD:BoursiereDjango/static/scripts/integer_picker.js
 $( document ).ready(function() {
     console.log( "integer picker ready!" );
 });
 
 var db = {};
 
-
-=======
 /////TODO : Verify the way that the page is updated is good enough
 ///// Solution bourrin
->>>>>>> 378b7dbfe179c03e33052714c56025aa386eb343:BoursiereDjango/static/scripts/update_stock.js
 $(document).ready(function() {
     $.ajaxSetup({
      beforeSend: function(xhr, settings) {
@@ -100,7 +96,6 @@ function show_bar(bar)
     $(".bar"+bar.toString()).show();
 }
 
-<<<<<<< HEAD:BoursiereDjango/static/scripts/integer_picker.js
 function kill_update_price(){
     $.post({
     url: '/kill_process/',
@@ -117,7 +112,6 @@ function kill_update_price(){
 }
 
 
-=======
 /*
 >>>>>>> 378b7dbfe179c03e33052714c56025aa386eb343:BoursiereDjango/static/scripts/update_stock.js
 function start_timer(){
