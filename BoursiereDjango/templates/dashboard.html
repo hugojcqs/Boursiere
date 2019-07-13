@@ -1,39 +1,33 @@
 {%extends 'main_template.html' %}
 {% load static %}
-{% load filter_extra %}
 {%block content%}
+<div class="container">
+    <div class="card">
+        <div class="card-body">
+            <div class="container">
+                    <p>Revenu : {{ total }} €</p>
+                    <p>Prix d'achats des biéres vendues : {{ total_buy_price }} €</p>
+            </div>
+        </div>
+        <div class="card-footer text-white bg-secondary">
+        Bénéfices théorique total : {{ benef }} €
+        </div>
+    </div>
 
-<div class="row">
-  <div class="col-sm-4 table-responsive-sm ml-3">
-    <table class="table table-light table-bordered table-striped  table-sm mt-3">
-
-      <thead>
-        <tr class="">
-          <th class="text-center align-middle" scope="col">Bière <i class="fas fas fa-beer"></i></th>
-          <th class="text-center" scope="col">Prix €</th>
-        </tr>
-      </thead>
-
-
-      <tbody>
-        {% for beer in beers %}
-
-
-          <tr class="">
-            <th class="text-center align-middle" scope="row" style="width: 50%"> {{beer.beer_name}} </th>
-            <td class="text-center align-middle" id="treso_price_{{ beer.id }}" contenteditable="true" style="width: 50%"> {{beer.price}} € </td>
-          </tr>
-
-        {% endfor %}
-
-      </tbody>
-    </table>
-  </div>
+    <div class="card mt-2">
+        <div class="card-header bg-dark text-white">
+            <div class="row">
+                <div>Prix tréso <b>ATTENTION - Mode non reversible</b></div>
+            </div>
+        </div>
+        <div class="card-body">
+        <div class="container">
+            {% include 'prix_treso.html' with beers=beers %}
+        </div>
+    </div>
+    <div class="card-footer text-white bg-dark">
+        <div class="btn btn-danger ml-3">Activer le failsafe!</div>
+    </div>
 </div>
-
-<div class="col-md-4 text-center">
-    <button type="submit" class="btn btn-success">Save price!</button>
 </div>
-
-
 {%endblock%}

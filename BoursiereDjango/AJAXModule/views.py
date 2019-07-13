@@ -33,6 +33,24 @@ def _random_string(string_length=10):
 
 
 @login_required
+def generate_data_set(request):
+    labels = []
+    prices = []
+    buy_price =[]
+    for hist in History.objects.all():
+        labels.append(hist.id)
+        prices.append(hist.total_price)
+    return JsonResponse(json.dumps({
+      "labels": labels,
+      "datasets": [
+        {
+          "label": "Revenu en euro",
+          "backgroundColor": ["#3e95cd"],
+          "data": prices
+        }]}), safe=False)
+
+
+@login_required
 def make_order(request):
     if request.method == 'POST':
         json_ = json.loads(request.POST.get('data'))

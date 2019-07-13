@@ -33,6 +33,7 @@ ALLOWED_HOSTS = []
 INSTALLED_APPS = [
     'Beer',
     'AJAXModule',
+    'Treso',
     'crispy_forms',
     'django.contrib.admin',
     'django.contrib.auth',

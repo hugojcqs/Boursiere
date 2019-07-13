@@ -10,7 +10,6 @@ class BeerForm(forms.Form):
     coef_max = forms.FloatField(required=True)
     alcohol_percentage = forms.FloatField(label='% d\'alccol', required=True)
     bar = forms.IntegerField(label='Bar (1 ou 2)',required=True)
-    image = forms.ImageField(required=False)
 
 
 class LoginForm(forms.Form):

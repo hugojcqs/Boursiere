@@ -17,6 +17,7 @@ from django.contrib import admin
 from django.urls import path
 from Beer import views as BeerViews
 from AJAXModule import views as AJAXModuleViews
+from Treso import  views as TresoViews
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -31,5 +32,6 @@ urlpatterns = [
     path('update_price/', AJAXModuleViews.update_price, name='update_price'),
     path('stock_page/', BeerViews.stock_page, name='stock_page'),
     path('update_stock/', AJAXModuleViews.update_stock, name='update_stock'),
-    path('dashboard/', BeerViews.dashboard, name='dashboard'),
+    path('dashboard/', TresoViews.dashboard, name='dashboard'),
+    path('dataset/', AJAXModuleViews.generate_data_set, name='dataset')
 ]

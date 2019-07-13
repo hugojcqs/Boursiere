@@ -5,9 +5,7 @@ from .forms import BeerForm, LoginForm
 from .models import Beer as BeerModel
 from .models import History
 from django.contrib.auth.decorators import login_required
-# Create your views here.
 from django.contrib import messages
-from .ImageUtilities import ImageUtilities
 from background_task import background
 
 
@@ -44,11 +42,6 @@ def add_beer(request):
     else:
         messages.error(request, beer_form.errors)
     return render(request, 'add_beer.html', {'form':beer_form})
-
-
-@login_required
-def dashboard(request):
-    return render(request, 'dashboard.html', {'beers':BeerModel.objects.all()})
 
 
 def stock_page(request):
