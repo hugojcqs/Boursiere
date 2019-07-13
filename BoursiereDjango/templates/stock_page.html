@@ -56,9 +56,9 @@
           <td class="text-center align-middle" id="beer_stock_{{ beer.id }}">{{beer.stock}}</td>
           <td class="text-center align-middle" id="beer_price_{{ beer.id }}"> {{beer.price}} € </td>
           <td class="text-center align-middle" id="beer_trend_image_{{ beer.id }}">
-          {% if beer.get_trend == 'UP' %}
+          {% if beer.trend == 'UP' %}
           <i class="fas fa-caret-up fa-2x" style="color: red;"></i>
-          {% elif beer.get_trend == 'EQUAL' %}
+          {% elif beer.trend == 'EQUAL' %}
           <i class="fas fa-caret-left fa-2x" style="color: orange;"></i>
           {% else %}
           <i class="fas fa-caret-down fa-2x" style="color: green;"></i>

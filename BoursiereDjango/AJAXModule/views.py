@@ -7,7 +7,9 @@ from datetime import datetime
 import random
 import string
 from django.views.decorators.csrf import csrf_exempt
-from .tasks import test_task
+
+
+
 
 @login_required
 def calculate_price(request):
@@ -117,7 +119,7 @@ def update_stock(request):  # TODO : Passer le processus dans le model beer pour
         beers[beer_name] = {}
         beers[beer_name]['price'] = beer.price
         beers[beer_name]['stock'] = beer.stock
-        beers[beer_name]['trend'] = beer.get_trend()
+        beers[beer_name]['trend'] = beer.trend
         beers[beer_name]['out_of_stock'] = beer.out_of_stock
     beers['worth'] = []
     for beer in Beer.get_worth_beers():

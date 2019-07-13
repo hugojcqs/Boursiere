@@ -14,6 +14,7 @@ class Beer(models.Model):
     q_current_qarder = models.IntegerField(null=False, default=0)
     alcohol_percentage = models.FloatField(null=False, default=0)
     bar = models.IntegerField(null=False, default=1)
+    trend = models.CharField(max_length=10, default='EQUAL')
     out_of_stock = models.BooleanField(null=False, default=False)
 
     def change_percentage_alchohol(self, percentage):
@@ -47,7 +48,10 @@ class Beer(models.Model):
 
         for beer in Beer.objects.all(): # for each beer
             new_price = beer.compute_price()
-            beer.change_stock(beer.q_current_qarder)  # remove q_current_qarder from stock
+
+            beer.trend = Beer.get_trend(q_qarder=beer.q_qarder, q_current_qarder=beer.q_current_qarder)
+
+            #beer.change_stock(beer.q_current_qarder)  # remove q_current_qarder from stock
 
             if beer.stock <= 0:
                 out_stock.append(beer)      # add beer to out of stock beer list
@@ -69,10 +73,12 @@ class Beer(models.Model):
             out_beer.out_of_stock = True
             out_beer.save()
 
-    def get_trend(self):
-        if self.q_current_qarder > self.q_qarder:
+
+    @staticmethod
+    def get_trend(q_qarder, q_current_qarder):
+        if q_current_qarder > q_qarder:
             return 'UP'
-        elif self.q_current_qarder == self.q_qarder:
+        elif q_current_qarder == q_qarder:
             return 'EQUAL'
         else:
             return 'DOWN'
