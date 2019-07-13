@@ -15,43 +15,45 @@ from background_task import background
 def notify_user():
     print('Here is a notification', 'You have been notified')
 
+
 @login_required
 def beer_ordering_view(request):
     return render(request, 'ordering_beer_page.html', {'beers':BeerModel.objects.all(), 'history':History.objects.all()})
 
+
 @login_required
 def add_beer(request):
-
     beer_form = BeerForm()
     if request.method == 'POST':
         beer_form = BeerForm(request.POST, request.FILES )
     if beer_form.is_valid():
-        #beer.image = ImageUtilities.resize_save_image(beer_form.cleaned_data['image'].read(), 100, 100)
         if beer_form.cleaned_data['beer_name'].upper() in [beer.beer_name.upper() for beer in BeerModel.objects.all()]: # check if the beer is already saved.
             messages.add_message(request, messages.ERROR, 'Cette bière à déjà été enregistré !')
-
         else:
-            beer = BeerModel.objects.create(beer_name=beer_form.cleaned_data['beer_name'],
-                                            price = beer_form.cleaned_data['price'],
-                                            buy_price = beer_form.cleaned_data['price'],
-                                            coef_down = beer_form.cleaned_data['coef_down'],
-                                            coef_up = beer_form.cleaned_data['coef_up'],
-                                            stock = beer_form.cleaned_data['stock'],
-                                            coef_max = beer_form.cleaned_data['coef_max'],
-                                            alcohol_percentage = beer_form.cleaned_data['alcohol_percentage'],
-                                            bar =  beer_form.cleaned_data['bar']
-                                            )
+            BeerModel.objects.create(beer_name=beer_form.cleaned_data['beer_name'],
+                                     price=beer_form.cleaned_data['price'],
+                                     buy_price=beer_form.cleaned_data['price'],
+                                     coef_down=beer_form.cleaned_data['coef_down'],
+                                     coef_up=beer_form.cleaned_data['coef_up'],
+                                     stock=beer_form.cleaned_data['stock'],
+                                     coef_max=beer_form.cleaned_data['coef_max'],
+                                     alcohol_percentage=beer_form.cleaned_data['alcohol_percentage'],
+                                     bar=beer_form.cleaned_data['bar']
+                                     )
             messages.add_message(request, messages.SUCCESS, 'La bière à bien été ajouté à la liste !')
     else:
         messages.error(request, beer_form.errors)
     return render(request, 'add_beer.html', {'form':beer_form})
 
+
 @login_required
 def dashboard(request):
     return render(request, 'dashboard.html', {'beers':BeerModel.objects.all()})
 
+
 def stock_page(request):
     return render(request, 'stock_page.html', {'beers':BeerModel.objects.all(), 'worth_beers':BeerModel.get_worth_beers()})
+
 
 def root(request):
     return redirect('beer_ordering')
