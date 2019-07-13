@@ -1,5 +1,15 @@
+<<<<<<< HEAD:BoursiereDjango/static/scripts/integer_picker.js
+$( document ).ready(function() {
+    console.log( "integer picker ready!" );
+});
+
+var db = {};
+
+
+=======
 /////TODO : Verify the way that the page is updated is good enough
 ///// Solution bourrin
+>>>>>>> 378b7dbfe179c03e33052714c56025aa386eb343:BoursiereDjango/static/scripts/update_stock.js
 $(document).ready(function() {
     $.ajaxSetup({
      beforeSend: function(xhr, settings) {
@@ -70,6 +80,12 @@ function update_stock()
                      elem.append(`<span class="badge badge-success worth">worth</span>`);
                     // ...
                 }
+
+                //update progress bar TODO: isolate this
+
+              //  $('#progress_tip').val($('.progress').val()+5);
+              //  $('#progress_tip').tooltip('update');
+              //  $('#progress_tip').attr('title', $('.progress').val());
         }
       });
 }
@@ -84,7 +100,26 @@ function show_bar(bar)
     $(".bar"+bar.toString()).show();
 }
 
+<<<<<<< HEAD:BoursiereDjango/static/scripts/integer_picker.js
+function kill_update_price(){
+    $.post({
+    url: '/kill_process/',
+    data: {
+      'data': String(token),
+    },
+    async: true,
+    dataType: 'json',
+    success: function(data) {
+        let elem = $('#'+String(token));
+        elem.remove();
+    }
+  });
+}
+
+
+=======
 /*
+>>>>>>> 378b7dbfe179c03e33052714c56025aa386eb343:BoursiereDjango/static/scripts/update_stock.js
 function start_timer(){
 
   var hour = document.getElementById("timer_hour").innerHTML;
