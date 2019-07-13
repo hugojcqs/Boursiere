@@ -38,6 +38,7 @@ def make_order(request):
         json_ = json.loads(request.POST.get('data'))
         item_str = ''
         total = 0
+        total_buy_price = 0
         time = datetime.now().strftime('%H:%M:%S')
         token = _random_string(10)
 
@@ -48,6 +49,7 @@ def make_order(request):
                 beer_db.q_current_qarder += nb_beer
                 beer_db.stock -= nb_beer
                 total += beer_db.price * nb_beer
+                total_buy_price += beer_db.buy_price * nb_beer
                 item_str += '%d %s -' % (nb_beer, beer)
                 beer_db.save()
 
@@ -57,6 +59,7 @@ def make_order(request):
         h.id_str = token
         h.time = time
         h.total_price = total
+        h.buy_total_price = total_buy_price
         h.history_json = request.POST.get('data')
         h.text = item_str
         h.save()
