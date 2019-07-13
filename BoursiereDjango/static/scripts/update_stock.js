@@ -1,9 +1,5 @@
-$( document ).ready(function() {
-    console.log( "integer picker ready!" );
-});
-
-var db = {};
-
+/////TODO : Verify the way that the page is updated is good enough
+///// Solution bourrin
 $(document).ready(function() {
     $.ajaxSetup({
      beforeSend: function(xhr, settings) {
@@ -27,89 +23,8 @@ $(document).ready(function() {
          }
      }
 });
-
 });
 
-setInterval(function(){ update_stock(); }, 5000);
-
-function calculate_price()
-{
-    $.post({
-        url: '/calculate_price/',
-        data: {
-          'data': JSON.stringify(db)
-        },
-        async: true,
-        dataType: 'json',
-        success: function (data) {
-            let elem = $("#total_price");
-            elem.text('Prix : '+ String(data['price']) + " €");
-        }
-      });
-}
-
-function make_order()
-{
-    $.post({
-        url: '/make_order/',
-        data: {
-          'data': JSON.stringify(db)
-        },
-        async: true,
-        dataType: 'json',
-        success: function (data) {
-                _add_history(data);
-                $(".input-number").val(0);
-                $("#total_price").text('Prix : 0 €');
-                db = {}
-        }
-      });
-}
-
-function plus(i, beer_name)
-{
-    let input = $("#input" + i.toString());
-    let new_v_input = Number(input.val()) + 1;
-    input.val(new_v_input);
-    db[beer_name] = new_v_input;
-    calculate_price();
-}
-
-function minus(i, beer_name)
-{
-    let input = $("#input" + i.toString());
-    let new_v_input = Number(input.val()) - 1;
-    input.val(new_v_input);
-    db[beer_name] = new_v_input;
-    calculate_price();
-}
-
-function _add_history(json_) {
-    time = json_['time'];
-    token = json_['token'];
-    text = json_['text'];
-    total_price = json_['total_price'];
-    raw_html = `<a class="list-group-item list-group-item-action flex-column align-items-start text-white bg-secondary" id="${token}"><div class="d-flex w-100 justify-content-between"><h5 class="mb-1">Commande n°${token}</h5><small>${time}</small><div class="btn-sm btn-danger" onclick="delete_histo(${token})">Supprimer</div></div><p class="mb-1">${text}</p><small>Prix total : ${total_price} €</small></a>`;
-    $('#histo').prepend(raw_html)
-}
-
-function delete_histo(token){
-        $.post({
-        url: '/delete_histo/',
-        data: {
-          'data': String(token),
-        },
-        async: true,
-        dataType: 'json',
-        success: function(data) {
-            let elem = $('#'+String(token));
-            elem.remove();
-        }
-      });
-}
-
-/////TODO : Verify the way that the page is updated is good enough
-///// Solution bourrin
 function update_stock()
 {
     $.post({
@@ -168,7 +83,7 @@ function show_bar(bar)
     $(".bar"+bar.toString()).show();
 }
 
-
+/*
 function start_timer(){
 
   var hour = document.getElementById("timer_hour").innerHTML;
@@ -202,3 +117,5 @@ function start_timer(){
   setTimeout(start_timer, 1000);
 
 }
+
+ */

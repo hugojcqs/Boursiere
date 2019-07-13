@@ -1,6 +1,11 @@
 {%extends 'main_template.html' %}
 {% load static %}
 {% load filter_extra %}
+
+{% block head %}
+    <script src="{%static '/scripts/update_stock.js' %}"></script>
+{% endblock %}
+
 {%block content%}
 
 <div class="container text-center mt-4 mb-4 ">
