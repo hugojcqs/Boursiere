@@ -25,6 +25,8 @@ $(document).ready(function() {
 });
 });
 
+setInterval(function(){ update_stock(); }, 5000);
+
 function update_stock()
 {
     $.post({
@@ -71,7 +73,6 @@ function update_stock()
         }
       });
 }
-
 
 function hide_bar(bar)
 {

@@ -25,12 +25,33 @@ $(document).ready(function() {
 
 var db = {};
 
+function _can_order()
+{
+    for (let key in db) {
+    if (db.hasOwnProperty(key)) {
+        if(db[key] > 0) return true;
+    }
+}
+}
+
+function set_clickable_order_button()
+{
+    if(_can_order())
+    {
+        $('#order_btn').removeClass("disabled")
+    }
+    else{
+        $('#order_btn').addClass("disabled")
+    }
+}
+
 function plus(i, beer_name)
 {
     let input = $("#input" + i.toString());
     let new_v_input = Number(input.val()) + 1;
     input.val(new_v_input);
     db[beer_name] = new_v_input;
+    set_clickable_order_button();
     calculate_price();
 }
 
@@ -40,6 +61,7 @@ function minus(i, beer_name)
     let new_v_input = Number(input.val()) - 1;
     input.val(new_v_input);
     db[beer_name] = new_v_input;
+    set_clickable_order_button();
     calculate_price();
 }
 
@@ -61,6 +83,9 @@ function calculate_price()
 
 function make_order()
 {
+    if(!_can_order())
+        return;
+
     $.post({
         url: '/make_order/',
         data: {
@@ -76,8 +101,6 @@ function make_order()
         }
       });
 }
-
-setInterval(function(){ update_stock(); }, 5000);
 
 
 function _add_history(json_) {
