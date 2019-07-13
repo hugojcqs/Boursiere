@@ -9,8 +9,6 @@ import string
 from django.views.decorators.csrf import csrf_exempt
 
 
-
-
 @login_required
 def calculate_price(request):
     if request.method == 'POST':

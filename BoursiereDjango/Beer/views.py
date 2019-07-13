@@ -6,12 +6,6 @@ from .models import Beer as BeerModel
 from .models import History
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
-from background_task import background
-
-
-@background(schedule=5)
-def notify_user():
-    print('Here is a notification', 'You have been notified')
 
 
 @login_required
