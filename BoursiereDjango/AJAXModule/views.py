@@ -7,6 +7,7 @@ from datetime import datetime
 import random
 import string
 from django.views.decorators.csrf import csrf_exempt
+from .tasks import test_task
 
 @login_required
 def calculate_price(request):

@@ -4,6 +4,7 @@ $( document ).ready(function() {
 
 var db = {};
 
+
 $(document).ready(function() {
     $.ajaxSetup({
      beforeSend: function(xhr, settings) {
@@ -153,6 +154,12 @@ function update_stock()
                      elem.append(`<span class="badge badge-success worth">worth</span>`);
                     // ...
                 }
+
+                //update progress bar TODO: isolate this
+
+              //  $('#progress_tip').val($('.progress').val()+5);
+              //  $('#progress_tip').tooltip('update');
+              //  $('#progress_tip').attr('title', $('.progress').val());
         }
       });
 }
@@ -166,6 +173,21 @@ function hide_bar(bar)
 function show_bar(bar)
 {
     $(".bar"+bar.toString()).show();
+}
+
+function kill_update_price(){
+    $.post({
+    url: '/kill_process/',
+    data: {
+      'data': String(token),
+    },
+    async: true,
+    dataType: 'json',
+    success: function(data) {
+        let elem = $('#'+String(token));
+        elem.remove();
+    }
+  });
 }
 
 
