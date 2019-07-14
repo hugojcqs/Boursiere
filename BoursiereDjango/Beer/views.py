@@ -45,9 +45,6 @@ def stock_page(request):
 def root(request):
     return redirect('stock_page')
 
-
-
-
 def login_page(request):
     login_form = LoginForm(request.POST or None)
     if login_form.is_valid():
