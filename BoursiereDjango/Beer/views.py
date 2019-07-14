@@ -43,7 +43,9 @@ def stock_page(request):
 
 
 def root(request):
-    return redirect('beer_ordering')
+    return redirect('stock_page')
+
+
 
 
 def login_page(request):
@@ -52,7 +54,7 @@ def login_page(request):
         user = authenticate(request, username=login_form.cleaned_data['username'], password=login_form.cleaned_data['password'])
         if user is not None:
             login(request, user)
-            return redirect('beer_ordering')
+            return redirect('stock_page')
         else:
             messages.add_message(request, messages.ERROR, 'Login error!')
             return render(request, 'login_page.html', {'form':login_form})
