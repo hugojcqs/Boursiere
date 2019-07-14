@@ -24,7 +24,7 @@ Pour installer les dépendances ci-dessus, enregistrer le texte ci-dessus dans u
 pip install -r <nom_du_fichier>.txt
 ```
 
-## Lancer le serveur et le timer de mise à jour des prix
+### Gestion de la base de données
 
 Avant de lancer le serveur, il est nécessaire d'initialiser la base de donner si cela n'as pas été fait. 
 
@@ -66,7 +66,7 @@ Pour stopper ce script (et donc le timer) il faut faire `ctrl + c` dans la conso
 
 Pour stopper le serveur (et donc le site web) il faut faire `ctrl + c`  dans la console du serveur.
 
-## URL disponnible
+## URL disponnibles
 
 |      `/url/`      | Objectif de la page                                          |
 | :---------------: | ------------------------------------------------------------ |
