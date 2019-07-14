@@ -7,7 +7,7 @@ import sys
 
 
 def handler(signum, frame):
-    os.system('python.exe D:/Documents/GIT/Boursi-re/BoursiereDjango/manage.py stop_timer')
+    os.system('py ./manage.py stop_timer')
     print('Timer has been stopped!')
     sys.exit(0)
 
@@ -16,9 +16,8 @@ signal.signal(signal.SIGINT, handler)
 
 
 def job():
-    os.system('python.exe D:/Documents/GIT/Boursi-re/BoursiereDjango/manage.py update_prices %s' % round(datetime.datetime.timestamp(datetime.datetime.now())))
-    print('python.exe D:/Documents/GIT/Boursi-re/BoursiereDjango/manage.py update_prices %s' % round(datetime.datetime.timestamp(datetime.datetime.now())))
-
+    os.system('py ./manage.py update_prices %s' % round(datetime.datetime.timestamp(datetime.datetime.now())))
+    print('py ./manage.py update_prices %s' % round(datetime.datetime.timestamp(datetime.datetime.now())))
 
 schedule.every(15).minutes.do(job)
 
