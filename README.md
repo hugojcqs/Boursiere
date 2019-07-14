@@ -1,4 +1,4 @@
-# Programme de la boursière
+# Programme de la boursière :beer:
 
 ## Avant de lancer le serveur
 
@@ -24,7 +24,7 @@ Pour installer les dépendances ci-dessus, enregistrer le texte ci-dessus dans u
 pip install -r <nom_du_fichier>.txt
 ```
 
-### Gestion de la base de données
+### Gestion de la base de données :floppy_disk:
 
 Avant de lancer le serveur, il est nécessaire d'initialiser la base de donner si cela n'as pas été fait. 
 
@@ -48,7 +48,7 @@ Pour se faire, il faut supprimer le fichier `db.sql3` et effectuer les commandes
    python.exe .\manage.py init_db	
    ```
 
-## Lancer le serveur
+## Lancer le serveur :computer:
 
 Pour lancer le serveur il faut effectuer la commande suivante.
 
@@ -66,7 +66,7 @@ Pour stopper ce script (et donc le timer) il faut faire `ctrl + c` dans la conso
 
 Pour stopper le serveur (et donc le site web) il faut faire `ctrl + c`  dans la console du serveur.
 
-## URL disponnibles
+## URL disponnibles : :page_with_curl:
 
 |      `/url/`      | Objectif de la page                                          |
 | :---------------: | ------------------------------------------------------------ |
