@@ -1,11 +1,11 @@
  {% extends 'main_template.html' %}
  {% load crispy_forms_tags %}
  {% block content %}
-     <div class="container">
-     <form method="post" enctype="multipart/form-data">
+<div class="container">
+    <form method="post" enctype="multipart/form-data">
     {% csrf_token %}
     {{ form|crispy }}
     <button type="submit" class="btn btn-success">Add beer</button>
     </form>
-     </div>
+</div>
  {% endblock %}
