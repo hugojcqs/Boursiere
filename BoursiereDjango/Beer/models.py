@@ -42,18 +42,22 @@ class Beer(models.Model):
     def change_stock(self, number):
         self.stock -= number
 
+
+    @staticmethod
+    def _stop_timer():
+        timer = Timer.objects.get(id=1)
+        timer.timer_is_started = False
+        timer.next_update = (datetime.timestamp(datetime.now()) + 15 * 60 + 3)
+        timer.save()
+
+
     @staticmethod
     def _update_prices(do_round=True):
-        timer = None
-        try:
-            timer = Timer.objects.get(id=1)
-        except Exception as e:
-            timer = Timer.objects.create(timer_is_started=False,
-                                         timer_last_updated=0)
-        finally:
-            timer.timer_last_updated = datetime.timestamp(datetime.now())
-            timer.timer_is_started = True
-            timer.save()
+
+        timer = Timer.objects.get(id=1)
+        timer.timer_is_started = True
+        timer.next_update = (datetime.timestamp(datetime.now()) + 15*60 + 3)
+        timer.save()
 
         out_stock = []
         for beer in Beer.objects.all(): # for each beer
@@ -118,6 +122,5 @@ class History(models.Model):
 
 
 class Timer(models.Model):
-    timer_is_started = models.BigIntegerField(null=False)
-    timer_last_updated = models.BigIntegerField(null=False)
-    timer_time_delay = models.IntegerField(default=15000)
+    next_update = models.BigIntegerField(null=False)
+    timer_is_started = models.BooleanField(null=False, default=False)

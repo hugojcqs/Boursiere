@@ -33,6 +33,7 @@ $(document).ready(function() {
 });
 
 
+var timeout = setInterval(function(){update_stock()}, 2000);
 
 function update_stock()
 {
@@ -44,14 +45,16 @@ function update_stock()
         async: true,
         dataType: 'json',
         success: function(data) {
-            var eta_ms = data.data.next_update - new Date().getTime() / 1000;
-            if(eta_ms <= 0)
-                eta_ms = 1;
-            console.log(data.data.next_update);
-            console.log('Will updated in ');
-            console.log(eta_ms);
-            var timeout = setTimeout(function(){update_stock()}, eta_ms*1000);
+            let pourcent = data.data.pourcent;
 
+            var progess = $("#progress_bar");
+            let val = pourcent;
+
+            progess.attr("aria-valuenow", val)
+            .css("width", val + "%")
+            .attr("aria-valuenow", val);
+
+                console.log('update');
                 for(var beer in data.data){
 
                     if (data.data.hasOwnProperty(beer)) {
