@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
-from Beer.models import Beer, History
+from Beer.models import Beer, History, Timer
 import json
 from datetime import datetime
 import random
@@ -120,6 +120,15 @@ def update_stock(request):  # TODO : Passer le processus dans le model beer pour
         beers[beer_name]['trend'] = beer.trend
         beers[beer_name]['out_of_stock'] = beer.out_of_stock
     beers['worth'] = []
+    # TODO : Code a revoir (try and catch)
+    try:
+        beers['next_update'] = Timer.objects.get(id=1).timer_last_updated + 15*60+5
+    except:
+        Timer.objects.create(timer_is_started=False,
+                             timer_last_updated=0)
+    finally:
+        beers['next_update'] = Timer.objects.get(id=1).timer_last_updated + 15*60+5
+
     for beer in Beer.get_worth_beers():
         beers['worth'].append(beer.id)
     return JsonResponse({'statut':'ok', 'data':beers})

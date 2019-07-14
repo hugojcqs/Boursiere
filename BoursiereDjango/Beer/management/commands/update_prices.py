@@ -3,9 +3,8 @@ from Beer.models import Beer, History
 
 
 class Command(BaseCommand):
-    help = 'Update the prices'
-    args = 'Next update time in ms'
+    def add_arguments(self, parser):
+        parser.add_argument('time', type=int, help='Next utime for update in second')
 
     def handle(self, *args, **options):
         Beer._update_prices()
-        self.stdout.write(self.style.SUCCESS('Successfully'))

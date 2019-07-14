@@ -1,6 +1,7 @@
 from django.db import models
 from django.db.models import *
-import datetime
+from datetime import datetime
+
 
 class Beer(models.Model):
     beer_name = models.CharField(max_length=100)
@@ -43,9 +44,18 @@ class Beer(models.Model):
 
     @staticmethod
     def _update_prices(do_round=True):
+        timer = None
+        try:
+            timer = Timer.objects.get(id=1)
+        except Exception as e:
+            timer = Timer.objects.create(timer_is_started=False,
+                                         timer_last_updated=0)
+        finally:
+            timer.timer_last_updated = datetime.timestamp(datetime.now())
+            timer.timer_is_started = True
+            timer.save()
 
         out_stock = []
-
         for beer in Beer.objects.all(): # for each beer
             new_price = beer.compute_price()
 
@@ -105,3 +115,9 @@ class History(models.Model):
     buy_total_price = models.FloatField(null=False, default=0)
     history_json = models.TextField()
     text = models.TextField(null=False, default="")
+
+
+class Timer(models.Model):
+    timer_is_started = models.BigIntegerField(null=False)
+    timer_last_updated = models.BigIntegerField(null=False)
+    timer_time_delay = models.IntegerField(default=15000)
