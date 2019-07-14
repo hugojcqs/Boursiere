@@ -1,6 +1,7 @@
 import json
 import math
 
+
 class Boursiere:
     def __init__(self):
         self.db = {}
@@ -53,14 +54,11 @@ class Boursiere:
 
             # TODO : Cas stock est vide? Bouger le dict de la beer vers un autre dict pour plus qu'il ne soit utilisé ?
 
-
-
             if self.db[beer_name]['stock'] <= 0: # check if the stock is empty
                 self.out_of_stock[beer_name] = self.db[beer_name] # add the db part of beer to out_of_stock (line:70)
 
             self.db[beer_name]['q_qarder'] = q_current_beer
             self.db[beer_name]['q_current_qarder'] = 0
-
 
             if new_price > (coef_max * buy_price):  # check for avoid too many growth in the price
                 self.db[beer_name]['price'] = coef_max * buy_price
@@ -95,7 +93,6 @@ class Boursiere:
         worth_beer = [math.inf,'']
         for beer_name in self.db:
 
-
             price = self.db[beer_name]['price']
             stock = self.db[beer_name]['stock']
             trend = self.get_trend(beer_name)
@@ -109,10 +106,8 @@ class Boursiere:
         dic['worth_beer'] = worth_beer[1]
         return dic
 
-
     def to_json(self):
         return json.dumps(self.get_info())
-
 
     def save(self):
         with open('db.json', 'w') as dbfile:
