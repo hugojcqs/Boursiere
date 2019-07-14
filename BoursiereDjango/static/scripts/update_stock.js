@@ -30,6 +30,7 @@ $(document).ready(function() {
      }
 });
     update_stock();
+    $('#progress_tip').popover({animation:true});
 });
 
 
@@ -49,13 +50,23 @@ function update_stock()
 
             var progess = $("#progress_bar");
             let val = pourcent;
+            let rounded = Math.round(val);
+            let progress_tip = $('#progress_tip');
+            progress_tip.tooltip('update');
+            if(rounded < 97 && rounded > 8)
+            {
+                progress_tip.text(rounded + " %");
+            }
+            else
+            {
+                progress_tip.text("");
+            }
 
             progess.attr("aria-valuenow", val)
             .css("width", val + "%")
             .attr("aria-valuenow", val);
 
-                console.log('update');
-                for(var beer in data.data){
+            for(var beer in data.data){
 
                     if (data.data.hasOwnProperty(beer)) {
                     $('#beer_price_'+beer).text(data.data[beer]['price'] + ' €');
