@@ -25,7 +25,7 @@ def _calculate_price(json_):
         if beer_db is None:
             return -1
         total += beer_db.price * json_[beer]
-    return round(total)
+    return round(total, 1)
 
 
 def _random_string(string_length=10):
