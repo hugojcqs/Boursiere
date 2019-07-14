@@ -17,16 +17,31 @@
 <body>
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <a class="navbar-brand" href="/">Boursière</a>
-        {% if user.is_authenticated %}
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav ml-auto">
+                {% if user.is_superuser %}
                 <li class="nav-item">
-                    <a class="btn btn-danger" href="/logout/">Se déconnecter</a>
+                    <a class="btn btn-success ml-1" href="/add_beer/">Add beers</a>
                 </li>
+                <li class="nav-item">
+                    <a class="btn btn-dark ml-1" href="/dashboard/">Dashboard trésoriers</a>
+                </li>
+                <li class="nav-item">
+                    <a class="btn btn-success ml-1" href="/stock_page/">Page des stocks</a>
+                </li>
+                {% endif %}
+                {% if user.is_authenticated %}
+                <li class="nav-item">
+                    <a class="btn btn-danger ml-1" href="/logout/">Se déconnecter</a>
+                </li>
+                {% endif %}
             </ul>
         </div>
+<<<<<<< HEAD
         {% endif %}
 
+=======
+>>>>>>> c8d1935a5a16064f30dbf65ef46969d8569f17f8
         {% block navbar %}{% endblock %}
     </nav>
     <div class="container mt-3 mb-2">

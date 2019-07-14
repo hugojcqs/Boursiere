@@ -25,7 +25,7 @@ def _calculate_price(json_):
         if beer_db is None:
             return -1
         total += beer_db.price * json_[beer]
-    return total
+    return round(total)
 
 
 def _random_string(string_length=10):
@@ -76,8 +76,8 @@ def make_order(request):
         h = History.objects.create()
         h.id_str = token
         h.time = time
-        h.total_price = total
-        h.buy_total_price = total_buy_price
+        h.total_price = round(total)
+        h.buy_total_price = round(total_buy_price)
         h.history_json = request.POST.get('data')
         h.text = item_str
         h.save()

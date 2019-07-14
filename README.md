@@ -1,5 +1,9 @@
 # Programme de la boursière :beer:
 
+## Example avec GIF
+
+![](/gif/example.gif)
+
 ## Avant de lancer le serveur
 
 ### Requirements  pour pip
