@@ -1,5 +1,5 @@
-from django.shortcuts import render
-from django.shortcuts import redirect
+from django.shortcuts import render , redirect
+from django.http import HttpResponse, Http404
 from django.contrib.auth import authenticate, login, logout
 from .forms import BeerForm, LoginForm
 from .models import Beer as BeerModel
@@ -38,9 +38,25 @@ def add_beer(request):
     return render(request, 'add_beer.html', {'form':beer_form})
 
 
+@login_required
+def delete_beer_page(request):
+    return render(request, 'delete_beer.html', {'beers':BeerModel.objects.all()})
+
+@login_required
+def delete_beer(request, id_beer):
+
+    try:
+        BeerModel.objects.get(id=id_beer).delete()
+        print('-- beer deleted. --')
+    except:
+        print('-- item not found --')
+        raise Http404
+
+    return redirect('delete_beer_page')
+
+
 def stock_page(request):
     return render(request, 'stock_page.html', {'beers':BeerModel.objects.all(), 'worth_beers':BeerModel.get_worth_beers()})
-
 
 def root(request):
     return redirect('stock_page')

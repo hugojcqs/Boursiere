@@ -1,0 +1,43 @@
+{%extends 'main_template.html' %}
+{% load static %}
+{% load filter_extra %}
+
+{% block content %}
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-sm-8">
+
+      <!-- delete Beer cards -->
+
+      <div class="row col-sm">
+
+      {% for beer in beers %}
+          <div class="card ml-3 mt-3" style="width: 13rem;">
+            <div class="card-body" style='background-color: {{beer.beer_name|rcolors}};'>
+
+              <!--
+              <a href="{ url 'blog:remove_item' id_item=item.id }">
+                -->
+
+              <a href="{% url 'delete_beer' id_beer=beer.id %}">
+                <button type="button" class="close" aria-label="Close">
+                  <span aria-hidden="true">&times</span>
+                </button>
+              </a>
+
+              <h5 class="card-title text-center">{{ beer.beer_name }}</h5>
+
+
+            </div>
+          </div>
+      {% endfor %}
+
+      </div>
+
+
+    </div>
+  </div>
+</div>
+
+{% endblock %}
