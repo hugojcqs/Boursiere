@@ -33,6 +33,9 @@ urlpatterns = [
     path('stock_page/', BeerViews.stock_page, name='stock_page'),
     path('update_stock/', AJAXModuleViews.update_stock, name='update_stock'),
     path('dashboard/', TresoViews.dashboard, name='dashboard'),
+    path('update_price_failsafe/', AJAXModuleViews.update_price_failsafe, name='update_price_failsafe'),
+    path('activate_failsafe/', AJAXModuleViews.activate_failsafe, name='activate_failsafe'),
+    path('timer_to_next_up/', AJAXModuleViews.timer_to_next_up, name='timer_to_next_up'),
     path('delete_beer/', BeerViews.delete_beer_page, name='delete_beer_page'),
     path('del_beer/<id_beer>', BeerViews.delete_beer, name='delete_beer'),
 ]
