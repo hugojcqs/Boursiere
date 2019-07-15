@@ -70,6 +70,12 @@ Pour stopper ce script (et donc le timer) il faut faire `ctrl + c` dans la conso
 
 Pour stopper le serveur (et donc le site web) il faut faire `ctrl + c`  dans la console du serveur.
 
+## Gestion en cas de soucis avec l'algo
+
+Dans le cas ou l'algo n'est pas optimal, il est possible d'override celui-ci afin de définir les prix manuellement. 
+
+![](/gif/example_fail_safe.gif)
+
 ## URL disponnibles : :page_with_curl:
 
 |      `/url/`      | Objectif de la page                                          |
