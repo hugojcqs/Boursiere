@@ -59,6 +59,7 @@ class Beer(models.Model):
         timer.next_update = (datetime.timestamp(datetime.now()) + 15*60 + 3)
         timer.save()
 
+
         out_stock = []
         for beer in Beer.objects.all(): # for each beer
             new_price = beer.compute_price()
@@ -124,3 +125,7 @@ class History(models.Model):
 class Timer(models.Model):
     next_update = models.BigIntegerField(null=False)
     timer_is_started = models.BooleanField(null=False, default=False)
+
+
+class TresoFailsafe(models.Model):
+    is_activated = models.BooleanField(null=False, default=False)

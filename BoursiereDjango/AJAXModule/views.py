@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
-from Beer.models import Beer, History, Timer
+from Beer.models import Beer, History, Timer, TresoFailsafe
 import json
 from datetime import datetime
 import random
@@ -108,17 +108,56 @@ def delete_histo(request):
     return JsonResponse({'statut': 'ok'}, safe=False)
 
 
+def activate_failsafe(request):
+    t = TresoFailsafe.objects.get(id=1)
+    t.is_activated = True
+    t.save()
+    return JsonResponse({'statut':'ok'})
+
+
+def update_price_failsafe(request):
+
+    if request.method == 'POST':
+        timer = Timer.objects.get(id=1)
+        timer.timer_is_started = True
+        timer.next_update = (datetime.timestamp(datetime.now()) + 15 * 60 + 3)
+        timer.save()
+        tab = json.loads(request.POST.get('new_prices'))
+        for id_, price in tab:
+            beer = Beer.objects.get(beer_name = id_)
+            beer.trend = Beer.get_trend(q_qarder=beer.q_qarder, q_current_qarder=beer.q_current_qarder)
+
+            beer.q_qarder = beer.q_current_qarder  # q_current_qarder beer become last quarder consomaition
+            beer.q_current_qarder = 0  # reset current qarder consomation
+
+            if beer.stock <= 0:
+                beer.out_of_stock = True
+
+            beer.price = price
+            beer.save()
+
+    return JsonResponse({'statut':'ok'})
+
+
+def _calculate_time_to_next_update():
+    timer = Timer.objects.get(id=1)
+    if not timer.timer_is_started:
+        return 0
+    else:
+        time_delta = timer.next_update - datetime.timestamp(datetime.now())
+        return time_delta
+
+
+def timer_to_next_up(request):
+    time_next_up_delta = _calculate_time_to_next_update()
+    return JsonResponse({'statut':'ok', 'time_remaining':time_next_up_delta, 'pourcent':100 - (time_next_up_delta / (15 * 60)) * 100})
+
+
 def update_stock(request):  # TODO : Passer le processus dans le model beer pour la creation du json
     #  TODO : Known bug - si une biere est ajouter sans mise a jour de la page de stock, celle ci ne sera pas afficher par l'ajax
     beers = {}
-    timer = Timer.objects.get(id=1)
-    if not timer.timer_is_started:
-        beers['pourcent'] = 0
-    else:
-        time_delta = timer.next_update - datetime.timestamp(datetime.now())
-        time_percent = 100 - (time_delta / (15 * 60)) * 100
-        beers['pourcent'] = time_percent
 
+    beers['pourcent'] = 100 - (_calculate_time_to_next_update() / (15 * 60)) * 100
 
     for beer in Beer.objects.all():
         beer_name = beer.id

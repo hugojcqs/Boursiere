@@ -1,5 +1,5 @@
 from django.core.management.base import BaseCommand, CommandError
-from Beer.models import Beer, History
+from Beer.models import Beer, History, TresoFailsafe
 
 
 class Command(BaseCommand):
@@ -7,4 +7,7 @@ class Command(BaseCommand):
         parser.add_argument('time', type=int, help='Next utime for update in second')
 
     def handle(self, *args, **options):
-        Beer._update_prices()
+        if not TresoFailsafe.objects.get(id=1).is_activated:
+            Beer._update_prices()
+        else:
+            print('Cannot compute new price, system has been overrided manually\nRun "py .\\manage.py disbale_fail_safe"')
