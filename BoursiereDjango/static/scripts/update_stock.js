@@ -136,7 +136,7 @@ function kill_update_price(){
 
 
 /*
->>>>>>> 378b7dbfe179c03e33052714c56025aa386eb343:BoursiereDjango/static/scripts/update_stock.js
+
 function start_timer(){
 
   var hour = document.getElementById("timer_hour").innerHTML;

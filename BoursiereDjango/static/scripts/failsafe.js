@@ -31,10 +31,11 @@ if($('#statut').text() === 'True')
 
 function activate_fail_safe()
 {
+
     $.post({
         url: '/activate_failsafe/',
                 data: {
-          'data': 'empty_request',
+          'data': String($('#failsafe_password').val()),
         },
         async: true,
         dataType: 'json',

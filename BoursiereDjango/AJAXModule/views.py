@@ -109,10 +109,14 @@ def delete_histo(request):
 
 
 def activate_failsafe(request):
-    t = TresoFailsafe.objects.get(id=1)
-    t.is_activated = True
-    t.save()
-    return JsonResponse({'statut':'ok'})
+    if request.method == 'POST':
+        if request.user.check_password(request.POST.get('data')):
+            t = TresoFailsafe.objects.get(id=1)
+            t.is_activated = True
+            t.save()
+            print('safe mode activated.')
+            return JsonResponse({'statut':'ok'})
+    return JsonResponse({'statut':'ko'})
 
 
 def update_price_failsafe(request):

@@ -36,9 +36,39 @@
         </div>
     </div>
     <div class="card-footer text-white bg-dark">
-        <div class="btn btn-danger ml-3" onclick="activate_fail_safe()">Activer le failsafe!</div>
+        <div class="btn btn-danger ml-3"  data-toggle="modal" data-target="#activate_fail_safeModal">Activer le failsafe!</div>
     </div>
 </div>
 </div>
+
+
+<!-- Modal -->
+
+<div class="modal fade" id="activate_fail_safeModal" tabindex="-1" role="dialog" aria-labelledby="activate_fail_safeModalLabel" aria-hidden="true">
+<div class="modal-dialog" role="document">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h5 class="modal-title" id="activate_fail_safeModalLabel">Entrez votre mot de passe</h5>
+      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <form method="POST" action="">
+        {% csrf_token %}
+        <div class="form-group">
+          <p>Mot de passe *</p>
+          <input type="password" class="form-control" id="failsafe_password" placeholder="password" required>
+        </div>
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-danger" onclick="activate_fail_safe()">activer!</button>
+        </div>
+      </form>
+    </div>
+
+  </div>
+</div>
+</div>
+
 
 {%endblock%}

@@ -34,6 +34,9 @@ class Beer(models.Model):
         self.q_current_qarder += number
 
     def compute_price(self):
+
+        #TODO: check parce que je pense que ça fait d'office que si conso !> old_conso , le prix baisse
+
         if self.q_current_qarder > self.q_qarder:
             return self.price + self.coef_up * (self.q_current_qarder - self.q_qarder)
         else:
@@ -74,19 +77,30 @@ class Beer(models.Model):
             beer.q_qarder = beer.q_current_qarder #q_current_qarder beer become last quarder consomaition
             beer.q_current_qarder = 0              #reset current qarder consomation
 
+            # TO HIGH PRICE SECURITY
+
             if new_price > (beer.coef_max * beer.buy_price):    #if new_price is too high , change it
                 new_price = beer.coef_max * beer.buy_price
+
+            # ROUND CHECK
 
             if do_round:                               # if round is need
                 beer.price = round(new_price, 1)       # round new price with 1 comma (roundup)
             else:
                 beer.price = new_price
+
+            # SAVING EACH BEER OBJECT
+
             beer.save()
+
+        # SET BEER TO OUT OF STOCK
 
         for out_beer in out_stock:   #for each beer out_of_stock
             # TODO: remove it from beer
             out_beer.out_of_stock = True
             out_beer.save()
+
+        
 
 
     @staticmethod
