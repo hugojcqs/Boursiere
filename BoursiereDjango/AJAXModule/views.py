@@ -109,6 +109,7 @@ def delete_histo(request):
 
 
 def activate_failsafe(request):
+    #TODO: check permission du user..
     if request.method == 'POST':
         if request.user.check_password(request.POST.get('data')):
             t = TresoFailsafe.objects.get(id=1)
