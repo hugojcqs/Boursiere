@@ -11,6 +11,18 @@ class BeerForm(forms.Form):
     alcohol_percentage = forms.FloatField(label='% d\'alccol', required=True)
     bar = forms.IntegerField(label='Bar (1 ou 2)',required=True)
 
+    # set min value
+
+    def __init__(self, *args, **kwargs):
+        super(BeerForm, self).__init__(*args, **kwargs)
+        self.fields['price'].widget.attrs['min'] = 0
+        self.fields['stock'].widget.attrs['min'] = 0
+        self.fields['coef_up'].widget.attrs['min'] = 0
+        self.fields['coef_down'].widget.attrs['min'] = 0
+        self.fields['coef_max'].widget.attrs['min'] = 0
+        self.fields['bar'].widget.attrs['min'] = 1
+        self.fields['alcohol_percentage'].widget.attrs['min'] = 0
+        self.fields['bar'].widget.attrs['max'] = 2
 
 class LoginForm(forms.Form):
     username = forms.CharField(label='Username', max_length=100, required=True)
