@@ -59,10 +59,14 @@ function minus(i, beer_name)
 {
     let input = $("#input" + i.toString());
     let new_v_input = Number(input.val()) - 1;
-    input.val(new_v_input);
-    db[beer_name] = new_v_input;
-    set_clickable_order_button();
-    calculate_price();
+
+    if(new_v_input >= 0){
+      input.val(new_v_input);
+      db[beer_name] = new_v_input;
+      set_clickable_order_button();
+      calculate_price();
+    }
+  
 }
 
 function calculate_price()
