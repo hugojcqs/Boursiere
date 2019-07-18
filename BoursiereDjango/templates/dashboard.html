@@ -4,6 +4,8 @@
         <script src="{%static '/scripts/failsafe.js' %}"></script>
 {% endblock %}
 {%block content%}
+
+{% if perms.Beer.failsafe_mode %}
 <div class="container">
     <div class="card">
         <div class="card-body">
@@ -70,5 +72,5 @@
 </div>
 </div>
 
-
+{% endif %}
 {%endblock%}

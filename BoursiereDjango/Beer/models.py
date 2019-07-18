@@ -19,7 +19,8 @@ class Beer(models.Model):
     out_of_stock = models.BooleanField(null=False, default=False)
 
     class Meta:
-        permissions = (("show_tool_bar", "Can show the toolbar"),)
+        permissions = (('show_tool_bar', 'Can show the toolbar'),
+                        ('failsafe_mode', 'Can access to failsafe'),)
 
     def change_percentage_alchohol(self, percentage):
         self.alcohol_percentage = percentage
