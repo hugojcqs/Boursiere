@@ -18,7 +18,8 @@
         <a class="navbar-brand" href="/">Boursière</a>
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav ml-auto">
-                {% if user.is_superuser %}
+
+                {% if perms.Beer.show_tool_bar %}
                 <li class="nav-item">
                     <a class="btn btn-success ml-1" href="/add_beer/">Add beers</a>
                 </li>

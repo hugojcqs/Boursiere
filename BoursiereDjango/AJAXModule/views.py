@@ -68,10 +68,10 @@ def make_order(request):
                 beer_db.stock -= nb_beer
                 total += beer_db.price * nb_beer
                 total_buy_price += beer_db.buy_price * nb_beer
-                item_str += '%d %s -' % (nb_beer, beer)
+                item_str += '%d %s - ' % (nb_beer, beer)
                 beer_db.save()
 
-        item_str = item_str[0:len(item_str)-1]  # remove the last '-' from the string
+        item_str = item_str[0:len(item_str)-2]  # remove the last '-' from the string
 
         h = History.objects.create()
         h.id_str = token
@@ -99,9 +99,13 @@ def delete_histo(request):
             if beer_db is None:
                 return JsonResponse({'statut':'ko', 'reason':'The beer %s does not exist!' % beer})
             beer_db.stock += json_[beer]
+
+            # SECURITY TO AVOID MISS IN PRICE COMPUTING
+            #TODO: check if the id of qarder are the same...
+
             if(beer_db.q_qarder - json_[beer]) > 0:
-                beer_db.q_qarder -= json_[beer]
-            #TODO: test beer_db.add_conso(-json_[beer])
+                beer_db.q_qarder -= json_[beer]         # can be replace by beer_db.add_conso(-json_[beer]) (à tester)
+
             beer_db.save()
         hist.delete()
 

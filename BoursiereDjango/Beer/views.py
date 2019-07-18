@@ -76,4 +76,5 @@ def login_page(request):
 
 def logout_page(request):
     print('logout with success !!')
+    logout(request)
     return redirect('login_page')

@@ -18,6 +18,9 @@ class Beer(models.Model):
     trend = models.CharField(max_length=10, default='EQUAL')
     out_of_stock = models.BooleanField(null=False, default=False)
 
+    class Meta:
+        permissions = (("show_tool_bar", "Can show the toolbar"),)
+
     def change_percentage_alchohol(self, percentage):
         self.alcohol_percentage = percentage
 
@@ -100,7 +103,7 @@ class Beer(models.Model):
             out_beer.out_of_stock = True
             out_beer.save()
 
-        
+
 
 
     @staticmethod
@@ -125,6 +128,8 @@ class Beer(models.Model):
         beer = Beer.objects.get(self)
         if beer is None:
             raise Exception('Beer does not exists in the database')
+
+
 
 
 class History(models.Model):
