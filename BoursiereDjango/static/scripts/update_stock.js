@@ -92,17 +92,17 @@ function update_stock()
 
                     if(data.data[beer]['out_of_stock'] == true)
                     {
-                      $('#beer_tr_'+beer).hide();
+                      $('#beer_name_'+beer).hide();
                     }
 
                     if(data.data[beer]['best_price'] == true)
                     {
-                        $('#beer_tr_'+beer).append(`<span class="badge badge-success worth">Best price</span>`)
+                        $('#beer_name_'+beer).append(`<span class="badge badge-success worth">Best price</span>`)
                     }
 
                     if(data.data[beer]['best_value'] == true)
                     {
-                        $('#beer_tr_'+beer).append(`<span class="badge badge-warning worth">Best value</span>`)
+                        $('#beer_name_'+beer).append(`<span class="badge badge-warning worth">Best value</span>`)
                     }
 
                 }

@@ -181,7 +181,7 @@ def update_stock(request):  # TODO : Passer le processus dans le model beer pour
         beers[beer_name] = {}
         beers[beer_name]['price'] = beer.price
         beers[beer_name]['best_price'] = beer.best_price
-        beers[beer_name]['best_value'] = beer.value
+        beers[beer_name]['best_value'] = beer.best_value
         beers[beer_name]['stock'] = beer.stock
         beers[beer_name]['trend'] = beer.trend
         beers[beer_name]['out_of_stock'] = beer.out_of_stock
