@@ -7,6 +7,8 @@ from datetime import datetime
 import random
 import string
 from django.views.decorators.csrf import csrf_exempt
+from django.contrib.auth.models import User, Group
+from django.contrib import messages
 
 
 @login_required
@@ -115,12 +117,18 @@ def delete_histo(request):
 def activate_failsafe(request):
     #TODO: check permission du user..
     if request.method == 'POST':
-        if request.user.check_password(request.POST.get('data')):
-            t = TresoFailsafe.objects.get(id=1)
-            t.is_activated = True
-            t.save()
-            print('safe mode activated.')
-            return JsonResponse({'statut':'ok'})
+        #check user group is admin
+        if request.user.groups.filter(name='admin').exists():
+
+            if request.user.check_password(request.POST.get('data')):
+                t = TresoFailsafe.objects.get(id=1)
+                t.is_activated = True
+                t.save()
+                print('safe mode activated.')
+                return JsonResponse({'statut':'ok'})
+
+        else:
+            print('error: access refused')
     return JsonResponse({'statut':'ko'})
 
 
