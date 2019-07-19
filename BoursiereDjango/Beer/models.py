@@ -144,7 +144,7 @@ class Beer(models.Model):
             if index <= best_index:
                 best_index = index
                 beer_index_list.append((index, beer))
-            beer.ssave()
+            beer.save()
 
         beer = max(beer_index_list, key=lambda t: t[0])[1]
         print(beer)
