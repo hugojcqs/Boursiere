@@ -179,4 +179,3 @@ class Timer(models.Model):
 
 class TresoFailsafe(models.Model):
     is_activated = models.BooleanField(null=False, default=False)
-
