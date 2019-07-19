@@ -39,3 +39,6 @@ urlpatterns = [
     path('delete_beer/', BeerViews.delete_beer_page, name='delete_beer_page'),
     path('del_beer/<id_beer>', BeerViews.delete_beer, name='delete_beer'),
 ]
+
+handler404 = BeerViews.error_404
+handler500 = BeerViews.error_500

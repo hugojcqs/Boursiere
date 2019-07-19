@@ -78,3 +78,11 @@ def logout_page(request):
     print('logout with success !!')
     logout(request)
     return redirect('login_page')
+
+# Error Handling
+
+def error_404(request):
+        return render(request,'404.html', locals())
+
+def error_500(request):
+        return render(request,'500.html', locals())
