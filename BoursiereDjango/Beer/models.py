@@ -134,7 +134,6 @@ class Beer(models.Model):
 
     @staticmethod
     def set_best_value_beer():
-        return
 
         max_price = Beer.objects.all().aggregate(Max('buy_price'))['buy_price__max']
         max_alcohol = Beer.objects.all().aggregate(Max('alcohol_percentage'))['alcohol_percentage__max']
