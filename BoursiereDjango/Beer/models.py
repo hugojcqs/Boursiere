@@ -1,7 +1,8 @@
 from django.db import models
 from django.db.models import *
 from datetime import datetime
-
+import hashlib
+import pprint
 
 class Beer(models.Model):
     beer_name = models.CharField(max_length=100)
@@ -133,22 +134,27 @@ class Beer(models.Model):
 
     @staticmethod
     def set_best_value_beer():
+        return
+
         max_price = Beer.objects.all().aggregate(Max('buy_price'))['buy_price__max']
         max_alcohol = Beer.objects.all().aggregate(Max('alcohol_percentage'))['alcohol_percentage__max']
 
         best_index = 1
-        beer_index_list = {}
+        beer_index_list = dict()
 
         for beer in Beer.objects.all():
-            index = (beer.price + beer.alcohol_percentage) / (max_price + max_alcohol)
-            if index <= best_index:
+            print(beer.beer_name)
+            index = int(round((beer.price + beer.alcohol_percentage) / (max_price + max_alcohol), 3) * 1000)
+            print(index)
+            if index <= best_index*1000:
                 best_index = index
+                if beer_index_list[index] is None:
+                    beer_index_list[index] = []
                 beer_index_list[index].append(beer)
             beer.save()
 
-        for beer in min(beer_index_list):
-            beer.best_index_value = True
-            beer.save()
+        pprint.pprint(beer_index_list)
+
 
     def __str__(self):
         return self.beer_name

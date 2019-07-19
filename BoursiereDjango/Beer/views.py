@@ -56,7 +56,7 @@ def delete_beer(request, id_beer):
 
 
 def stock_page(request):
-    return render(request, 'stock_page.html', {'beers':BeerModel.objects.all(), 'worth_beers':BeerModel.get_worth_beers()})
+    return render(request, 'stock_page.html', {'beers':BeerModel.objects.all()})
 
 def root(request):
     return redirect('stock_page')
