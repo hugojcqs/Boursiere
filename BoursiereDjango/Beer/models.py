@@ -134,26 +134,23 @@ class Beer(models.Model):
 
     @staticmethod
     def set_best_value_beer():
-        return
-
         max_price = Beer.objects.all().aggregate(Max('buy_price'))['buy_price__max']
         max_alcohol = Beer.objects.all().aggregate(Max('alcohol_percentage'))['alcohol_percentage__max']
-
         best_index = 1
-        beer_index_list = dict()
-
+        beer_index_list = []
+        print(max_price, max_alcohol)
         for beer in Beer.objects.all():
-            print(beer.beer_name)
-            index = int(round((beer.price + beer.alcohol_percentage) / (max_price + max_alcohol), 3) * 1000)
-            print(index)
-            if index <= best_index*1000:
+            index = (beer.price + beer.alcohol_percentage) / (max_price + max_alcohol)
+            if index <= best_index:
                 best_index = index
-                if beer_index_list[index] is None:
-                    beer_index_list[index] = []
-                beer_index_list[index].append(beer)
+                beer_index_list.append((index, beer))
             beer.save()
 
-        pprint.pprint(beer_index_list)
+        beer = min(beer_index_list, key=lambda t: t[0])[1]
+        print(beer)
+        beer.best_value = True
+        beer.save()
+
 
 
     def __str__(self):
