@@ -17,6 +17,8 @@ class Beer(models.Model):
     bar = models.IntegerField(null=False, default=1)
     trend = models.CharField(max_length=10, default='EQUAL')
     out_of_stock = models.BooleanField(null=False, default=False)
+    best_value = models.BooleanField(null=False, default=False)
+    best_price = models.BooleanField(null=False, default=False)
 
     class Meta:
         permissions = (('show_tool_bar', 'Can show the toolbar'),
@@ -49,7 +51,6 @@ class Beer(models.Model):
     def change_stock(self, number):
         self.stock -= number
 
-
     @staticmethod
     def _stop_timer():
         timer = Timer.objects.get(id=1)
@@ -57,15 +58,17 @@ class Beer(models.Model):
         timer.next_update = (datetime.timestamp(datetime.now()) + 15 * 60 + 3)
         timer.save()
 
-
     @staticmethod
     def _update_prices(do_round=True):
+
+        Beer.reset_beers()
+        Beer.set_best_value_beer()
+        Beer.set_best_price()
 
         timer = Timer.objects.get(id=1)
         timer.timer_is_started = True
         timer.next_update = (datetime.timestamp(datetime.now()) + 15*60 + 3)
         timer.save()
-
 
         out_stock = []
         for beer in Beer.objects.all(): # for each beer
@@ -99,13 +102,10 @@ class Beer(models.Model):
 
         # SET BEER TO OUT OF STOCK
 
-        for out_beer in out_stock:   #for each beer out_of_stock
+        for out_beer in out_stock:
             # TODO: remove it from beer
             out_beer.out_of_stock = True
             out_beer.save()
-
-
-
 
     @staticmethod
     def get_trend(q_qarder, q_current_qarder):
@@ -117,9 +117,38 @@ class Beer(models.Model):
             return 'DOWN'
 
     @staticmethod
-    def get_worth_beers():
-        worth_beers = Beer.objects.filter(price=Beer.objects.all().aggregate(Min('price'))['price__min'])  # get QuerySet with all minus price beers
-        return worth_beers
+    def reset_beers():
+        for beer in Beer.objects.all():
+            beer.best_price = False
+            beer.best_value = False
+            beer.save()
+
+    @staticmethod
+    def set_best_price():
+        beers_min = Beer.objects.filter(price=Beer.objects.all().aggregate(Min('price'))['price__min'])
+
+        for beer in beers_min:
+            beer.best_price = True
+            beer.save()
+
+    @staticmethod
+    def set_best_value_beer():
+        max_price = Beer.objects.all().aggregate(Max('buy_price'))['buy_price__max']
+        max_alcohol = Beer.objects.all().aggregate(Max('alcohol_percentage'))['alcohol_percentage__max']
+
+        best_index = 1
+        beer_index_list = {}
+
+        for beer in Beer.objects.all():
+            index = (beer.price + beer.alcohol_percentage) / (max_price + max_alcohol)
+            if index <= best_index:
+                best_index = index
+                beer_index_list[index].append(beer)
+            beer.save()
+
+        for beer in min(beer_index_list):
+            beer.best_index_value = True
+            beer.save()
 
     def __str__(self):
         return self.beer_name
@@ -129,8 +158,6 @@ class Beer(models.Model):
         beer = Beer.objects.get(self)
         if beer is None:
             raise Exception('Beer does not exists in the database')
-
-
 
 
 class History(models.Model):
@@ -149,3 +176,4 @@ class Timer(models.Model):
 
 class TresoFailsafe(models.Model):
     is_activated = models.BooleanField(null=False, default=False)
+

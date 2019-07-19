@@ -66,6 +66,8 @@ function update_stock()
             .css("width", val + "%")
             .attr("aria-valuenow", val);
 
+            $('.worth').remove();
+
             for(var beer in data.data){
 
                     if (data.data.hasOwnProperty(beer)) {
@@ -88,16 +90,21 @@ function update_stock()
                     }
                     }
 
-                    if(data.data[beer]['out_of_stock'] == true){
+                    if(data.data[beer]['out_of_stock'] == true)
+                    {
                       $('#beer_tr_'+beer).hide();
                     }
 
-                }
-                $('.worth').remove();
-                for (var i = 0; i < data.data.worth.length; i++) {
-                    let elem = $('#beer_name_'+data.data.worth[i]);
-                     elem.append(`<span class="badge badge-success worth">worth</span>`);
-                    // ...
+                    if(data.data[beer]['best_price'] == true)
+                    {
+                        $('#beer_tr_'+beer).append(`<span class="badge badge-success worth">Best price</span>`)
+                    }
+
+                    if(data.data[beer]['best_value'] == true)
+                    {
+                        $('#beer_tr_'+beer).append(`<span class="badge badge-warning worth">Best value</span>`)
+                    }
+
                 }
 
                 //update progress bar TODO: isolate this
@@ -117,21 +124,6 @@ function hide_bar(bar)
 function show_bar(bar)
 {
     $(".bar"+bar.toString()).show();
-}
-
-function kill_update_price(){
-    $.post({
-    url: '/kill_process/',
-    data: {
-      'data': String(token),
-    },
-    async: true,
-    dataType: 'json',
-    success: function(data) {
-        let elem = $('#'+String(token));
-        elem.remove();
-    }
-  });
 }
 
 

@@ -172,14 +172,12 @@ def update_stock(request):  # TODO : Passer le processus dans le model beer pour
         beer_name = beer.id
         beers[beer_name] = {}
         beers[beer_name]['price'] = beer.price
+        beers[beer_name]['best_price'] = beer.best_price
+        beers[beer_name]['best_value'] = beer.value
         beers[beer_name]['stock'] = beer.stock
         beers[beer_name]['trend'] = beer.trend
         beers[beer_name]['out_of_stock'] = beer.out_of_stock
-    beers['worth'] = []
-    # TODO : Code a revoir (try and catch)
 
-    for beer in Beer.get_worth_beers():
-        beers['worth'].append(beer.id)
     return JsonResponse({'statut': 'ok', 'data': beers})
 
 
