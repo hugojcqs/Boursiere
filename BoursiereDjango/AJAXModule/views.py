@@ -76,8 +76,8 @@ def make_order(request):
         h = History.objects.create()
         h.id_str = token
         h.time = time
-        h.total_price = round(total)
-        h.buy_total_price = round(total_buy_price)
+        h.total_price = round(total, 1)
+        h.buy_total_price = round(total_buy_price, 1)
         h.history_json = request.POST.get('data')
         h.text = item_str
         h.save()
