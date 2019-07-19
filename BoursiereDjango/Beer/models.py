@@ -139,15 +139,15 @@ class Beer(models.Model):
 
         best_index = 1
         beer_index_list = []
-        print(max_price, max_alcohol)
         for beer in Beer.objects.all():
             index = (beer.price + beer.alcohol_percentage) / (max_price + max_alcohol)
+            print(max_price, max_alcohol, index)
             if index <= best_index:
                 best_index = index
                 beer_index_list.append((index, beer))
             beer.save()
 
-        beer = min(beer_index_list, key=lambda t: t[0])[1]
+        beer = max(beer_index_list, key=lambda t: t[0])[1]
         print(beer)
         beer.best_value = True
         beer.save()
