@@ -97,12 +97,12 @@ function update_stock()
 
                     if(data.data[beer]['best_price'] == true)
                     {
-                        $('#beer_name_'+beer).append(`<span class="badge badge-success worth">Best price</span>`)
+                        $('#beer_name_'+beer).append(`<span class="badge badge-success worth">Meilleur prix</span>`)
                     }
 
                     if(data.data[beer]['best_value'] == true)
                     {
-                        $('#beer_name_'+beer).append(`<span class="badge badge-warning worth">Best value</span>`)
+                        $('#beer_name_'+beer).append(`<span class="badge badge-warning worth">Meilleur prix / taule</span>`)
                     }
 
                 }
