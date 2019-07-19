@@ -81,8 +81,10 @@ def logout_page(request):
 
 # Error Handling
 
-def error_404(request):
-        return render(request,'404.html', locals())
+
+def error_404(request, exception):
+        return render(request, '404.html', locals())
+
 
 def error_500(request):
-        return render(request,'500.html', locals())
+        return render(request, '500.html', locals())
