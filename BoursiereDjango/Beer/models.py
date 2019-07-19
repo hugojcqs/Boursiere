@@ -136,6 +136,7 @@ class Beer(models.Model):
     def set_best_value_beer():
         max_price = Beer.objects.all().aggregate(Max('buy_price'))['buy_price__max']
         max_alcohol = Beer.objects.all().aggregate(Max('alcohol_percentage'))['alcohol_percentage__max']
+
         best_index = 1
         beer_index_list = []
         print(max_price, max_alcohol)
@@ -144,9 +145,9 @@ class Beer(models.Model):
             if index <= best_index:
                 best_index = index
                 beer_index_list.append((index, beer))
-            beer.ssave()
+            beer.save()
 
-        beer = max(beer_index_list, key=lambda t: t[0])[1]
+        beer = min(beer_index_list, key=lambda t: t[0])[1]
         print(beer)
         beer.best_value = True
         beer.save()
