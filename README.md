@@ -99,16 +99,17 @@ La button du dessus ne seront pas visible sur les projecteurs.
 
 ### New beer
 
-![](images\new_beer.png)
+![](/images/new_beer.png)
 
 ### Suppression de bières
 
-![](images\delete_beer.png)
+![](/images/delete_beer.png)
 
 ### Dashboard trésorier
 
-![](images\dashboard.png)
+![](/images/dashboard.png)
 
 ### Ordering page pour la commande de bières
 
-![](images\ordering.png)
+![](/images/ordering.png)
+
