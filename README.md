@@ -93,7 +93,7 @@ Dans le cas ou l'algo n'est pas optimal, il est possible d'override celui-ci afi
 
 ### Stock page
 
-![](images\stock_page.png)
+![](/images/stock_page.png)
 
 La button du dessus ne seront pas visible sur les projecteurs.
 
