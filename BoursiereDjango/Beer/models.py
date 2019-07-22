@@ -82,6 +82,12 @@ class Beer(models.Model):
             if beer.stock <= 0:
                 out_stock.append(beer)      # add beer to out of stock beer list
 
+            if 5 <= beer.stock <= 10:
+                new_price = beer.buy_price * 2.1
+            if beer.stock < 5:
+                new_price = beer.buy_price * 2.5
+
+
             beer.q_qarder = beer.q_current_qarder #q_current_qarder beer become last quarder consomaition
             beer.q_current_qarder = 0              #reset current qarder consomation
 
