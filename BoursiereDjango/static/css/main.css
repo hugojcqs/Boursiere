@@ -1,0 +1,22 @@
+@font-face {
+  font-family: mistral;
+  src: url('../fonts/mistral.ttf');
+}
+
+.tales {
+  width: 100%;
+}
+.carousel-inner{
+  width: 100%;
+  max-height: 1000px !important;
+}
+
+.navbutton{
+background-color: #211f42;
+border:none;
+
+}
+
+.navbutton:hover{
+  background-color: #37346e;
+}

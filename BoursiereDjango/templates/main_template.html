@@ -5,6 +5,7 @@
   <meta charset="utf-8">
   <title>Boursière</title>
     <link rel="stylesheet" href="{% static 'css/bootstrap.css' %}">
+    <link rel="stylesheet" href="{% static 'css/main.css' %}">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js" integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.js"></script>
@@ -14,31 +15,34 @@
 </head>
 
 <body>
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <a class="navbar-brand" href="/">Boursière</a>
+    <nav class="navbar navbar-expand-lg navbar-light" style="background-color: #292654;">
+      <a class="navbar-brand" href="/" style="font-family: mistral; font-size:28px; color:white;">
+          <img src="{% static 'images/souris.svg' %}" width="45" height="45" class="d-inline-block align-top logo" alt="">
+          Cercle Info
+      </a>
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav ml-auto">
 
                 {% if perms.Beer.show_tool_bar %}
                 <li class="nav-item">
-                    <a class="btn btn-success ml-1" href="/add_beer/">Add beers</a>
+                    <a class="btn btn-success ml-1 navbutton text-white" href="/add_beer/"><i class="fas fa-plus"></i> add beer</a>
                 </li>
                 <li class="nav-item">
-                    <a class="btn btn-danger ml-1" href="/delete_beer/">Delete beers</a>
+                    <a class="btn btn-danger ml-1 navbutton text-white"  href="/delete_beer/"><i class="fas fa-minus"></i> delete beer</a>
                 </li>
                 <li class="nav-item">
-                    <a class="btn btn-success ml-1" href="/beer_ordering/">Ordering Pannel</a>
+                    <a class="btn btn-success ml-1 navbutton text-white" href="/beer_ordering/">ordering pannel <i class="fas fa-cog"></i></a>
                 </li>
                 <li class="nav-item">
-                    <a class="btn btn-dark ml-1" href="/dashboard/">Dashboard trésoriers</a>
+                    <a class="btn btn-dark ml-1 navbutton text-white" href="/dashboard/">dashboard <i class="fas fa-lock"></i></a>
                 </li>
                 <li class="nav-item">
-                    <a class="btn btn-success ml-1" href="/stock_page/">Page des stocks</a>
+                    <a class="btn btn-success ml-1 navbutton text-white" href="/stock_page/">stocks page <i class="fas fa-chart-line"></i></a>
                 </li>
                 {% endif %}
                 {% if user.is_authenticated %}
                 <li class="nav-item">
-                    <a class="btn btn-danger ml-1" href="/logout/">Se déconnecter</a>
+                    <a class="btn btn-danger ml-1 navbutton text-white" href="/logout/">logout <i class="fas fa-sign-out-alt"></i></a>
                 </li>
                 {% endif %}
             </ul>
@@ -46,6 +50,8 @@
 
         {% block navbar %}{% endblock %}
     </nav>
+
+
     <div class="container mt-3 mb-2">
         {% if messages %}
             <ul class="messages">
