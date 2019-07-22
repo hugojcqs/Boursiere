@@ -38,6 +38,8 @@ urlpatterns = [
     path('timer_to_next_up/', AJAXModuleViews.timer_to_next_up, name='timer_to_next_up'),
     path('delete_beer/', BeerViews.delete_beer_page, name='delete_beer_page'),
     path('del_beer/<id_beer>', BeerViews.delete_beer, name='delete_beer'),
+    path('sound_ajax/', AJAXModuleViews.sound_ajax, name='sound_ajax'),
+    path('sound_page/', BeerViews.sound_page, name='sound_page'),
 ]
 
 handler404 = BeerViews.error_404

@@ -6,7 +6,7 @@ from .models import Beer as BeerModel
 from .models import History
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
-from django.views.decorators.csrf import ensure_csrf_cookie
+
 
 @login_required
 def beer_ordering_view(request):
@@ -54,12 +54,14 @@ def delete_beer(request, id_beer):
 
     return redirect('delete_beer_page')
 
-@ensure_csrf_cookie
+
 def stock_page(request):
     return render(request, 'stock_page.html', {'beers':BeerModel.objects.all()})
 
+
 def root(request):
     return redirect('stock_page')
+
 
 def login_page(request):
     login_form = LoginForm(request.POST or None)
@@ -79,7 +81,9 @@ def logout_page(request):
     logout(request)
     return redirect('login_page')
 
-# Error Handling
+
+def sound_page(request):
+    return render(request, 'sound_page.html')
 
 
 def error_404(request, exception):

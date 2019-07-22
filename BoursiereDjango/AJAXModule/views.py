@@ -117,7 +117,7 @@ def delete_histo(request):
 def activate_failsafe(request):
     #TODO: check permission du user..
     if request.method == 'POST':
-        #check user group is admin
+
         if request.user.groups.filter(name='admin').exists():
 
             if request.user.check_password(request.POST.get('data')):
@@ -200,3 +200,8 @@ def update_price(request):
            Beer._update_prices(do_round=True)
            return JsonResponse({'statut':'ok'})
     return JsonResponse({'statut':'ko'})
+
+@csrf_exempt
+def sound_ajax(request):
+    t = Timer.objects.get(id=1)
+    return JsonResponse({'statut':'ok', 'next_update':t.next_update})

@@ -68,7 +68,7 @@ class Beer(models.Model):
 
         timer = Timer.objects.get(id=1)
         timer.timer_is_started = True
-        timer.next_update = (datetime.timestamp(datetime.now()) + 15*60 + 3)
+        timer.next_update = (datetime.timestamp(datetime.now()) + 15*60)
         timer.save()
 
         out_stock = []
