@@ -60,6 +60,7 @@ ROOT_URLCONF = 'BoursiereDjango.urls'
 
 
 CSP_DEFAULT_SRC = ("'none'",)
+CSP_MEDIA_SRC = ("'self'",)
 CSP_STYLE_SRC = ("'self'", "'unsafe-inline'", 'use.fontawesome.com')
 CSP_SCRIPT_SRC = ("'self'", "'unsafe-inline'", "'unsafe-eval'", 'cdnjs.cloudflare.com', 'stackpath.bootstrapcdn.com')
 CSP_FONT_SRC = ("'self'", 'use.fontawesome.com')

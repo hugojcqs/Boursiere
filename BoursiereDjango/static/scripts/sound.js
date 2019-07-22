@@ -23,6 +23,7 @@ $(document).ready(function() {
 });
 });
 
+play_sound();
 get_next_update_and_play();
 
 function sleep(ms) {
@@ -60,7 +61,7 @@ function get_next_update_and_play()
 
 async function play_sound()
 {
-    let audio = new Audio(document.origin + '/static/sounds/sound.mp3');
+    let audio = new Audio(document.location.origin + '/static/sounds/sound.mp3');
     audio.play();
     await sleep(10000);
 }
