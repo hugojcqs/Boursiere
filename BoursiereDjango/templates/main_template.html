@@ -44,6 +44,10 @@
                 <li class="nav-item">
                     <a class="btn btn-danger ml-1 navbutton text-white" href="/logout/">logout <i class="fas fa-sign-out-alt"></i></a>
                 </li>
+                {% else %}
+                <li class="nav-item">
+                    <a class="btn btn-danger ml-1 navbutton text-white" href="/login/">sign in <i class="fas fa-sign-in-alt"></i></a>
+                </li>
                 {% endif %}
             </ul>
         </div>
