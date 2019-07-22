@@ -48,7 +48,7 @@ function get_next_update_and_play()
             if(time_to_update > 0)
             {
                 console.log(time_to_update);
-                setTimeout(play_sound, time_to_update * 1000);
+                setTimeout(play_sound, time_to_update * 1000 - 500);
             }
             else
             {
