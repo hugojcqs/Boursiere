@@ -63,7 +63,7 @@ python.exe .\manage.py runserver
 Pour lancer le timer afin que les prix soit mis à jours il faut lancer le script externe `cron_job.py`.
 
 ```bash
-python.exe .\cron_job.py
+python.exe .\timer.py
 ```
 
 Pour stopper ce script (et donc le timer) il faut faire `ctrl + c` dans la console de `cron_job.py`
@@ -87,3 +87,29 @@ Dans le cas ou l'algo n'est pas optimal, il est possible d'override celui-ci afi
 |    `/logout/`     | Logout                                                       |
 |  `/stock_page/`   | Page des stock affiché par les projecteurs (informe de l'état du marché) |
 |   `/dashboard/`   | Page tréso pour la gestion des prix (cas de soucis avec l'algo + informations sur les bénefs et consommation) |
+|  `/delete_beer/`  | Supprimer des bières de la base de données                   |
+
+## Screen de l'interface :
+
+### Stock page
+
+![](/images/stock_page.png)
+
+La button du dessus ne seront pas visible sur les projecteurs.
+
+### New beer
+
+![](/images/new_beer.png)
+
+### Suppression de bières
+
+![](/images/delete_beer.png)
+
+### Dashboard trésorier
+
+![](/images/dashboard.png)
+
+### Ordering page pour la commande de bières
+
+![](/images/ordering.png)
+
