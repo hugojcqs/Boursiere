@@ -8,10 +8,49 @@ from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.views.decorators.csrf import ensure_csrf_cookie
 
+
+#TODO V2: MAKE CLASS VIEW
+#TODO: MAKE THIS THING BETTER CLEAR
+
+#--- DEFAULT VIEWS
+
+def root(request):
+    return redirect('stock_page')
+
+#--- LOGIN/LOGOUT VIEWS
+
+def login_page(request):
+    login_form = LoginForm(request.POST or None)
+    if login_form.is_valid():
+        user = authenticate(request, username=login_form.cleaned_data['username'], password=login_form.cleaned_data['password'])
+        if user is not None:
+            login(request, user)
+            return redirect('stock_page')
+        else:
+            messages.add_message(request, messages.ERROR, 'Login error!')
+            return render(request, 'login_page.html', {'form':login_form})
+    return render(request, 'login_page.html', {'form':login_form})
+
+
+def logout_page(request):
+    print('logout with success !!')
+    logout(request)
+    return redirect('login_page')
+
+
+#--- BEER ORDERING VIEWS
+
 @login_required
 def beer_ordering_view(request):
     return render(request, 'ordering_beer_page.html', {'beers':BeerModel.objects.all(), 'history':History.objects.all()})
 
+#--- STOCK VIEWS
+
+@ensure_csrf_cookie    #generate CSRF token on stockpage
+def stock_page(request):
+    return render(request, 'stock_page.html', {'beers':BeerModel.objects.all()})
+
+#--- BEER MANAGEMENT VIEWS
 
 @login_required
 def add_beer(request):
@@ -54,37 +93,7 @@ def delete_beer(request, id_beer):
 
     return redirect('delete_beer_page')
 
-@ensure_csrf_cookie
-def stock_page(request):
-    return render(request, 'stock_page.html', {'beers':BeerModel.objects.all()})
-
-
-def root(request):
-    return redirect('stock_page')
-
-
-def login_page(request):
-    login_form = LoginForm(request.POST or None)
-    if login_form.is_valid():
-        user = authenticate(request, username=login_form.cleaned_data['username'], password=login_form.cleaned_data['password'])
-        if user is not None:
-            login(request, user)
-            return redirect('stock_page')
-        else:
-            messages.add_message(request, messages.ERROR, 'Login error!')
-            return render(request, 'login_page.html', {'form':login_form})
-    return render(request, 'login_page.html', {'form':login_form})
-
-
-def logout_page(request):
-    print('logout with success !!')
-    logout(request)
-    return redirect('login_page')
-
-
-def sound_page(request):
-    return render(request, 'sound_page.html')
-
+#--- ERROR VIEWS (need DEBUG=False in settings.py to works)
 
 def error_404(request, exception):
         return render(request, '404.html', locals())
@@ -92,3 +101,8 @@ def error_404(request, exception):
 
 def error_500(request):
         return render(request, '500.html', locals())
+
+#--- OTHER VIEWS
+
+def sound_page(request):
+    return render(request, 'sound_page.html')

@@ -11,9 +11,9 @@ class BeerForm(forms.Form):
     alcohol_percentage = forms.FloatField(label='% d\'alccol', required=True)
     bar = forms.IntegerField(label='Bar (1 ou 2)',required=True)
 
-    # set min value
 
-    def __init__(self, *args, **kwargs):
+
+    def __init__(self, *args, **kwargs):                        # set min value
         super(BeerForm, self).__init__(*args, **kwargs)
         self.fields['price'].widget.attrs['min'] = 0
         self.fields['stock'].widget.attrs['min'] = 0

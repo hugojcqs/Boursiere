@@ -11,14 +11,7 @@ from django.contrib.auth.models import User, Group
 from django.contrib import messages
 
 
-@login_required
-def calculate_price(request):
-    if request.method == 'POST':
-        json_ = request.POST.get('data')
-        converted_json = json.loads(json_)
-        return JsonResponse({'statut': 'ok', 'price': _calculate_price(converted_json)})
-    return JsonResponse({'statut': 'ko'})
-
+#--- NOT VIEWS PYTHON's FUNCTION
 
 def _calculate_price(json_):
     total = 0
@@ -29,10 +22,27 @@ def _calculate_price(json_):
         total += beer_db.price * json_[beer]
     return round(total, 1)
 
-
 def _random_string(string_length=10):
     letters = "123456789"
     return ''.join(random.choice(letters) for i in range(string_length))
+
+def _calculate_time_to_next_update():
+    timer = Timer.objects.get(id=1)
+    if not timer.timer_is_started:
+        return 0
+    else:
+        time_delta = timer.next_update - datetime.timestamp(datetime.now())
+        return time_delta
+
+#--- AJAX REQUEST VIEWS
+
+@login_required
+def calculate_price(request):
+    if request.method == 'POST':
+        json_ = request.POST.get('data')
+        converted_json = json.loads(json_)
+        return JsonResponse({'statut': 'ok', 'price': _calculate_price(converted_json)})
+    return JsonResponse({'statut': 'ko'})
 
 
 @login_required
@@ -156,15 +166,6 @@ def update_price_failsafe(request):
     return JsonResponse({'statut':'ok'})
 
 
-def _calculate_time_to_next_update():
-    timer = Timer.objects.get(id=1)
-    if not timer.timer_is_started:
-        return 0
-    else:
-        time_delta = timer.next_update - datetime.timestamp(datetime.now())
-        return time_delta
-
-
 def timer_to_next_up(request):
     time_next_up_delta = _calculate_time_to_next_update()
     return JsonResponse({'statut':'ok', 'time_remaining':time_next_up_delta, 'pourcent':100 - (time_next_up_delta / (15 * 60)) * 100})
@@ -200,6 +201,7 @@ def update_price(request):
            Beer._update_prices(do_round=True)
            return JsonResponse({'statut':'ok'})
     return JsonResponse({'statut':'ko'})
+
 
 @csrf_exempt
 def sound_ajax(request):

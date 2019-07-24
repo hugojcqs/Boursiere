@@ -42,8 +42,6 @@ class Beer(models.Model):
 
     def compute_price(self):
 
-        #TODO: check parce que je pense que ça fait d'office que si conso !> old_conso , le prix baisse
-
         if self.q_current_qarder > self.q_qarder:
             return self.price + self.coef_up * (self.q_current_qarder - self.q_qarder)
         else:
@@ -157,8 +155,6 @@ class Beer(models.Model):
         print(beer)
         beer.best_value = True
         beer.save()
-
-
 
     def __str__(self):
         return self.beer_name
