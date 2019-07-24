@@ -26,6 +26,9 @@ if($('#statut').text() === 'True')
 {
     var timeout = setInterval(function(){update_page()}, 3000);
 }
+
+$('#error_msg').hide();
+
 });
 
 
@@ -40,12 +43,19 @@ function activate_fail_safe()
         async: true,
         dataType: 'json',
         success: function(data) {
-            $('#statut').text('True');
+            console.log( data.statut );
+            if(data.statut == "ok"){
+              $('#statut').text('True');
+
+            }
         }
       });
     if($('#statut').text() === 'True')
     {
         var timeout = setInterval(function(){update_page()}, 500);
+    }else{
+      $('#error_msg').show();
+      $('#activate_fail_safeModal').modal('toggle');
     }
 }
 

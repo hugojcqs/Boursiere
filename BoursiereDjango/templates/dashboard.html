@@ -7,7 +7,9 @@
 
 {% if perms.Beer.failsafe_mode %}
 <div class="container">
-    <p id="test"></p>
+    <div class="alert alert-danger" id="error_msg" role="alert">
+      A simple secondary alert—check it out!
+    </div>
     <div class="card">
         <div class="card-body">
             <div class="container">
@@ -57,16 +59,14 @@
       </button>
     </div>
     <div class="modal-body">
-      <form method="POST" action="">
         {% csrf_token %}
         <div class="form-group">
           <p>Mot de passe *</p>
           <input type="password" class="form-control" id="failsafe_password" placeholder="password" required>
         </div>
         <div class="modal-footer">
-          <button type="submit" class="btn btn-danger" onclick="activate_fail_safe()">activer!</button>
+          <div  class="btn btn-danger" onclick="activate_fail_safe()">activer!</div>
         </div>
-      </form>
     </div>
 
   </div>

@@ -126,19 +126,19 @@ def delete_histo(request):
 
 def activate_failsafe(request):
     #TODO: check permission du user..
-    if request.method == 'POST':
+    #if request.method == 'POST':
 
-        if request.user.groups.filter(name='admin').exists():
+    if request.user.groups.filter(name='admin').exists():
 
-            if request.user.check_password(request.POST.get('data')):
-                t = TresoFailsafe.objects.get(id=1)
-                t.is_activated = True
-                t.save()
-                print('safe mode activated.')
-                return JsonResponse({'statut':'ok'})
+        if request.user.check_password(request.POST.get('data')):
+            t = TresoFailsafe.objects.get(id=1)
+            t.is_activated = True
+            t.save()
+            print('safe mode activated.')
+            return JsonResponse({'statut':'ok'})
 
-        else:
-            print('error: access refused')
+    else:
+        print('error: access refused')
     return JsonResponse({'statut':'ko'})
 
 
