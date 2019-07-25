@@ -2,7 +2,7 @@
 {% load filter_extra %}
 <div class="row col-sm">
 {% for beer in beers %}
-    <div class="card ml-3 mt-3" style="width: 13rem;">
+    <div class="card ml-3 mt-3 bar{{beer.bar}}" style="width: 13rem;">
       <div class="card-body" style='background-color: {{beer.beer_name|rcolors}};'>
            <h5 class="card-title text-center">{{ beer.beer_name }}</h5>
         <div class="input-group col-sm-12">
