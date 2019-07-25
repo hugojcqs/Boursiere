@@ -1,0 +1,21 @@
+.tform{
+
+
+
+
+}
+
+.tbutton{
+
+  width: 10%; /*can be in percentage also.*/
+  height: auto;
+  margin: 0 auto;
+  padding: 10px;
+  position: relative;
+  border-radius: 20px;
+  background-color:#c44569;
+  color:white;
+  font-weight:400;
+  font-size:16px;
+
+}

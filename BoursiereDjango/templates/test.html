@@ -1,0 +1,26 @@
+{%extends 'main_template.html' %}
+{% load static %}
+{% load filter_extra %}
+
+{% block head %}
+    <link rel="stylesheet" href="{% static 'css/test.css' %}">
+{% endblock %}
+
+{% block content %}
+<body class="" style="background-color: #778beb;">
+
+<div class="">
+  <div id="white-area" class="ml-5 mt-5 shadow-lg p-3" style="border-top-left-radius: 10px; border-top-right-radius: 10px; background-color:white; width: 280px; height: 300px;">
+
+  </div>
+  <div class="ml-5 shadow-lg p-3 mt-1" style="border-bottom-left-radius: 10px; border-bottom-right-radius: 10px; background-color: white; width: 280px; height: 110px;">
+
+    <div  class="btn pl-3 pr-3 text-center" style="border-radius: 20px; background-color:#c44569;color:white;font-weight:400; font-size:16px;"> login! </div>
+
+  </div>
+</div>
+
+
+
+</body>
+{% endblock %}

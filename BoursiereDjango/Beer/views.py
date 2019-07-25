@@ -106,3 +106,6 @@ def error_500(request):
 
 def sound_page(request):
     return render(request, 'sound_page.html')
+
+def test(request):
+    return render(request, 'test.html')
