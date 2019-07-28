@@ -1,52 +1,47 @@
 $(document).ready(function() {
     $.ajaxSetup({
-     beforeSend: function(xhr, settings) {
-         function getCookie(name) {
-             var cookieValue = null;
-             if (document.cookie && document.cookie != '') {
-                 var cookies = document.cookie.split(';');
-                 for (var i = 0; i < cookies.length; i++) {
-                     var cookie = jQuery.trim(cookies[i]);
-                     // Does this cookie string begin with the name we want?
-                     if (cookie.substring(0, name.length + 1) == (name + '=')) {
-                         cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-                         break;
-                     }
-                 }
-             }
-             return cookieValue;
-         }
-         if (!(/^http:.*/.test(settings.url) || /^https:.*/.test(settings.url))) {
-             xhr.setRequestHeader("X-CSRFToken", getCookie('csrftoken'));
-         }
-     }
-});
+        beforeSend: function(xhr, settings) {
+            function getCookie(name) {
+                var cookieValue = null;
+                if (document.cookie && document.cookie != '') {
+                    var cookies = document.cookie.split(';');
+                    for (var i = 0; i < cookies.length; i++) {
+                        var cookie = jQuery.trim(cookies[i]);
+                        // Does this cookie string begin with the name we want?
+                        if (cookie.substring(0, name.length + 1) == (name + '=')) {
+                            cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                            break;
+                        }
+                    }
+                }
+                return cookieValue;
+            }
+            if (!(/^http:.*/.test(settings.url) || /^https:.*/.test(settings.url))) {
+                xhr.setRequestHeader("X-CSRFToken", getCookie('csrftoken'));
+            }
+        }
+    });
 });
 
 var db = {};
 
-function _can_order()
-{
+function _can_order() {
     for (let key in db) {
-    if (db.hasOwnProperty(key)) {
-        if(db[key] > 0) return true;
+        if (db.hasOwnProperty(key)) {
+            if (db[key] > 0) return true;
+        }
     }
-}
 }
 
-function set_clickable_order_button()
-{
-    if(_can_order())
-    {
+function set_clickable_order_button() {
+    if (_can_order()) {
         $('#order_btn').removeClass("disabled")
-    }
-    else{
+    } else {
         $('#order_btn').addClass("disabled")
     }
 }
 
-function plus(i, beer_name)
-{
+function plus(i, beer_name) {
     let input = $("#input" + i.toString());
     let new_v_input = Number(input.val()) + 1;
     input.val(new_v_input);
@@ -55,57 +50,61 @@ function plus(i, beer_name)
     calculate_price();
 }
 
-function minus(i, beer_name)
-{
+function minus(i, beer_name) {
     let input = $("#input" + i.toString());
     let new_v_input = Number(input.val()) - 1;
 
-    if(new_v_input >= 0){
-      input.val(new_v_input);
-      db[beer_name] = new_v_input;
-      set_clickable_order_button();
-      calculate_price();
+    if (new_v_input >= 0) {
+        input.val(new_v_input);
+        db[beer_name] = new_v_input;
+        set_clickable_order_button();
+        calculate_price();
     }
 
 }
 
-function calculate_price()
-{
+function calculate_price() {
     $.post({
         url: '/calculate_price/',
         data: {
-          'data': JSON.stringify(db)
+            'data': JSON.stringify(db)
         },
         async: true,
         dataType: 'json',
-        success: function (data) {
+        success: function(data) {
             let elem = $("#total_price");
-            elem.text('Prix : '+ String(data['price']) + " €");
+            elem.text('Prix : ' + String(data['price']) + " €");
+        },
+        error: function(xhr, status, error) {
+            //TODO : handle error in ajax request
+            console.log('Cannot update the stock page', status, error);
         }
-      });
+    });
 }
 
-function make_order()
-{
-    if(!_can_order())
+function make_order() {
+    if (!_can_order())
         return;
 
     $.post({
         url: '/make_order/',
         data: {
-          'data': JSON.stringify(db)
+            'data': JSON.stringify(db)
         },
         async: true,
         dataType: 'json',
-        success: function (data) {
-                _add_history(data);
-                $(".input-number").val(0);
-                $("#total_price").text('Prix : 0 €');
-                db = {}
+        success: function(data) {
+            _add_history(data);
+            $(".input-number").val(0);
+            $("#total_price").text('Prix : 0 €');
+            db = {}
+        },
+        error: function(xhr, status, error) {
+            //TODO : handle error in ajax request
+            console.log('Cannot update the stock page', status, error);
         }
-      });
+    });
 }
-
 
 function _add_history(json_) {
     time = json_['time'];
@@ -116,27 +115,29 @@ function _add_history(json_) {
     $('#histo').prepend(raw_html)
 }
 
-function delete_histo(token){
-        $.post({
+function delete_histo(token) {
+    $.post({
         url: '/delete_histo/',
         data: {
-          'data': String(token),
+            'data': String(token),
         },
         async: true,
         dataType: 'json',
         success: function(data) {
-            let elem = $('#'+String(token));
+            let elem = $('#' + String(token));
             elem.remove();
+        },
+        error: function(xhr, status, error) {
+            //TODO : handle error in ajax request
+            console.log('Cannot update the stock page', status, error);
         }
-      });
+    });
 }
 
-function hide_bar(bar)
-{
-    $(".bar"+bar.toString()).hide();
+function hide_bar(bar) {
+    $(".bar" + bar.toString()).hide();
 }
 
-function show_bar(bar)
-{
-    $(".bar"+bar.toString()).show();
+function show_bar(bar) {
+    $(".bar" + bar.toString()).show();
 }

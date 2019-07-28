@@ -16,8 +16,9 @@ signal.signal(signal.SIGINT, handler)
 
 
 def job():
-    os.system('python3 ./manage.py update_prices %s' % round(datetime.datetime.timestamp(datetime.datetime.now())))
-    print('python3 ./manage.py update_prices %s' % round(datetime.datetime.timestamp(datetime.datetime.now())))
+    os.system('python.exe ./manage.py update_prices %s' % round(datetime.datetime.timestamp(datetime.datetime.now())))
+    print('python.exe ./manage.py update_prices %s' % round(datetime.datetime.timestamp(datetime.datetime.now())))
+
 
 schedule.every(15).minutes.do(job)
 

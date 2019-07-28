@@ -5,13 +5,10 @@ from Beer.models import Beer, History, Timer, TresoFailsafe
 import json
 from datetime import datetime
 import random
-import string
-from django.views.decorators.csrf import csrf_exempt
-from django.contrib.auth.models import User, Group
-from django.contrib import messages
 
 
-#--- NOT VIEWS PYTHON's FUNCTION
+# --- NOT VIEWS PYTHON's FUNCTION
+
 
 def _calculate_price(json_):
     total = 0
@@ -22,27 +19,31 @@ def _calculate_price(json_):
         total += beer_db.price * json_[beer]
     return round(total, 1)
 
+
 def _random_string(string_length=10):
     letters = "123456789"
     return ''.join(random.choice(letters) for i in range(string_length))
 
+
 def _calculate_time_to_next_update():
     timer = Timer.objects.get(id=1)
     if not timer.timer_is_started:
-        return 0
+        return -1
     else:
         time_delta = timer.next_update - datetime.timestamp(datetime.now())
         return time_delta
 
-#--- AJAX REQUEST VIEWS
+
+# --- AJAX REQUEST VIEWS
+
 
 @login_required
 def calculate_price(request):
     if request.method == 'POST':
         json_ = request.POST.get('data')
         converted_json = json.loads(json_)
-        return JsonResponse({'statut': 'ok', 'price': _calculate_price(converted_json)})
-    return JsonResponse({'statut': 'ko'})
+        return JsonResponse({'status': True, 'price': _calculate_price(converted_json)})
+    return JsonResponse(status=520, data={'status': False})
 
 
 @login_required
@@ -53,13 +54,13 @@ def generate_data_set(request):
         labels.append(hist.id)
         prices.append(hist.total_price)
     return JsonResponse(json.dumps({
-      "labels": labels,
-      "datasets": [
-        {
-          "label": "Revenu en euro",
-          "backgroundColor": ["#3e95cd"],
-          "data": prices
-        }]}), safe=False)
+        "labels": labels,
+        "datasets": [
+            {
+                "label": "Revenu en euro",
+                "backgroundColor": ["#3e95cd"],
+                "data": prices
+            }]}), safe=False)
 
 
 @login_required
@@ -83,7 +84,7 @@ def make_order(request):
                 item_str += '%d %s - ' % (nb_beer, beer)
                 beer_db.save()
 
-        item_str = item_str[0:len(item_str)-2]  # remove the last '-' from the string
+        item_str = item_str[0:len(item_str) - 2]  # remove the last '-' from the string
 
         h = History.objects.create()
         h.id_str = token
@@ -94,8 +95,9 @@ def make_order(request):
         h.text = item_str
         h.save()
 
-        return JsonResponse({'statut': 'ok', 'time': time, 'token': token, 'text': item_str, 'total_price': round(total, 1)})
-    return JsonResponse({'statut': 'ko'})
+        return JsonResponse(
+            {'status': True, 'time': time, 'token': token, 'text': item_str, 'total_price': round(total, 1)})
+    return JsonResponse(status=404, data={'status': False, 'reason': 'Not yet defined'})  # TODO : Completer codes d'er
 
 
 def delete_histo(request):
@@ -103,30 +105,30 @@ def delete_histo(request):
         token = request.POST.get('data')
         hist = History.objects.get(id_str=token)
         if hist is None:
-            return JsonResponse({'statut': 'ko', 'reason': 'History object not found!'})
+            return JsonResponse(status=520, data={'status': False, 'reason': 'History object not found!'})
 
         json_ = json.loads(hist.history_json)
         for beer in json_:
             beer_db = Beer.objects.get(beer_name=beer)
             if beer_db is None:
-                return JsonResponse({'statut':'ko', 'reason':'The beer %s does not exist!' % beer})
+                return JsonResponse(status=404, data={'status': False, 'reason': 'The beer %s does not exist!' % beer})
             beer_db.stock += json_[beer]
 
             # SECURITY TO AVOID MISS IN PRICE COMPUTING
-            #TODO: check if the id of qarder are the same...
+            # TODO: check if the id of qarder are the same...
 
-            if(beer_db.q_qarder - json_[beer]) > 0:
-                beer_db.q_qarder -= json_[beer]         # can be replace by beer_db.add_conso(-json_[beer]) (à tester)
+            if (beer_db.q_qarder - json_[beer]) > 0:
+                beer_db.q_qarder -= json_[beer]  # can be replace by beer_db.add_conso(-json_[beer]) (à tester)
 
             beer_db.save()
         hist.delete()
 
-    return JsonResponse({'statut': 'ok'}, safe=False)
+    return JsonResponse({'status': True}, safe=False)
 
 
 def activate_failsafe(request):
-    #TODO: check permission du user..
-    #if request.method == 'POST':
+    # TODO: check permission du user..
+    # if request.method == 'POST':
 
     if request.user.groups.filter(name='admin').exists():
 
@@ -134,16 +136,14 @@ def activate_failsafe(request):
             t = TresoFailsafe.objects.get(id=1)
             t.is_activated = True
             t.save()
-            print('safe mode activated.')
-            return JsonResponse({'statut':'ok'})
+            return JsonResponse({'status': True})
 
     else:
         print('error: access refused')
-    return JsonResponse({'statut':'ko'})
+    return JsonResponse(status=404, data={'status': False, 'reason': 'Not yet defined'})  # TODO : Completer codes d'er
 
 
 def update_price_failsafe(request):
-
     if request.method == 'POST':
         timer = Timer.objects.get(id=1)
         timer.timer_is_started = True
@@ -151,7 +151,7 @@ def update_price_failsafe(request):
         timer.save()
         tab = json.loads(request.POST.get('new_prices'))
         for id_, price in tab:
-            beer = Beer.objects.get(beer_name = id_)
+            beer = Beer.objects.get(beer_name=id_)
             beer.trend = Beer.get_trend(q_qarder=beer.q_qarder, q_current_qarder=beer.q_current_qarder)
 
             beer.q_qarder = beer.q_current_qarder  # q_current_qarder beer become last quarder consomaition
@@ -163,12 +163,13 @@ def update_price_failsafe(request):
             beer.price = price
             beer.save()
 
-    return JsonResponse({'statut':'ok'})
+    return JsonResponse({'status': True})
 
 
 def timer_to_next_up(request):
     time_next_up_delta = _calculate_time_to_next_update()
-    return JsonResponse({'statut':'ok', 'time_remaining':time_next_up_delta, 'pourcent':100 - (time_next_up_delta / (15 * 60)) * 100})
+    return JsonResponse({'status': True, 'time_remaining': time_next_up_delta,
+                         'pourcent': 100 - (time_next_up_delta / (15 * 60)) * 100})
 
 
 def update_stock(request):  # TODO : Passer le processus dans le model beer pour la creation du json
@@ -176,6 +177,7 @@ def update_stock(request):  # TODO : Passer le processus dans le model beer pour
     beers = {}
 
     beers['pourcent'] = 100 - (_calculate_time_to_next_update() / (15 * 60)) * 100
+    print('test', _calculate_time_to_next_update())
 
     for beer in Beer.objects.all():
         beer_name = beer.id
@@ -187,23 +189,4 @@ def update_stock(request):  # TODO : Passer le processus dans le model beer pour
         beers[beer_name]['trend'] = beer.trend
         beers[beer_name]['out_of_stock'] = beer.out_of_stock
 
-    return JsonResponse({'statut': 'ok', 'data': beers})
-
-
-@csrf_exempt
-def update_price(request):
-
-    TOKEN = 'CABB74F774DD3ACB'
-
-    if request.method == 'POST':
-        token = request.POST.get('token')
-        if token == TOKEN:
-           Beer._update_prices(do_round=True)
-           return JsonResponse({'statut':'ok'})
-    return JsonResponse({'statut':'ko'})
-
-
-@csrf_exempt
-def sound_ajax(request):
-    t = Timer.objects.get(id=1)
-    return JsonResponse({'statut':'ok', 'next_update':t.next_update})
+    return JsonResponse({'status': True, 'data': beers})

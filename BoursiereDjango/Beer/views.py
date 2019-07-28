@@ -1,4 +1,4 @@
-from django.shortcuts import render , redirect
+from django.shortcuts import render, redirect
 from django.http import HttpResponse, Http404
 from django.contrib.auth import authenticate, login, logout
 from .forms import BeerForm, LoginForm
@@ -9,15 +9,17 @@ from django.contrib import messages
 from django.views.decorators.csrf import ensure_csrf_cookie
 import random
 
-#TODO V2: MAKE CLASS VIEW
-#TODO: MAKE THIS THING BETTER CLEAR
+# TODO V2: MAKE CLASS VIEW
+# TODO: MAKE THIS THING BETTER CLEAR
 
-#--- DEFAULT VIEWS
+# --- DEFAULT VIEWS
+
 
 def root(request):
     return redirect('stock_page')
 
-#--- LOGIN/LOGOUT VIEWS
+# --- LOGIN/LOGOUT VIEWS
+
 
 def login_page(request):
     login_form = LoginForm(request.POST or None)
@@ -28,8 +30,8 @@ def login_page(request):
             return redirect('stock_page')
         else:
             messages.add_message(request, messages.ERROR, 'Login error!')
-            return render(request, 'login_page.html', {'form':login_form})
-    return render(request, 'login_page.html', {'form':login_form})
+            return render(request, 'login_page.html', {'form': login_form})
+    return render(request, 'login_page.html', {'form': login_form})
 
 
 def logout_page(request):
@@ -38,27 +40,30 @@ def logout_page(request):
     return redirect('login_page')
 
 
-#--- BEER ORDERING VIEWS
+# --- BEER ORDERING VIEWS
 
 @login_required
 def beer_ordering_view(request):
-    return render(request, 'ordering_beer_page.html', {'beers':BeerModel.objects.all(), 'history':History.objects.all()})
+    return render(request, 'ordering_beer_page.html', {'beers': BeerModel.objects.all(), 'history': History.objects.all()})
 
-#--- STOCK VIEWS
+# --- STOCK VIEWS
 
-@ensure_csrf_cookie    #generate CSRF token on stockpage
+
+@ensure_csrf_cookie  # generate CSRF token on stockpage
 def stock_page(request):
-    return render(request, 'stock_page.html', {'beers':BeerModel.objects.all()})
+    return render(request, 'stock_page.html', {'beers': BeerModel.objects.all()})
 
-#--- BEER MANAGEMENT VIEWS
+# --- BEER MANAGEMENT VIEWS
+
 
 @login_required
 def add_beer(request):
     beer_form = BeerForm()
     if request.method == 'POST':
-        beer_form = BeerForm(request.POST, request.FILES )
+        beer_form = BeerForm(request.POST, request.FILES)
     if beer_form.is_valid():
-        if beer_form.cleaned_data['beer_name'].upper() in [beer.beer_name.upper() for beer in BeerModel.objects.all()]: # check if the beer is already saved.
+        # check if the beer is already saved.
+        if beer_form.cleaned_data['beer_name'].upper() in [beer.beer_name.upper() for beer in BeerModel.objects.all()]:
             messages.add_message(request, messages.ERROR, 'Cette bière à déjà été enregistré !')
         else:
             BeerModel.objects.create(beer_name=beer_form.cleaned_data['beer_name'],
@@ -74,12 +79,13 @@ def add_beer(request):
             messages.add_message(request, messages.SUCCESS, 'La bière à bien été ajouté à la liste !')
     else:
         messages.error(request, beer_form.errors)
-    return render(request, 'add_beer.html', {'form':beer_form})
+    return render(request, 'add_beer.html', {'form': beer_form})
 
 
 @login_required
 def delete_beer_page(request):
-    return render(request, 'delete_beer.html', {'beers':BeerModel.objects.all()})
+    return render(request, 'delete_beer.html', {'beers': BeerModel.objects.all()})
+
 
 @login_required
 def delete_beer(request, id_beer):
@@ -93,20 +99,23 @@ def delete_beer(request, id_beer):
 
     return redirect('delete_beer_page')
 
-#--- ERROR VIEWS (need DEBUG=False in settings.py to works)
+# --- ERROR VIEWS (need DEBUG=False in settings.py to works)
+
 
 def error_404(request, exception):
-        return render(request, '404.html', locals())
+    return render(request, '404.html', locals())
 
 
 def error_500(request):
-        return render(request, '500.html', locals())
+    return render(request, '500.html', locals())
 
-#--- OTHER VIEWS
+# --- OTHER VIEWS
+
 
 def sound_page(request):
     return render(request, 'sound_page.html')
 
+
 def test(request):
-    rdn = ['cat1.jpg','cat2.jpg','cat3.jpg','cat4.jpg','cat5.jpg','cat6.jpg']
-    return render(request, 'test.html', {'image':'../static/images/'+random.choice(rdn)})
+    rdn = ['cat1.jpg', 'cat2.jpg', 'cat3.jpg', 'cat4.jpg', 'cat5.jpg', 'cat6.jpg']
+    return render(request, 'test.html', {'image': '../static/images/'+random.choice(rdn)})

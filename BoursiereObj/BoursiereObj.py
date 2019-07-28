@@ -27,7 +27,7 @@ class Boursiere:
     def add_conso(self, beer_name, number):
         self._verify_beer_exists(beer_name)
         self.db[beer_name]['q_current_qarder'] += number
-        self.log('- '+str(number) +' '+ beer_name)
+        self.log('- '+str(number) + ' ' + beer_name)
 
     @staticmethod
     def _compute_price(q_current_beer, q_last_beer, coef_down, coef_up, price):
@@ -54,8 +54,8 @@ class Boursiere:
 
             # TODO : Cas stock est vide? Bouger le dict de la beer vers un autre dict pour plus qu'il ne soit utilisé ?
 
-            if self.db[beer_name]['stock'] <= 0: # check if the stock is empty
-                self.out_of_stock[beer_name] = self.db[beer_name] # add the db part of beer to out_of_stock (line:70)
+            if self.db[beer_name]['stock'] <= 0:  # check if the stock is empty
+                self.out_of_stock[beer_name] = self.db[beer_name]  # add the db part of beer to out_of_stock (line:70)
 
             self.db[beer_name]['q_qarder'] = q_current_beer
             self.db[beer_name]['q_current_qarder'] = 0
@@ -67,7 +67,7 @@ class Boursiere:
             else:
                 self.db[beer_name]['price'] = new_price
 
-        for beer_name in self.out_of_stock: #
+        for beer_name in self.out_of_stock:
             del(self.db[beer_name])         # del from db all the beer out of stocks
 
     def _verify_beer_exists(self, beer_name):
@@ -80,7 +80,7 @@ class Boursiere:
     def get_trend(self, beer_name):
         if self.db[beer_name]['q_current_qarder'] > self.db[beer_name]['q_qarder']:
             return 'UP'
-        elif self.db[beer_name]['q_current_qarder'] ==  self.db[beer_name]['q_qarder']:
+        elif self.db[beer_name]['q_current_qarder'] == self.db[beer_name]['q_qarder']:
             return 'EQUAL'
         else:
             return 'DOWN'
@@ -90,7 +90,7 @@ class Boursiere:
 
     def get_info(self):
         dic = {}
-        worth_beer = [math.inf,'']
+        worth_beer = [math.inf, '']
         for beer_name in self.db:
 
             price = self.db[beer_name]['price']
@@ -101,7 +101,7 @@ class Boursiere:
                 worth_beer[0] = price
                 worth_beer[1] = beer_name
 
-            dic[beer_name] = {'price':price, 'stock':stock, 'trend':trend}
+            dic[beer_name] = {'price': price, 'stock': stock, 'trend': trend}
 
         dic['worth_beer'] = worth_beer[1]
         return dic

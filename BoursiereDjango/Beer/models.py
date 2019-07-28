@@ -4,6 +4,7 @@ from datetime import datetime
 import hashlib
 import pprint
 
+
 class Beer(models.Model):
     beer_name = models.CharField(max_length=100)
     price = models.FloatField(null=False)
@@ -23,7 +24,7 @@ class Beer(models.Model):
 
     class Meta:
         permissions = (('show_tool_bar', 'Can show the toolbar'),
-                        ('failsafe_mode', 'Can access to failsafe'),)
+                       ('failsafe_mode', 'Can access to failsafe'),)
 
     def change_percentage_alchohol(self, percentage):
         self.alcohol_percentage = percentage
@@ -70,12 +71,12 @@ class Beer(models.Model):
         timer.save()
 
         out_stock = []
-        for beer in Beer.objects.all(): # for each beer
+        for beer in Beer.objects.all():  # for each beer
             new_price = beer.compute_price()
 
             beer.trend = Beer.get_trend(q_qarder=beer.q_qarder, q_current_qarder=beer.q_current_qarder)
 
-            #beer.change_stock(beer.q_current_qarder)  # remove q_current_qarder from stock
+            # beer.change_stock(beer.q_current_qarder)  # remove q_current_qarder from stock
 
             if beer.stock <= 0:
                 out_stock.append(beer)      # add beer to out of stock beer list
@@ -85,13 +86,12 @@ class Beer(models.Model):
             if beer.stock < 5:
                 new_price = beer.buy_price * 2.5
 
-
-            beer.q_qarder = beer.q_current_qarder #q_current_qarder beer become last quarder consomaition
-            beer.q_current_qarder = 0              #reset current qarder consomation
+            beer.q_qarder = beer.q_current_qarder  # q_current_qarder beer become last quarder consomaition
+            beer.q_current_qarder = 0  # reset current qarder consomation
 
             # TO HIGH PRICE SECURITY
 
-            if new_price > (beer.coef_max * beer.buy_price):    #if new_price is too high , change it
+            if new_price > (beer.coef_max * beer.buy_price):  # if new_price is too high , change it
                 new_price = beer.coef_max * beer.buy_price
 
             # ROUND CHECK
