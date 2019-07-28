@@ -19,3 +19,33 @@
   font-size:16px;
 
 }
+
+.center {
+  position: relative;
+}
+
+.center-element {
+  margin: 0;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.tform{
+
+
+text-align: center;
+padding: 5px;
+background-color: white;
+border: 1px solid #C0C0C0;
+border-radius: 7px;
+color: #202020;
+
+}
+
+
+
+.tform:focus{
+    outline: none;
+}
