@@ -27,28 +27,28 @@
 
                 {% if perms.Beer.show_tool_bar %}
                 <li class="nav-item">
-                    <a class="btn btn-success ml-1 navbutton text-white" href="/add_beer/"><i class="fas fa-plus"></i> add beer</a>
+                    <a class="btn ml-1 navbutton text-white" href="/add_beer/"><i class="fas fa-plus"></i> add beer</a>
                 </li>
                 <li class="nav-item">
-                    <a class="btn btn-danger ml-1 navbutton text-white"  href="/delete_beer/"><i class="fas fa-minus"></i> delete beer</a>
+                    <a class="btn ml-1 navbutton text-white"  href="/delete_beer/"><i class="fas fa-minus"></i> delete beer</a>
                 </li>
                 <li class="nav-item">
-                    <a class="btn btn-success ml-1 navbutton text-white" href="/beer_ordering/">ordering pannel <i class="fas fa-cog"></i></a>
+                    <a class="btn ml-1 navbutton text-white" href="/beer_ordering/">ordering pannel <i class="fas fa-cog"></i></a>
                 </li>
                 <li class="nav-item">
-                    <a class="btn btn-dark ml-1 navbutton text-white" href="/dashboard/">dashboard <i class="fas fa-lock"></i></a>
+                    <a class="btn ml-1 navbutton text-white" href="/dashboard/">dashboard <i class="fas fa-lock"></i></a>
                 </li>
                 <li class="nav-item">
-                    <a class="btn btn-success ml-1 navbutton text-white" href="/stock_page/">stocks page <i class="fas fa-chart-line"></i></a>
+                    <a class="btn ml-1 navbutton text-white" href="/stock_page/">stocks page <i class="fas fa-chart-line"></i></a>
                 </li>
                 {% endif %}
                 {% if user.is_authenticated %}
                 <li class="nav-item">
-                    <a class="btn btn-danger ml-1 navbutton text-white" href="/logout/">logout <i class="fas fa-sign-out-alt"></i></a>
+                    <a class="btn ml-1 navbutton text-white" href="/logout/">logout <i class="fas fa-sign-out-alt"></i></a>
                 </li>
                 {% else %}
                 <li class="nav-item">
-                    <a class="btn btn-danger ml-1 navbutton text-white" href="/login/">sign in <i class="fas fa-sign-in-alt"></i></a>
+                    <a class="btn ml-1 navbutton text-white" href="/login/">sign in <i class="fas fa-sign-in-alt"></i></a>
                 </li>
                 {% endif %}
             </ul>
