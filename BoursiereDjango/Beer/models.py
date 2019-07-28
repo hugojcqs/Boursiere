@@ -67,6 +67,7 @@ class Beer(models.Model):
 
         timer = Timer.objects.get(id=1)
         timer.timer_is_started = True
+        timer.current_quarter += 1
         timer.next_update = (datetime.timestamp(datetime.now()) + 15*60)
         timer.save()
 
@@ -172,12 +173,14 @@ class History(models.Model):
     total_price = models.FloatField(null=False, default=0)
     buy_total_price = models.FloatField(null=False, default=0)
     history_json = models.TextField()
+    quarter = models.IntegerField(null=False, default=1)
     text = models.TextField(null=False, default="")
 
 
 class Timer(models.Model):
     next_update = models.BigIntegerField(null=False)
     timer_is_started = models.BooleanField(null=False, default=False)
+    current_quarter = models.IntegerField(null=False, default=1)
 
 
 class TresoFailsafe(models.Model):

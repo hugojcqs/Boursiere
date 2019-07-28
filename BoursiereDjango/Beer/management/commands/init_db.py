@@ -8,7 +8,7 @@ class Command(BaseCommand):
             Timer.objects.get(id=1)
         except Exception as e:
             print('Timer initialisation - %s but it does now!' % e)
-            Timer.objects.create(id=1, next_update=0, timer_is_started=False)
+            Timer.objects.create(id=1, next_update=0, timer_is_started=False, current_quarter=1)
 
         try:
             TresoFailsafe.objects.get(id=1)

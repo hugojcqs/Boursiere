@@ -1,3 +1,6 @@
+var db = {};
+var current_quarter = 0;
+var first_run = true;
 $(document).ready(function() {
     $.ajaxSetup({
         beforeSend: function(xhr, settings) {
@@ -21,9 +24,10 @@ $(document).ready(function() {
             }
         }
     });
+    get_next_update_and_disable_past_history();
 });
 
-var db = {};
+
 
 function _can_order() {
     for (let key in db) {
@@ -32,6 +36,50 @@ function _can_order() {
         }
     }
 }
+
+
+function _disable_past_history() {
+    //get_current_quarter();
+    $('.history_btn').each(function() {
+        let btn = $(this);
+        if (parseInt(btn.data("id")) != current_quarter) {
+            btn.attr('onclick', '');
+            btn.removeClass("history_btn");
+            btn.addClass("disabled");
+        }
+    });
+    get_next_update_and_disable_past_history();
+}
+
+
+function get_next_update_and_disable_past_history() {
+    $.post({
+        url: '/timer_to_next_up/',
+        data: {
+            'data': 'none'
+        },
+        async: true,
+        dataType: 'json',
+        success: function(data) {
+            let time_to_update = data.time_remaining;
+            current_quarter = data.quarter;
+            if (first_run) {
+                _disable_past_history();
+                first_run = false;
+            }
+            if (time_to_update > 0) {
+                setTimeout(_disable_past_history, time_to_update * 1000 - 1000);
+            } else {
+                setTimeout(get_next_update_and_disable_past_history, 20 * 1000);
+            }
+        },
+        error: function(xhr, status, error) {
+            //TODO : handle error in ajax request
+            console.log('Cannot update the stock page', status, error);
+        }
+    });
+}
+
 
 function set_clickable_order_button() {
     if (_can_order()) {
@@ -111,7 +159,7 @@ function _add_history(json_) {
     token = json_['token'];
     text = json_['text'];
     total_price = json_['total_price'];
-    raw_html = `<a class="list-group-item list-group-item-action flex-column align-items-start text-white " style="background-color:#8b9dc3;" id="${token}"><div class="d-flex w-100 justify-content-between"><h5 class="mb-1">Commande n°${token}</h5><small>${time}</small><div class="btn-sm btn-danger" onclick="delete_histo(${token})">Supprimer</div></div><p class="mb-1">${text}</p><small>Prix total : ${total_price} €</small></a>`;
+    raw_html = `<a class="list-group-item list-group-item-action flex-column align-items-start text-white " style="background-color:#8b9dc3;" id="${token}"><div class="d-flex w-100 justify-content-between"><h5 class="mb-1">Commande n°${token}</h5><small>${time}</small><div class="btn btn-sm btn-danger history_btn" data-id="${current_quarter}" onclick="delete_histo(${token})">Supprimer</div></div><p class="mb-1">${text}</p><small>Prix total : ${total_price} €</small></a>`;
     $('#histo').prepend(raw_html)
 }
 

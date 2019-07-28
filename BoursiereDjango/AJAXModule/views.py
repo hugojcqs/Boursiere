@@ -89,6 +89,7 @@ def make_order(request):
         h = History.objects.create()
         h.id_str = token
         h.time = time
+        h.quarter = Timer.objects.get(id=1).current_quarter
         h.total_price = round(total, 1)
         h.buy_total_price = round(total_buy_price, 1)
         h.history_json = request.POST.get('data')
@@ -97,10 +98,11 @@ def make_order(request):
 
         return JsonResponse(
             {'status': True, 'time': time, 'token': token, 'text': item_str, 'total_price': round(total, 1)})
+
     return JsonResponse(status=404, data={'status': False, 'reason': 'Not yet defined'})  # TODO : Completer codes d'er
 
 
-def delete_histo(request):
+def delete_histo(request):  # TODO : Verification de l'existance de l'histo
     if request.method == 'POST':
         token = request.POST.get('data')
         hist = History.objects.get(id_str=token)
@@ -169,7 +171,7 @@ def update_price_failsafe(request):
 def timer_to_next_up(request):
     time_next_up_delta = _calculate_time_to_next_update()
     return JsonResponse({'status': True, 'time_remaining': time_next_up_delta,
-                         'pourcent': 100 - (time_next_up_delta / (15 * 60)) * 100})
+                         'pourcent': 100 - (time_next_up_delta / (15 * 60)) * 100, 'quarter':Timer.objects.get(id=1).current_quarter})
 
 
 def update_stock(request):  # TODO : Passer le processus dans le model beer pour la creation du json
