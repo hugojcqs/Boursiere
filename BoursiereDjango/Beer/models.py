@@ -160,7 +160,7 @@ class Beer(models.Model):
     def __str__(self):
         return self.beer_name
 
-    #  TODO : CHECK IF IT WORKS !!
+
     def verify_exist(self):
         beer = Beer.objects.get(self)
         if beer is None:

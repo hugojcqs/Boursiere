@@ -99,7 +99,7 @@ def make_order(request):
         return JsonResponse(
             {'status': True, 'time': time, 'token': token, 'text': item_str, 'total_price': round(total, 1)})
 
-    return JsonResponse(status=404, data={'status': False, 'reason': 'Not yet defined'})  # TODO : Completer codes d'er
+    return JsonResponse(status=404, data={'status': False, 'reason': 'Not yet defined'})
 
 
 def delete_histo(request):  # TODO : Verification de l'existance de l'histo
@@ -118,6 +118,7 @@ def delete_histo(request):  # TODO : Verification de l'existance de l'histo
 
             # SECURITY TO AVOID MISS IN PRICE COMPUTING
             # TODO: check if the id of qarder are the same...
+
 
             if (beer_db.q_qarder - json_[beer]) > 0:
                 beer_db.q_qarder -= json_[beer]  # can be replace by beer_db.add_conso(-json_[beer]) (à tester)
@@ -142,7 +143,7 @@ def activate_failsafe(request):
 
     else:
         print('error: access refused')
-    return JsonResponse(status=404, data={'status': False, 'reason': 'Not yet defined'})  # TODO : Completer codes d'er
+    return JsonResponse(status=404, data={'status': False, 'reason': 'Not yet defined'})
 
 
 def update_price_failsafe(request):
@@ -174,8 +175,7 @@ def timer_to_next_up(request):
                          'pourcent': 100 - (time_next_up_delta / (15 * 60)) * 100, 'quarter':Timer.objects.get(id=1).current_quarter})
 
 
-def update_stock(request):  # TODO : Passer le processus dans le model beer pour la creation du json
-    #  TODO : Known bug - si une biere est ajouter sans mise a jour de la page de stock, celle ci ne sera pas afficher par l'ajax
+def update_stock(request):
     beers = {}
 
     beers['pourcent'] = 100 - (_calculate_time_to_next_update() / (15 * 60)) * 100
