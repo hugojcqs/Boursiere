@@ -18,27 +18,6 @@ import random
 def root(request):
     return redirect('stock_page')
 
-# --- LOGIN/LOGOUT VIEWS
-
-
-def login_page(request):
-    login_form = LoginForm(request.POST or None)
-    if login_form.is_valid():
-        user = authenticate(request, username=login_form.cleaned_data['username'], password=login_form.cleaned_data['password'])
-        if user is not None:
-            login(request, user)
-            return redirect('stock_page')
-        else:
-            messages.add_message(request, messages.ERROR, 'Login error!')
-            return render(request, 'login_page.html', {'form': login_form})
-    return render(request, 'login_page.html', {'form': login_form})
-
-
-def logout_page(request):
-    print('logout with success !!')
-    logout(request)
-    return redirect('login_page')
-
 
 # --- BEER ORDERING VIEWS
 

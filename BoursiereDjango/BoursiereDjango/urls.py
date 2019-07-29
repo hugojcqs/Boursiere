@@ -18,14 +18,15 @@ from django.urls import path
 from Beer import views as BeerViews
 from AJAXModule import views as AJAXModuleViews
 from Treso import views as TresoViews
+from SessionManager import views as SessionManagerViews
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('beer_ordering/', BeerViews.beer_ordering_view, name='beer_ordering'),
     path('add_beer/', BeerViews.add_beer, name='add_beer'),
     path('', BeerViews.root),
-    path('login/', BeerViews.login_page, name='login_page'),
-    path('logout/', BeerViews.logout_page, name='logout_page'),
+    path('login/', SessionManagerViews.login_page, name='login_page'),
+    path('logout/', SessionManagerViews.logout_page, name='logout_page'),
     path('calculate_price/', AJAXModuleViews.calculate_price, name='calculate_price'),
     path('make_order/', AJAXModuleViews.make_order, name='make_order'),
     path('delete_histo/', AJAXModuleViews.delete_histo, name='delete_histo'),

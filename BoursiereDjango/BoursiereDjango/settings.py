@@ -34,6 +34,7 @@ INSTALLED_APPS = [
     'Beer',
     'AJAXModule',
     'Treso',
+    'SessionManager',
     'crispy_forms',
     'django.contrib.admin',
     'django.contrib.auth',
