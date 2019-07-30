@@ -1,4 +1,3 @@
-from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 from Beer.models import Beer, History, Timer, TresoFailsafe
@@ -6,11 +5,19 @@ import json
 from datetime import datetime
 import random
 
-
-# --- NOT VIEWS PYTHON's FUNCTION
+"""
+###########################################
+Private function used by the (ajax) views
+###########################################
+"""
 
 
 def _calculate_price(json_):
+    """
+    Responsible for calculating price of an order.
+    :param json_: json from de javascript, containing the beer and the quantities associated with it.
+    :return: total price based on database prices.
+    """
     total = 0
     for beer in json_:
         beer_db = Beer.objects.get(beer_name=beer)
@@ -21,11 +28,20 @@ def _calculate_price(json_):
 
 
 def _random_string(string_length=10):
+    """
+    Responsible for generating random string
+    :param string_length: generated string length
+    :return: the random string
+    """
     letters = "123456789"
     return ''.join(random.choice(letters) for i in range(string_length))
 
 
 def _calculate_time_to_next_update():
+    """
+    Responsible for calculating time (in seconds) before the next update.
+    :return: time remaining to the next update.
+    """
     timer = Timer.objects.get(id=1)
     if not timer.timer_is_started:
         return -1
@@ -35,10 +51,20 @@ def _calculate_time_to_next_update():
 
 
 # --- AJAX REQUEST VIEWS
+"""
+###########################################
+AJAX Views
+###########################################
+"""
 
 
 @login_required
 def calculate_price(request):
+    """
+    AJAX responsible for calculating the price of an order.
+    :param request: request from the client.
+    :return: JsonResponse
+    """
     if request.method == 'POST':
         json_ = request.POST.get('data')
         converted_json = json.loads(json_)
@@ -47,24 +73,12 @@ def calculate_price(request):
 
 
 @login_required
-def generate_data_set(request):
-    labels = []
-    prices = []
-    for hist in History.objects.all():
-        labels.append(hist.id)
-        prices.append(hist.total_price)
-    return JsonResponse(json.dumps({
-        "labels": labels,
-        "datasets": [
-            {
-                "label": "Revenu en euro",
-                "backgroundColor": ["#3e95cd"],
-                "data": prices
-            }]}), safe=False)
-
-
-@login_required
 def make_order(request):
+    """
+    AJAX responsible for adding an order to the database.
+    :param request: request from the client.
+    :return: JsonResponse
+    """
     if request.method == 'POST':
         json_ = json.loads(request.POST.get('data'))
         item_str = ''
@@ -102,7 +116,12 @@ def make_order(request):
     return JsonResponse(status=404, data={'status': False, 'reason': 'Not yet defined'})
 
 
-def delete_histo(request):  # TODO : Verification de l'existance de l'histo
+def delete_histo(request):
+    """
+    AJAX responsible for deleting a previous order. The quantities are restored to the remaining quantities.
+    :param request: request from the client.
+    :return: JsonResponse
+    """
     if request.method == 'POST':
         token = request.POST.get('data')
         hist = History.objects.get(id_str=token)
@@ -113,12 +132,11 @@ def delete_histo(request):  # TODO : Verification de l'existance de l'histo
         for beer in json_:
             beer_db = Beer.objects.get(beer_name=beer)
             if beer_db is None:
-                return JsonResponse(status=404, data={'status': False, 'reason': 'The beer %s does not exist!' % beer})
+                return JsonResponse(status=520, data={'status': False, 'reason': 'The beer %s does not exist!' % beer})
             beer_db.stock += json_[beer]
 
             # SECURITY TO AVOID MISS IN PRICE COMPUTING
             # TODO: check if the id of qarder are the same...
-
 
             if (beer_db.q_qarder - json_[beer]) > 0:
                 beer_db.q_qarder -= json_[beer]  # can be replace by beer_db.add_conso(-json_[beer]) (à tester)
@@ -130,6 +148,11 @@ def delete_histo(request):  # TODO : Verification de l'existance de l'histo
 
 
 def activate_failsafe(request):
+    """
+    AJAX Activate the failsafe and disable the update from the timer.
+    :param request: request from the client.
+    :return: JsonResponse
+    """
     # TODO: check permission du user..
     # if request.method == 'POST':
 
@@ -147,6 +170,11 @@ def activate_failsafe(request):
 
 
 def update_price_failsafe(request):
+    """
+    AJAX Update price based on the price given by the trésoriers de mes balls.
+    :param request: request from the client.
+    :return: JsonResponse
+    """
     if request.method == 'POST':
         timer = Timer.objects.get(id=1)
         timer.timer_is_started = True
@@ -170,12 +198,23 @@ def update_price_failsafe(request):
 
 
 def timer_to_next_up(request):
+    """
+    AJAX responsible for giving the time to next update, the percent of progression to the next
+    update and the current quarter.
+    :param request: request from client.
+    :return: JsonResponse
+    """
     time_next_up_delta = _calculate_time_to_next_update()
     return JsonResponse({'status': True, 'time_remaining': time_next_up_delta,
-                         'pourcent': 100 - (time_next_up_delta / (15 * 60)) * 100, 'quarter':Timer.objects.get(id=1).current_quarter})
+                         'pourcent': 100 - (time_next_up_delta / (15 * 60)) * 100, 'quarter': Timer.objects.get(id=1).current_quarter})
 
 
 def update_stock(request):
+    """
+    AJAX responsible for giving the dataset for updating the update_stock page table.
+    :param request: request from client.
+    :return: JsonResponse.
+    """
     beers = {}
 
     beers['pourcent'] = 100 - (_calculate_time_to_next_update() / (15 * 60)) * 100
