@@ -163,9 +163,6 @@ def activate_failsafe(request):
             t.is_activated = True
             t.save()
             return JsonResponse({'status': True})
-
-    else:
-        print('error: access refused')
     return JsonResponse(status=404, data={'status': False, 'reason': 'Not yet defined'})
 
 
@@ -218,7 +215,6 @@ def update_stock(request):
     beers = {}
 
     beers['pourcent'] = 100 - (_calculate_time_to_next_update() / (15 * 60)) * 100
-    print('test', _calculate_time_to_next_update())
 
     for beer in Beer.objects.all():
         beer_name = beer.id

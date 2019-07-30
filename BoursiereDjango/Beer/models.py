@@ -1,8 +1,5 @@
 from django.db import models
-from django.db.models import *
 from datetime import datetime
-import hashlib
-import pprint
 
 
 class Beer(models.Model):

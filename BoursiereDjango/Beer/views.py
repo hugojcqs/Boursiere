@@ -69,9 +69,8 @@ def delete_beer(request, id_beer):
 
     try:
         BeerModel.objects.get(id=id_beer).delete()
-        print('-- beer deleted. --')
     except Exception as e:
-        print('-- item not found : %s --' % e)
+        print(e)
         raise Http404
 
     return redirect('delete_beer_page')
