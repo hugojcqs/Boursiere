@@ -86,7 +86,7 @@ def make_order(request):
         total_buy_price = 0
         time = datetime.now().strftime('%H:%M:%S')
         token = _random_string(10)
-        print(1)
+
         for beer in json_:
             nb_beer = json_[beer]
             beer_db = Beer.objects.get(beer_name=beer)
@@ -98,22 +98,17 @@ def make_order(request):
                 item_str += '%d %s - ' % (nb_beer, beer)
                 beer_db.save()
 
-        print(2)
         item_str = item_str[0:len(item_str) - 2]  # remove the last '-' from the string
-        print(3)
+
         h = History.objects.create()
-        print(4)
         h.id_str = token
         h.time = time
         h.quarter = Timer.objects.get(id=1).current_quarter
         h.total_price = round(total, 1)
         h.buy_total_price = round(total_buy_price, 1)
-        print(5)
         h.history_json = request.POST.get('data')
-        print(6)
         h.text = item_str
         h.save()
-        print(7)
 
         return JsonResponse(
             {'status': True, 'time': time, 'token': token, 'text': item_str, 'total_price': round(total, 1)})
@@ -168,7 +163,7 @@ def activate_failsafe(request):
             t.is_activated = True
             t.save()
             return JsonResponse({'status': True})
-    return JsonResponse(status=520, data={'status': False, 'reason': 'Not yet defined'})
+    return JsonResponse(status=404, data={'status': False, 'reason': 'Not yet defined'})
 
 
 def update_price_failsafe(request):
