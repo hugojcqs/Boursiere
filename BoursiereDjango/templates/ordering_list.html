@@ -1,7 +1,7 @@
 
 <div class="list-group" id="histo" style="position: relative; height: 94vh; width: 100%; overflow-y: scroll;">
     {% for histo in history reversed %}
-    <a class="list-group-item list-group-item-action flex-column align-items-start text-white " style="background-color:#8b9dc3;" id="{{ histo.id_str }}">
+    <a class="list-group-item list-group-item-action flex-column align-items-start text-white history_color" style="background-color:#8b9dc3;" id="{{ histo.id_str }}">
         <div class="d-flex w-100 justify-content-between">
             <h5 class="mb-1">Commande n°{{ histo.id_str }}</h5>
             <small>{{ histo.time }}</small>
