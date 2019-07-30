@@ -20,11 +20,15 @@ def _calculate_income():
 @login_required
 # @permission_required('Beer.failsafe_mode')
 def dashboard(request):
-
     if request.user.has_perm('Beer.failsafe_mode'):
         total, total_buy_price, benef = _calculate_income()
         print(TresoFailsafe.objects.get(id=1).is_activated)
-        return render(request, 'dashboard.html', {'total': total, 'total_buy_price': total_buy_price, 'benef': benef, 'beers': Beer.objects.all(), 'failsafe': TresoFailsafe.objects.get(id=1).is_activated})
+        return render(request,
+                      'dashboard.html',
+                      {'total': total,
+                       'total_buy_price': total_buy_price,
+                       'benef': benef, 'beers': Beer.objects.all(),
+                       'failsafe': TresoFailsafe.objects.get(id=1).is_activated})
     else:
         # return HttpResponseForbidden()
         raise PermissionDenied()

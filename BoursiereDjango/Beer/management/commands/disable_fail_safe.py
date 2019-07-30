@@ -1,5 +1,6 @@
-from django.core.management.base import BaseCommand, CommandError
-from Beer.models import Beer, History, TresoFailsafe
+from django.core.management.base import BaseCommand
+from Beer.models import TresoFailsafe
+import emoji
 
 
 class Command(BaseCommand):
@@ -8,7 +9,6 @@ class Command(BaseCommand):
             t = TresoFailsafe.objects.get(id=1)
             t.is_activated = False
             t.save()
-            print(t.is_activated)
-            print('Failsafe DISABLED - Price will now be computed using the system algorithm')
+            print(emoji.emojize("The failsafe has been disabled :heavy_check_mark:"))
         except Exception as e:
-            print(e)
+            print(emoji.emojize("An error ocured while disabling the failsafe %e:x:" % e))

@@ -1,13 +1,11 @@
 from django.shortcuts import render, redirect
-from django.http import HttpResponse, Http404
-from django.contrib.auth import authenticate, login, logout
-from .forms import BeerForm, LoginForm
+from django.http import Http404
+from .forms import BeerForm
 from .models import Beer as BeerModel
 from .models import History
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.views.decorators.csrf import ensure_csrf_cookie
-import random
 
 # TODO V2: MAKE CLASS VIEW
 # TODO: MAKE THIS THING BETTER CLEAR
@@ -72,8 +70,8 @@ def delete_beer(request, id_beer):
     try:
         BeerModel.objects.get(id=id_beer).delete()
         print('-- beer deleted. --')
-    except:
-        print('-- item not found --')
+    except Exception as e:
+        print('-- item not found : %s --' % e)
         raise Http404
 
     return redirect('delete_beer_page')
@@ -95,6 +93,8 @@ def sound_page(request):
     return render(request, 'sound_page.html')
 
 
+'''
 def test(request):
     rdn = ['cat1.jpg', 'cat2.jpg', 'cat3.jpg', 'cat4.jpg', 'cat5.jpg', 'cat6.jpg']
     return render(request, 'test.html', {'image': '../static/images/'+random.choice(rdn)})
+'''

@@ -65,6 +65,7 @@ class Beer(models.Model):
         Beer.set_best_value_beer()
         Beer.set_best_price()
 
+        # Moved timer modification to the
         timer = Timer.objects.get(id=1)
         timer.timer_is_started = True
         timer.current_quarter += 1
@@ -146,20 +147,17 @@ class Beer(models.Model):
         beer_index_list = []
         for beer in Beer.objects.all():
             index = (beer.price + beer.alcohol_percentage) / (max_price + max_alcohol)
-            print(max_price, max_alcohol, index)
             if index <= best_index:
                 best_index = index
                 beer_index_list.append((index, beer))
             beer.save()
 
         beer = max(beer_index_list, key=lambda t: t[0])[1]
-        print(beer)
         beer.best_value = True
         beer.save()
 
     def __str__(self):
         return self.beer_name
-
 
     def verify_exist(self):
         beer = Beer.objects.get(self)
