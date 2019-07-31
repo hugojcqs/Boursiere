@@ -14,6 +14,7 @@ class Command(BaseCommand):
             print(emoji.emojize('Cannot compute new price, system has been overrided manually :x:'))
             print('Run "python3 or python.exe .\\manage.py disable_fail_safe"')
 
+    @staticmethod
     def _update_timer():
         timer = Timer.objects.get(id=1)
         timer.timer_is_started = True

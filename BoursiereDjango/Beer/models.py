@@ -1,6 +1,6 @@
 from django.db import models
 from datetime import datetime
-
+from django.db.models import Min, Max
 
 class Beer(models.Model):
     beer_name = models.CharField(max_length=100)

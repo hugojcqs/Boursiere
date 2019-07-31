@@ -1,5 +1,5 @@
 import schedule
-from datetime.datetime import timestamp, now
+from datetime import datetime
 import os
 import time
 import signal
@@ -17,8 +17,7 @@ def handler(signum, frame):
 
 
 def job():
-    os.system('%s ./manage.py update_prices %s' % (python_os,
-                                                   round(timestamp(now()))))
+    os.system('%s ./manage.py update_prices' % python_os)
 
 
 signal.signal(signal.SIGINT, handler)
