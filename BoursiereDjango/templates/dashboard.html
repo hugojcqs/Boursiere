@@ -46,18 +46,22 @@
                 <div class="card-header bg-dark text-white">
                     <div class="row">
                         <div>Prix tréso <b>ATTENTION - Mode non reversible</b>
-                            <div class="btn btn-danger disabled" id="statut">{{failsafe}}</div>
+                            <div class="btn btn-danger disabled" id="statut" style="visibility: hidden">{{failsafe}}</div>
                         </div>
                     </div>
                 </div>
                 <div class="card-body">
                 <div class="container">
+
                       <div class="progress" style="height: 20px;">
-                        <div class="progress-bar bg-danger" role="progressbar" style="width: 25%; background-color:#428bca;" id="progress_bar"aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">Mise à jour des prix</div>
+                        <div class="progress-bar bg-danger" role="progressbar" style="width: 0%; background-color:#428bca;" id="progress_bar"aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">Mise à jour des prix</div>
                         <span id="progress_tip" data-toggle="tooltip" data-placement="top"></span>
                         <!-- TODO: $('#element').tooltip('update'), for update position of tooltip-->
                       </div>
                     {% include 'prix_treso.html' with beers=beers %}
+                    <div class="row justify-content-center">
+                    <div class="btn btn-primary" onclick="set_price()">Force update</div>
+                    </div>
                 </div>
             </div>
             <div class="card-footer text-white bg-dark">
