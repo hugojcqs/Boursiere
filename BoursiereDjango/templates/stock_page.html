@@ -50,7 +50,9 @@
 
                 <th class="text-center align-middle" id="beer_name_{{ beer.id }}" scope="row"> {{beer.beer_name}} </th>
 
-          <td class="text-center align-middle" id="beer_stock_{{ beer.id }}">{{beer.stock}}</td>
+
+          <!-- <td class="text-center align-middle" id="beer_stock_{{ beer.id }}">{{beer.stock}}</td> -->
+          <td class="text-center align-middle" id="beer_stock_{{ beer.id }}">{{beer.get_stock_left}}</td>
           <td class="text-center align-middle" id="beer_price_{{ beer.id }}"> {{beer.price}} € </td>
           <td class="text-center align-middle" id="beer_trend_image_{{ beer.id }}">
           {% if beer.trend == 'UP' %}

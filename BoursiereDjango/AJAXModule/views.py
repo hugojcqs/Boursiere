@@ -223,6 +223,11 @@ def update_stock(request):
         beers[beer_name]['best_price'] = beer.best_price
         beers[beer_name]['best_value'] = beer.best_value
         beers[beer_name]['stock'] = beer.stock
+
+        #test
+        beers[beer_name]['stock_msg'] = beer.get_stock_left()
+
+        
         beers[beer_name]['trend'] = beer.trend
         beers[beer_name]['out_of_stock'] = beer.out_of_stock
 

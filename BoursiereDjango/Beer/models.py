@@ -121,16 +121,15 @@ class Beer(models.Model):
         else:
             return 'DOWN'
 
-    @staticmethod
-    def get_stock_left(q_stock, static_stock):
+    def get_stock_left(self):
 
-        if q_stock <= 0:
+        if self.stock <= 0:
             return 'plus de stock'
-        elif q_stock <= round(static_stock/8):
+        elif self.stock <= round(self.static_stock/8):
             return 'quantité très faible'
-        elif q_stock <= round(static_stock/4):
+        elif self.stock <= round(self.static_stock/4):
             return 'quantité faible'
-        elif q_stock < round(static_stock/2) and q_stock > round(static_stock/4):
+        elif self.stock < round(self.static_stock/2) and self.stock > round(self.static_stock/4):
             return 'quantité affaiblie'
         else:
             return 'quantité suffisante'
