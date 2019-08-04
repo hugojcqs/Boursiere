@@ -7,6 +7,7 @@ class Beer(models.Model):
     price = models.FloatField(null=False)
     buy_price = models.FloatField(null=False)
     stock = models.IntegerField(null=False)
+    static_stock = models.IntegerField(null=False, default=100)
     coef_up = models.FloatField(null=False)
     coef_down = models.FloatField(null=False)
     coef_max = models.FloatField(null=False)
@@ -119,6 +120,15 @@ class Beer(models.Model):
             return 'EQUAL'
         else:
             return 'DOWN'
+
+    @staticmethod
+    def get_stock_left(q_stock, static_stock):
+        if q_stock > round(static_stock/2):
+            return 'quantité suffisante'
+        elif q_stock < round(static_stock/2) and q_stock > round(static_stock/4):
+            return 'quantité affaiblie'
+        else:
+            return 'quantité faible'
 
     @staticmethod
     def reset_beers():
