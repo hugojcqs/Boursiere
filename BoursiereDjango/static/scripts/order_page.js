@@ -91,7 +91,7 @@ function set_clickable_order_button() {
 
 
 function plus(i, beer_name) {
-    let input = $("#input" + i.toString());
+    let input = $("#input" + beer_name);
     let new_v_input = Number(input.val()) + 1;
     input.val(new_v_input);
     db[beer_name] = new_v_input;
@@ -100,7 +100,7 @@ function plus(i, beer_name) {
 }
 
 function minus(i, beer_name) {
-    let input = $("#input" + i.toString());
+    let input = $("#input" + beer_name);
     let new_v_input = Number(input.val()) - 1;
 
     if (new_v_input >= 0) {
@@ -123,12 +123,33 @@ function calculate_price() {
         success: function(data) {
             let elem = $("#total_price");
             elem.text('Prix : ' + String(data['price']) + " €");
+            console.log(data['now_stock']);
+            check_order_stock(data['now_stock']);
+
         },
         error: function(xhr, status, error) {
             //TODO : handle error in ajax request
             console.log('Cannot update the stock page', status, error);
         }
     });
+}
+
+function check_order_stock(data){
+  // get all conserned beer
+  data = JSON.parse(data)
+  for(var beer_name in data){
+
+    let input = $("#input" + beer_name);   //get input of beer card
+    console.log(beer_name +' '+ String(data[String(beer_name)]) + 'input: '+String(input.val()));
+    if(input.val() >= data[beer_name]){   //if input upper or equal than beer stock block plus button
+      $('#plus'+beer_name).css("pointer-events", "none"); // disable + button
+    } else {
+        $('#plus'+beer_name).css("pointer-events", "auto"); // enable + button
+    }
+
+
+  }
+
 }
 
 function make_order() {

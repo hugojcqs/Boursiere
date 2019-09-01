@@ -105,7 +105,7 @@ function _update_stock(data) {
         if (data.data.hasOwnProperty(beer)) {
             $('#beer_price_' + beer).text(data.data[beer]['price'] + ' €');
             //$('#beer_stock_' + beer).text(data.data[beer]['stock']);
-            $('#beer_stock_' + beer).text(data.data[beer]['stock_msg']);
+            $('#beer_stock_' + beer).text(data.data[beer]['stock']);
             trend_elem = $('#beer_trend_image_' + beer);
             trend_elem.empty();
 
