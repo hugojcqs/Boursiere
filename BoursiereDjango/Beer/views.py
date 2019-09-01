@@ -51,6 +51,7 @@ def add_beer(request):
                                      stock=beer_form.cleaned_data['stock'],
                                      static_stock=beer_form.cleaned_data['stock'],
                                      coef_max=beer_form.cleaned_data['coef_max'],
+                                     coef_min=beer_form.cleaned_data['coef_min'],
                                      alcohol_percentage=beer_form.cleaned_data['alcohol_percentage'],
                                      bar=beer_form.cleaned_data['bar']
                                      )

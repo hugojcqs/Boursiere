@@ -8,6 +8,7 @@ class BeerForm(forms.Form):
     coef_up = forms.FloatField(required=True)
     coef_down = forms.FloatField(required=True)
     coef_max = forms.FloatField(required=True)
+    coef_min = forms.FloatField(required=True)
     alcohol_percentage = forms.FloatField(label='% d\'alccol', required=True)
     bar = forms.IntegerField(label='Bar (1 ou 2)', required=True)
 
@@ -18,6 +19,7 @@ class BeerForm(forms.Form):
         self.fields['coef_up'].widget.attrs['min'] = 0
         self.fields['coef_down'].widget.attrs['min'] = 0
         self.fields['coef_max'].widget.attrs['min'] = 0
+        self.fields['coef_min'].widget.attrs['min'] = 0
         self.fields['bar'].widget.attrs['min'] = 1
         self.fields['alcohol_percentage'].widget.attrs['min'] = 0
         self.fields['bar'].widget.attrs['max'] = 2

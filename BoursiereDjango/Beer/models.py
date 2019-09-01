@@ -11,6 +11,7 @@ class Beer(models.Model):
     coef_up = models.FloatField(null=False)
     coef_down = models.FloatField(null=False)
     coef_max = models.FloatField(null=False)
+    coef_min = models.FloatField(null=False)
     q_qarder = models.IntegerField(null=False, default=0)
     q_current_qarder = models.IntegerField(null=False, default=0)
     alcohol_percentage = models.FloatField(null=False, default=0)
@@ -93,6 +94,9 @@ class Beer(models.Model):
 
             if new_price > (beer.coef_max * beer.buy_price):  # if new_price is too high , change it
                 new_price = beer.coef_max * beer.buy_price
+
+            if new_price < (beer.coef_min * beer.buy_price): # if new_price is too lower, fix it.
+                new_price = beer.coef_min * beer.buy_price
 
             # ROUND CHECK
 
