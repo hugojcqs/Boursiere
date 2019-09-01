@@ -148,6 +148,9 @@ def delete_histo(request):
             if beer_db is None:
                 return JsonResponse(status=520, data={'status': False, 'reason': 'The beer %s does not exist!' % beer})
             beer_db.stock += json_[beer]
+            if beer_db.stock > 0:
+                beer_db.out_of_stock = False
+
 
             # SECURITY TO AVOID MISS IN PRICE COMPUTING
             # TODO: check if the id of qarder are the same...

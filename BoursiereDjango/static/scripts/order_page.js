@@ -123,7 +123,6 @@ function calculate_price() {
         success: function(data) {
             let elem = $("#total_price");
             elem.text('Prix : ' + String(data['price']) + " €");
-            console.log(data['now_stock']);
             check_order_stock(data['now_stock']);
 
         },
@@ -140,11 +139,12 @@ function check_order_stock(data){
   for(var beer_name in data){
 
     let input = $("#input" + beer_name);   //get input of beer card
-    console.log(beer_name +' '+ String(data[String(beer_name)]) + 'input: '+String(input.val()));
     if(input.val() >= data[beer_name]){   //if input upper or equal than beer stock block plus button
       $('#plus'+beer_name).css("pointer-events", "none"); // disable + button
+      $('#card_title_'+beer_name).css("text-decoration", "line-through");
     } else {
         $('#plus'+beer_name).css("pointer-events", "auto"); // enable + button
+        $('#card_title_'+beer_name).css("text-decoration", "none");
     }
 
 

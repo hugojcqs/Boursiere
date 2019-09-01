@@ -3,8 +3,12 @@
 <div class="row col-sm">
 {% for beer in beers %}
     <div class="card ml-3 mt-3 bar{{beer.bar}}" style="width: 13rem;">
-      <div class="card-body" style='background-color: {{beer.beer_name|rcolors}};'>
-           <h5 class="card-title text-center">{{ beer.beer_name }}</h5>
+      <div id="card{{beer.beer_name}}" class="card-body" style='background-color: {{beer.beer_name|rcolors}};'>
+          {% if beer.out_of_stock == False %}
+           <h5 id="card_title_{{beer.beer_name}}" class="card-title text-center">{{ beer.beer_name }}</h5>
+          {% else %}
+           <h5 id="card_title_{{beer.beer_name}}" class="card-title text-center" style="text-decoration: line-through">{{ beer.beer_name }}</h5>
+          {% endif %}
         <div class="input-group col-sm-12">
           <span class="input-group-btn">
               <div class="btn btn-danger" onclick="minus({{ forloop.counter }}, '{{ beer.beer_name }}')">
