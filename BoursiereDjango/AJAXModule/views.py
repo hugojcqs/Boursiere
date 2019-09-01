@@ -93,6 +93,7 @@ def make_order(request):
             if beer_db is not None:
                 beer_db.q_current_qarder += nb_beer
                 beer_db.stock -= nb_beer
+                beer_db.out_of_stock = beer_db.stock <= 0         # set out_of_stock  beer when stock less than 0
                 total += beer_db.price * nb_beer
                 total_buy_price += beer_db.buy_price * nb_beer
                 item_str += '%d %s - ' % (nb_beer, beer)
@@ -227,7 +228,7 @@ def update_stock(request):
         #test
         beers[beer_name]['stock_msg'] = beer.get_stock_left()
 
-        
+
         beers[beer_name]['trend'] = beer.trend
         beers[beer_name]['out_of_stock'] = beer.out_of_stock
 

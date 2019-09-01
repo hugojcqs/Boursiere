@@ -89,6 +89,7 @@ function set_clickable_order_button() {
     }
 }
 
+
 function plus(i, beer_name) {
     let input = $("#input" + i.toString());
     let new_v_input = Number(input.val()) + 1;
