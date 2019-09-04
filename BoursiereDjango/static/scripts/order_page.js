@@ -186,6 +186,7 @@ function _add_history(json_) {
 }
 
 function delete_histo(token) {
+
     $.post({
         url: '/delete_histo/',
         data: {
@@ -199,7 +200,7 @@ function delete_histo(token) {
         },
         error: function(xhr, status, error) {
             //TODO : handle error in ajax request
-            console.log('Cannot update the stock page', status, error);
+            console.log('Cannot update the history page', status, JSON.parse(xhr.responseText)['reason']);
         }
     });
 }

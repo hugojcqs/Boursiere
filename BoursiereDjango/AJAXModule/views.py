@@ -138,8 +138,10 @@ def delete_histo(request):
     """
     if request.method == 'POST':
         token = request.POST.get('data')
-        hist = History.objects.get(id_str=token)
-        if hist is None:
+
+        try:
+            hist = History.objects.get(id_str=token)
+        except:
             return JsonResponse(status=520, data={'status': False, 'reason': 'History object not found!'})
 
         json_ = json.loads(hist.history_json)
