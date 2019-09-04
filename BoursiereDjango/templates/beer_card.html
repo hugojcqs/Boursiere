@@ -15,7 +15,7 @@
                   <i class="fas fa-minus"></i>
               </div>
           </span>
-          <input type="text" id="input{{ beer.beer_name}}" class="form-control input-number" value="0" min="0">
+          <input type="text" id="input{{ beer.beer_name}}" class="form-control input-number text-center" value="0" min="0" disabled>
           <span class="input-group-btn max-btn" id="plus{{ beer.beer_name }}" onclick="plus({{ forloop.counter }}, '{{ beer.beer_name }}')">
               <button type="button"  class="btn btn-success">
                   <i class="fas fa-plus"></i>

@@ -118,8 +118,10 @@ function _update_stock(data) {
             }
         }
 
+        console.log(beer + ' ' + String(data.data[beer]['out_of_stock']))
         if (data.data[beer]['out_of_stock'] === true) {
-            $('#beer_name_' + beer).hide();
+            console.log('hide '+ beer)
+            $('#beer_tr_' + beer).hide();
         }
 
         if (data.data[beer]['best_price'] === true) {
