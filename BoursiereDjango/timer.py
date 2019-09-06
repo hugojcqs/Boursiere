@@ -13,12 +13,13 @@ if os.name == 'nt':
 
 def handler(signum, frame):
     os.system('%s ./manage.py stop_timer' % python_os)
+    #os.system('py ./manage.py stop_timer')
     sys.exit(0)
 
 
 def job():
     os.system('%s ./manage.py update_prices' % python_os)
-
+    #os.system('py ./manage.py update_prices')
 
 signal.signal(signal.SIGINT, handler)
 schedule.every(15).minutes.do(job)

@@ -30,9 +30,6 @@ $(document).ready(function() {
         }
     });
     update_stock_ajax();
-    $('#progress_tip').popover({
-        animation: true
-    });
 });
 
 
@@ -89,12 +86,13 @@ function _update_stock(data) {
     let val = pourcent;
     let rounded = Math.round(val);
     let progress_tip = $('#progress_tip');
+    let progress_title = $('#title_progress_bar');
+    let progress_msg = $('#title_progress_bar_dynamic');
+    let test = $('#utest');
+
+
     progress_tip.tooltip('update');
-    if (rounded < 97 && rounded > 8) {
-        progress_tip.text(rounded + " %");
-    } else {
-        progress_tip.text("");
-    }
+    progress_msg.text(" "+rounded + "%");
 
     progess.attr("aria-valuenow", val)
         .css("width", val + "%")
@@ -120,7 +118,6 @@ function _update_stock(data) {
 
         console.log(beer + ' ' + String(data.data[beer]['out_of_stock']))
         if (data.data[beer]['out_of_stock'] === true) {
-            console.log('hide '+ beer)
             $('#beer_tr_' + beer).hide();
         }
 
