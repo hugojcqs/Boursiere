@@ -38,6 +38,7 @@
         <th class="text-center" scope="col">Stock</th>
         <th class="text-center" scope="col">Prix €</th>
         <th class="text-center" scope="col">Tendance <i class="fas fa-sort"></i></th>
+        <th class="text-center" scope="col">Tags <i class="fas fa-tags"></i></th>
       </tr>
     </thead>
 
@@ -65,6 +66,7 @@
           <i class="fas fa-caret-down fa-2x" style="color: green;"></i>
           {% endif %}
           </td>
+          <td class="text-center align-middle" id="beer_tags_{{ beer.id }}"></td>
         </tr>
       {% endfor %}
 
@@ -78,12 +80,6 @@
     <li class="page-item"><a class="page-link" onclick="show_bar(2);hide_bar(1)">Bar 2</a></li>
   </ul>
 </nav>
-
-<script>
-  $(function(){
-    $('#progress_tip').tooltip('show');
-  });
-</script>
 
 
  <footer id="page-footer" class="page-footer fixed-bottom">
