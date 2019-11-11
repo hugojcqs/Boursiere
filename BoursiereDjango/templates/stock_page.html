@@ -59,11 +59,11 @@
           <td class="text-center align-middle" id="beer_price_{{ beer.id }}"> {{beer.price}} € </td>
           <td class="text-center align-middle" id="beer_trend_image_{{ beer.id }}">
           {% if beer.trend == 'UP' %}
-          <i class="fas fa-long-arrow-alt-up fa-2x" style="color: red;"></i>
+          <i class="fas fa-caret-up fa-2x" style="color: red;"></i>
           {% elif beer.trend == 'EQUAL' %}
-          <i class="fas fa-long-arrow-alt-right fa-2x" style="color: orange;"></i>
+          <i class="fas fa-caret-right fa-2x" style="color: orange;"></i>
           {% else %}
-          <i class="fas fa-long-arrow-alt-down fa-2x" style="color: green;"></i>
+          <i class="fas fa-caret-down fa-2x" style="color: green;"></i>
           {% endif %}
           </td>
           <td class="text-center align-middle" id="beer_tags_{{ beer.id }}"></td>
@@ -86,9 +86,9 @@
     <div class="card text-center">
         <div class="card-header text-center" style="font-weight: bold;">Help <i class="fas fa-key"></i></div>
           <ul class="list-inline">
-            <li class="list-inline-item"><i class="fas fa-long-arrow-alt-up fa-2x" style="color: red; margin-right: 5px;"></i>- Les prix ont augmentés</li>
-            <li class="list-inline-item"><i class="fas fa-long-arrow-alt-right fa-2x" style="color: orange; margin-right: 15px;"></i>- Les prix n'ont pas bouger</li>
-            <li class="list-inline-item"><i class="fas fa-long-arrow-alt-down fa-2x" style="color: green; margin-right: 5px;"></i>- Les prix ont diminués</li>
+            <li class="list-inline-item"><i class="fas fa-caret-up fa-2x" style="color: red; margin-right: 5px;"></i>- Les prix ont augmentés</li>
+            <li class="list-inline-item"><i class="fas fa-caret-right fa-2x" style="color: orange; margin-right: 15px;"></i>- Les prix n'ont pas bouger</li>
+            <li class="list-inline-item"><i class="fas fa-caret-down fa-2x" style="color: green; margin-right: 5px;"></i>- Les prix ont diminués</li>
             <li class="list-inline-item" style="font-size:10px;"><a class="" style="text-decoration:none;color: #292654;" href="https://www.facebook.com/cercleinfo/">Powered by Cercle Info. <i class="fas fa-running"></i></a></li>
           </ul>
 

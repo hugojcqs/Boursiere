@@ -108,11 +108,11 @@ function _update_stock(data) {
             trend_elem.empty();
 
             if (data.data[beer]['trend'] === 'UP') {
-                trend_elem.append(`<i class="-fas fa-long-arrow-alt-up fa-2x" style="color: red;"></i>`);
+                trend_elem.append(`<i class="fas fa-caret-up fa-2x" style="color: red;"></i>`);
             } else if (data.data[beer]['trend'] === 'EQUAL') {
-                trend_elem.append(`<i class="fas fa-long-arrow-alt-right fa-2x" style="color: orange;"></i>`);
+                trend_elem.append(`<i class="fas fa-caret-right fa-2x" style="color: orange;"></i>`);
             } else {
-                trend_elem.append(`<i class="fas fa-long-arrow-alt-down fa-2x" style="color: green;"></i>`);
+                trend_elem.append(`<i class="fas fa-caret-down fa-2x" style="color: green;"></i>`);
             }
         }
 
