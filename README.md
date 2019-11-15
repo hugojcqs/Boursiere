@@ -1,8 +1,6 @@
 # Programme de la boursière :beer:
 
-## Example avec GIF
 
-![](/gif/example.gif)
 
 ## Avant de lancer le serveur
 
@@ -88,28 +86,3 @@ Dans le cas ou l'algo n'est pas optimal, il est possible d'override celui-ci afi
 |  `/stock_page/`   | Page des stock affiché par les projecteurs (informe de l'état du marché) |
 |   `/dashboard/`   | Page tréso pour la gestion des prix (cas de soucis avec l'algo + informations sur les bénefs et consommation) |
 |  `/delete_beer/`  | Supprimer des bières de la base de données                   |
-
-## Screen de l'interface :
-
-### Stock page
-
-![](/images/stock_page.png)
-
-La button du dessus ne seront pas visible sur les projecteurs.
-
-### New beer
-
-![](/images/new_beer.png)
-
-### Suppression de bières
-
-![](/images/delete_beer.png)
-
-### Dashboard trésorier
-
-![](/images/dashboard.png)
-
-### Ordering page pour la commande de bières
-
-![](/images/ordering.png)
-
