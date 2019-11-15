@@ -1,4 +1,5 @@
 from django.contrib.auth.decorators import login_required
+from django.views.decorators.csrf import csrf_exempt
 from django.http import JsonResponse
 from Beer.models import Beer, History, Timer, TresoFailsafe
 import json
@@ -25,6 +26,7 @@ def _calculate_price(json_):
             return -1
         total += beer_db.price * json_[beer]
     return round(total, 1)
+
 
 def _get_current_stock(json_):
     """
@@ -213,6 +215,7 @@ def update_price_failsafe(request):
     return JsonResponse({'status': True})
 
 
+@csrf_exempt
 def timer_to_next_up(request):
     """
     AJAX responsible for giving the time to next update, the percent of progression to the next
