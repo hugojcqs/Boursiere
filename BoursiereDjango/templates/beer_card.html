@@ -16,7 +16,7 @@
               </div>
           </span>
           <input type="text" id="input{{ beer.beer_name}}" class="form-control input-number text-center" value="0" min="0" disabled>
-          <span class="input-group-btn max-btn" id="plus{{ beer.beer_name }}" onclick="plus({{ forloop.counter }}, '{{ beer.beer_name }}')">
+          <span class="input-group-btn max-btn {% if beer.out_of_stock == True %} disabled {%  endif %}" id="plus{{ beer.beer_name }}" {% if beer.out_of_stock == False %} onclick="plus({{ forloop.counter }}, '{{ beer.beer_name }}')"  {%  endif %}>
               <button type="button"  class="btn btn-success">
                   <i class="fas fa-plus"></i>
               </button>
