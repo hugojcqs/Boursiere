@@ -181,22 +181,25 @@ function _add_history(json_) {
     token = json_['token'];
     text = json_['text'];
     total_price = json_['total_price'];
-    raw_html = `<a class="list-group-item list-group-item-action flex-column align-items-start text-white " style="background-color:#8b9dc3;" id="${token}"><div class="d-flex w-100 justify-content-between"><h5 class="mb-1">Commande n°${token}</h5><small>${time}</small><div class="btn btn-sm btn-danger history_btn" data-id="${current_quarter}" onclick="delete_histo(${token})">Supprimer</div></div><p class="mb-1">${text}</p><small>Prix total : ${total_price} €</small></a>`;
+    raw_html = `<a class="list-group-item list-group-item-action flex-column align-items-start text-white " style="background-color:#8b9dc3;" id="${token}"><div class="d-flex w-100 justify-content-between"><h5 class="mb-1">Commande n°${token}</h5><small>${time}</small><div class="btn btn-sm btn-danger history_btn" data-id="${current_quarter}" onclick="delete_histo(${token}, ${current_quarter})">Supprimer</div></div><p class="mb-1">${text}</p><small>Prix total : ${total_price} €</small></a>`;
     $('#histo').prepend(raw_html)
 }
 
-function delete_histo(token) {
+function delete_histo(token, quarter) {
 
     $.post({
         url: '/delete_histo/',
         data: {
             'data': String(token),
+            'quarter':quarter,
         },
         async: true,
         dataType: 'json',
         success: function(data) {
             let elem = $('#' + String(token));
             elem.remove();
+            //calculate_price();
+            window.location.reload(true)
         },
         error: function(xhr, status, error) {
             //TODO : handle error in ajax request

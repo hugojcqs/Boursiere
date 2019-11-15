@@ -140,6 +140,7 @@ def delete_histo(request):
     """
     if request.method == 'POST':
         token = request.POST.get('data')
+        quarter = request.POST.get('quarter')
 
         try:
             hist = History.objects.get(id_str=token)
@@ -158,6 +159,10 @@ def delete_histo(request):
 
             # SECURITY TO AVOID MISS IN PRICE COMPUTING
             # TODO: check if the id of qarder are the same...
+            timer = Timer.objects.get(id=1)
+            if quarter == timer.current_quarter:
+                beer_db = Beer.objects.get(beer_name=beer)
+                beer_db.q_current_qarder += json_[beer]
 
             if (beer_db.q_qarder - json_[beer]) > 0:
                 beer_db.q_qarder -= json_[beer]  # can be replace by beer_db.add_conso(-json_[beer]) (à tester)
