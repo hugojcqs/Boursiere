@@ -22,7 +22,7 @@ def job():
     #os.system('py ./manage.py update_prices')
 
 signal.signal(signal.SIGINT, handler)
-schedule.every(1).minutes.do(job)
+schedule.every(15).minutes.do(job)
 
 job()
 print('Timer has been started!')
