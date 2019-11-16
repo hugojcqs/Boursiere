@@ -13,8 +13,10 @@
       {% include 'beer_card.html' with beers=beers%}
       <div class="mt-3 ml-3" style="max-width: 13rem;">
         <ul class="pagination justify-content-center">
-            <li class="page-item"><a class="page-link" onclick="show_bar(1);hide_bar(2);">Bar 1</a></li>
-            <li class="page-item"><a class="page-link" onclick="show_bar(2);hide_bar(1)">Bar 2</a></li>
+          <li class="page-item"><a class="page-link" onclick="show_bar(1);hide_bar(2);hide_bar(3);">Bar 1</a></li>
+          <li class="page-item"><a class="page-link" onclick="show_bar(2);hide_bar(1);hide_bar(3);">Bar 2</a></li>
+          <li class="page-item"><a class="page-link" onclick="show_bar(3);hide_bar(1);hide_bar(2);">Bar 3</a></li>
+          <li class="page-item"><a class="page-link" onclick="show_bar(1);show_bar(2);show_bar(3);">All</a></li>    
         </ul>
       </div>
       <div class="card text-white mt-3 ml-3" style="max-width: 13rem;">
