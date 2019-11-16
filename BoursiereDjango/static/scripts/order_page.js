@@ -156,6 +156,8 @@ function make_order() {
     if (!_can_order())
         return;
 
+    get_next_update_and_disable_past_history();
+
     $.post({
         url: '/make_order/',
         data: {
