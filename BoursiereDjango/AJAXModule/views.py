@@ -5,6 +5,7 @@ from Beer.models import Beer, History, Timer, TresoFailsafe
 import json
 from datetime import datetime
 import random
+import pprint
 
 """
 ###########################################
@@ -21,9 +22,11 @@ def _calculate_price(json_):
     """
     total = 0
     for beer in json_:
-        beer_db = Beer.objects.get(beer_name=beer)
+        beer_db = Beer.objects.get(id=beer)
         if beer_db is None:
             return -1
+        pprint.pprint(json_)
+        print("DEBUUUGGG", json_[beer])
         total += beer_db.price * json_[beer]
     return round(total, 1)
 
@@ -37,7 +40,7 @@ def _get_current_stock(json_):
 
     dic=  {}
     for beer in json_:
-        beer_db = Beer.objects.get(beer_name=beer)
+        beer_db = Beer.objects.get(id=beer)
         dic[beer] = beer_db.stock
     return json.dumps(dic)
 
@@ -104,7 +107,7 @@ def make_order(request):
 
         for beer in json_:
             nb_beer = json_[beer]
-            beer_db = Beer.objects.get(beer_name=beer)
+            beer_db = Beer.objects.get(id=beer)
             if beer_db is not None:
                 beer_db.q_current_qarder += nb_beer
                 beer_db.stock -= nb_beer
@@ -149,7 +152,7 @@ def delete_histo(request):
 
         json_ = json.loads(hist.history_json)
         for beer in json_:
-            beer_db = Beer.objects.get(beer_name=beer)
+            beer_db = Beer.objects.get(id=beer)
             if beer_db is None:
                 return JsonResponse(status=520, data={'status': False, 'reason': 'The beer %s does not exist!' % beer})
             beer_db.stock += json_[beer]
@@ -161,7 +164,7 @@ def delete_histo(request):
             # TODO: check if the id of qarder are the same...
             timer = Timer.objects.get(id=1)
             if quarter == timer.current_quarter:
-                beer_db = Beer.objects.get(beer_name=beer)
+                beer_db = Beer.objects.get(id=beer)
                 beer_db.q_current_qarder += json_[beer]
 
             if (beer_db.q_qarder - json_[beer]) > 0:
@@ -182,14 +185,13 @@ def activate_failsafe(request):
     # TODO: check permission du user..
     # if request.method == 'POST':
 
-    if request.user.groups.filter(name='admin').exists():
-
-        if request.user.check_password(request.POST.get('data')):
-            t = TresoFailsafe.objects.get(id=1)
-            t.is_activated = True
-            t.save()
-            return JsonResponse({'status': True})
-    return JsonResponse(status=404, data={'status': False, 'reason': 'Not yet defined'})
+    if request.user.check_password(request.POST.get('data')):
+        t = TresoFailsafe.objects.get(id=1)
+        t.is_activated = True
+        t.save()
+        print("GOOD PASSWORD")
+        return JsonResponse({'status': True})
+    return JsonResponse(status=401, data={'status': False, 'reason': 'Not yet defined'})
 
 
 def update_price_failsafe(request):
@@ -198,6 +200,10 @@ def update_price_failsafe(request):
     :param request: request from the client.
     :return: JsonResponse
     """
+    if not TresoFailsafe.objects.get(id=1).is_activated:
+        print("Not activated")
+        return JsonResponse({'status': False})
+
     if request.method == 'POST':
         timer = Timer.objects.get(id=1)
         timer.timer_is_started = True
@@ -205,7 +211,7 @@ def update_price_failsafe(request):
         timer.save()
         tab = json.loads(request.POST.get('new_prices'))
         for id_, price in tab:
-            beer = Beer.objects.get(beer_name=id_)
+            beer = Beer.objects.get(id=id_)
             beer.trend = Beer.get_trend(q_qarder=beer.q_qarder, q_current_qarder=beer.q_current_qarder)
 
             beer.q_qarder = beer.q_current_qarder  # q_current_qarder beer become last quarder consomaition

@@ -23,9 +23,12 @@ $(document).ready(function() {
     });
 
     if ($('#statut').text() === 'True') {
+        console.log("The failsafe is activated!");
         var timeout = setInterval(function() {
+            console.log("Interval set!");
             update_page_ajax()
-        }, 3000);
+        }, 2000)
+
     }
 
     $('#error_msg').hide();
@@ -43,8 +46,14 @@ function activate_fail_safe() {
         async: true,
         dataType: 'json',
         success: function(data) {
-            console.log(data.statut);
-            $('#statut').text('True');
+            if(data.status)
+            {
+                $('#statut').text('True');
+                console.log("The failsafe has been activated!");
+                var timeout = setInterval(function() {
+                update_page_ajax();
+                }, 2000);
+            }
 
         },
         error: function(xhr, status, error) {
@@ -52,15 +61,6 @@ function activate_fail_safe() {
             console.log('Cannot update the stock page', status, error);
         }
     });
-
-    if ($('#statut').text() === 'True') {
-        var timeout = setInterval(function() {
-            update_page_ajax()
-        }, 500);
-    } else {
-        $('#error_msg').show();
-        $('#activate_fail_safeModal').modal('toggle');
-    }
 }
 
 function _build_db() {

@@ -11,7 +11,7 @@
         {% for beer in beers %}
           <tr class="">
             <th class="text-center align-middle" scope="row" style="width: 50%"> {{beer.beer_name}} </th>
-            <td class="text-center align-middle price" id="{{ beer.beer_name }}" contenteditable="true" style="width: 50%"> {{beer.price}}</td>
+            <td class="text-center align-middle price" id="{{ beer.id }}" contenteditable="true" style="width: 50%"> {{beer.price}}</td>
           </tr>
         {% endfor %}
       </tbody>

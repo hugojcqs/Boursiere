@@ -95,6 +95,7 @@ function plus(i, beer_name) {
     let new_v_input = Number(input.val()) + 1;
     input.val(new_v_input);
     db[beer_name] = new_v_input;
+    console.log(JSON.stringify(db));
     set_clickable_order_button();
     calculate_price();
 }
@@ -106,6 +107,7 @@ function minus(i, beer_name) {
     if (new_v_input >= 0) {
         input.val(new_v_input);
         db[beer_name] = new_v_input;
+        console.log(JSON.stringify(db));
         set_clickable_order_button();
         calculate_price();
     }
