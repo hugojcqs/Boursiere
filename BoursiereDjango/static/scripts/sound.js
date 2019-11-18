@@ -53,10 +53,12 @@ function get_next_update_and_play() {
             console.log('Cannot update the stock page', status, error);
         }
     });
+
 }
 
 async function play_sound() {
     let audio = new Audio(document.location.origin + '/static/sounds/sound.mp3');
     audio.play();
     await sleep(10000);
+    get_next_update_and_play();
 }

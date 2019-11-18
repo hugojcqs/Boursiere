@@ -221,6 +221,8 @@ def update_price_failsafe(request):
                 beer.out_of_stock = True
 
             beer.price = price
+
+
             beer.save()
 
     return JsonResponse({'status': True})
@@ -253,8 +255,6 @@ def update_stock(request):
         beer_name = beer.id
         beers[beer_name] = {}
         beers[beer_name]['price'] = beer.price
-        beers[beer_name]['best_price'] = beer.best_price
-        beers[beer_name]['best_value'] = beer.best_value
         beers[beer_name]['stock'] = beer.stock
 
         #test
@@ -263,5 +263,9 @@ def update_stock(request):
 
         beers[beer_name]['trend'] = beer.trend
         beers[beer_name]['out_of_stock'] = beer.out_of_stock
+        beers[beer_name]['best_price'] = beer.best_price
+        beers[beer_name]['best_value'] = beer.best_value
+
+        #print(beers[beer_name]['best_price'], beers[beer_name]['best_value'])
 
     return JsonResponse({'status': True, 'data': beers})

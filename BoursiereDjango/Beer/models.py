@@ -61,8 +61,6 @@ class Beer(models.Model):
     def _update_prices(do_round=True):
 
         Beer.reset_beers()
-        Beer.set_best_value_beer()
-        Beer.set_best_price()
 
         # Moved timer modification to the
         timer = Timer.objects.get(id=1)
@@ -108,6 +106,8 @@ class Beer(models.Model):
             # SAVING EACH BEER OBJECT
 
             beer.save()
+            Beer.set_best_value_beer()
+            Beer.set_best_price()
 
         # SET BEER TO OUT OF STOCK
 
@@ -148,7 +148,7 @@ class Beer(models.Model):
     @staticmethod
     def set_best_price():
         beers_min = Beer.objects.filter(price=Beer.objects.all().aggregate(Min('price'))['price__min'])
-
+        print("Bière la moins chère : ", beers_min)
         for beer in beers_min:
             beer.best_price = True
             beer.save()
@@ -161,15 +161,16 @@ class Beer(models.Model):
         best_index = 1
         beer_index_list = []
         for beer in Beer.objects.all():
-            index = (beer.price + beer.alcohol_percentage) / (max_price + max_alcohol)
+            index = beer.price / beer.alcohol_percentage
             if index <= best_index:
                 best_index = index
                 beer_index_list.append((index, beer))
             beer.save()
 
-        beer = max(beer_index_list, key=lambda t: t[0])[1]
+        beer = min(beer_index_list, key=lambda t: t[0])[1]
         beer.best_value = True
         beer.save()
+
 
     def __str__(self):
         return self.beer_name
