@@ -1,59 +1,37 @@
 $(document).ready(function() {
-    console.log("integer picker ready!");
+        var wsStart = 'ws://localhost:8000/display';
+    socket = new WebSocket(wsStart);
+
+    socket.onmessage = function (e) {
+        data = JSON.parse(e['data']);
+            console.log(data);
+        if(data['action'] === 'update_qtt')
+        {
+            console.log(data);
+        }
+        else if(data['action'] === 'update_price')
+        {
+            console.log(data);
+        }
+        else if(data['action'] === 'play_sound')
+        {
+            console.log(data);
+        }
+    };
+
+    socket.onopen = function (e) {
+        console.log("open", e)
+    };
+
+    socket.onerror = function (e) {
+        console.log("error", e)
+    };
+
+    socket.onclose = function (e) {
+        console.log("close", e)
+    };
 });
 
-var db = {};
-
-/////TODO : Verify the way that the page is updated is good enough
-///// Solution bourrin
-$(document).ready(function() {
-    $.ajaxSetup({
-        beforeSend: function(xhr, settings) {
-            function getCookie(name) {
-                var cookieValue = null;
-                if (document.cookie && document.cookie != '') {
-                    var cookies = document.cookie.split(';');
-                    for (var i = 0; i < cookies.length; i++) {
-                        var cookie = jQuery.trim(cookies[i]);
-                        // Does this cookie string begin with the name we want?
-                        if (cookie.substring(0, name.length + 1) == (name + '=')) {
-                            cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-                            break;
-                        }
-                    }
-                }
-                return cookieValue;
-            }
-            if (!(/^http:.*/.test(settings.url) || /^https:.*/.test(settings.url))) {
-                xhr.setRequestHeader("X-CSRFToken", getCookie('csrftoken'));
-            }
-        }
-    });
-    update_stock_ajax();
-});
-
-
-var timeout = setInterval(function() {
-    update_stock_ajax()
-}, 2000);
-
-function update_stock_ajax() {
-    $.post({
-        url: '/update_stock/',
-        data: {
-            'data': 'empty_request',
-        },
-        async: true,
-        dataType: 'json',
-        success: function(data) {
-            _update_stock(data);
-        },
-        error: function(xhr, status, error) {
-            //TODO : handle error in ajax request
-            console.log('Cannot update the stock page', status, error);
-        }
-    });
-}
 
 function hide_bar(bar) {
     $(".bar" + bar.toString()).hide();
@@ -63,7 +41,17 @@ function show_bar(bar) {
     $(".bar" + bar.toString()).show();
 }
 
+function update_price()
+{
 
+}
+
+function update_qtt()
+{
+
+}
+
+/*
 function sound(src) {
     this.sound = document.createElement("audio");
     this.sound.src = src;
@@ -78,6 +66,8 @@ function sound(src) {
         this.sound.pause();
     };
 }
+*
+
 
 
 function _update_stock(data) {
@@ -130,3 +120,4 @@ function _update_stock(data) {
 
     }
 }
+*/

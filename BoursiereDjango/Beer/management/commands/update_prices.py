@@ -8,7 +8,11 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         if not TresoFailsafe.objects.get(id=1).is_activated:
             Command._update_timer()
+
             Beer._update_prices()
+
+            # TODO : send beers to the client using web socket.
+
             print(datetime.datetime.now(), emoji.emojize('The prices has been updated :heavy_check_mark:'))
         else:
             print(emoji.emojize('Cannot compute new price, system has been overrided manually :x:'))

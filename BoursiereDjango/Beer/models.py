@@ -58,7 +58,7 @@ class Beer(models.Model):
         timer.save()
 
     @staticmethod
-    def _update_prices(do_round=True):
+    def update_prices(do_round=True):
 
         Beer.reset_beers()
 
@@ -106,8 +106,8 @@ class Beer(models.Model):
             # SAVING EACH BEER OBJECT
 
             beer.save()
-            Beer.set_best_value_beer()
-            Beer.set_best_price()
+        Beer.set_best_value_beer()
+        Beer.set_best_price()
 
         # SET BEER TO OUT OF STOCK
 
