@@ -1,6 +1,10 @@
 from django.db import models
 from datetime import datetime
 from django.db.models import Min, Max
+from asgiref.sync import async_to_sync
+from channels.layers import get_channel_layer
+import json
+from .ws_notifier import *
 
 class Beer(models.Model):
     beer_name = models.CharField(max_length=100)
@@ -49,12 +53,17 @@ class Beer(models.Model):
 
     def change_stock(self, number):
         self.stock -= number
+        self.save()
+        WSNotifier.notify_change_in_stock(self.pk, self.stock)
+        # TODO : notify the change of stock using websocket
+
+
 
     @staticmethod
     def _stop_timer():
         timer = Timer.objects.get(id=1)
         timer.timer_is_started = False
-        timer.next_update = (datetime.timestamp(datetime.now()) + 15 * 60 + 3)
+        timer.next_update = (datetime.timestamp(datetime.now()) + Settings.objects.all()[0].quarter_time * 60+1)
         timer.save()
 
     @staticmethod
@@ -66,7 +75,7 @@ class Beer(models.Model):
         timer = Timer.objects.get(id=1)
         timer.timer_is_started = True
         timer.current_quarter += 1
-        timer.next_update = (datetime.timestamp(datetime.now()) + 15*60)
+        timer.next_update = (datetime.timestamp(datetime.now()) + Settings.objects.all()[0].quarter_time*60)
         timer.save()
 
         out_stock = []
@@ -171,7 +180,6 @@ class Beer(models.Model):
         beer.best_value = True
         beer.save()
 
-
     def __str__(self):
         return self.beer_name
 
@@ -199,3 +207,7 @@ class Timer(models.Model):
 
 class TresoFailsafe(models.Model):
     is_activated = models.BooleanField(null=False, default=False)
+
+
+class Settings(models.Model):
+    quarter_time = models.IntegerField(default=15)
