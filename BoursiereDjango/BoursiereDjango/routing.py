@@ -4,7 +4,7 @@ from channels.security.websocket import AllowedHostsOriginValidator, OriginValid
 from django.conf.urls import url
 from Beer.consumers_display import *
 from Beer.consumers_sound import *
-
+from Beer.consumers_time import *
 application = ProtocolTypeRouter({
     # (http->django views is added by default)
     'websocket': AllowedHostsOriginValidator(
@@ -13,6 +13,7 @@ application = ProtocolTypeRouter({
                [
                     url("display", MessageDisplayConsumer),
                     url("sound", MessageSoundConsumer),
+                    url("time", MessageTimeConsumer),
                ]
            )
         )

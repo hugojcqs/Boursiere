@@ -15,16 +15,10 @@ class MessageDisplayConsumer(AsyncConsumer):
             'display',
             self.channel_name
         )
-        print('DISPLAY connected')
-        channel_layer = get_channel_layer()
-        print(channel_layer)
         await self.send({'type': 'websocket.accept'})
 
     async def websocket_send(self, message):
         await self.send(message)
 
     async def websocket_receive(self, event):
-        pass
-
-    async def websocket_disconnect(self, event):
         pass

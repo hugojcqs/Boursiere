@@ -1,20 +1,14 @@
 $(document).ready(function() {
+    play_sound();
     var wsStart = 'ws://localhost:8000/sound';
     socket = new WebSocket(wsStart);
 
     socket.onmessage = function (e) {
+
         data = JSON.parse(e['data']);
-        if(data['action'] === 'update_qtt')
+        if(data['action'] === 'play_sound')
         {
-            console.log(data);
-        }
-        else if(data['action'] === 'update_price')
-        {
-            console.log(data);
-        }
-        else if(data['action'] === 'play_sound')
-        {
-            console.log(data);
+            play_sound();
         }
     };
 

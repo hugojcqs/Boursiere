@@ -1,21 +1,92 @@
+
 $(document).ready(function() {
-        var wsStart = 'ws://localhost:8000/display';
+    time_ws();
+    display_ws();
+});
+
+
+function hide_bar(bar) {
+    $(".bar" + bar.toString()).hide();
+}
+
+function show_bar(bar) {
+    $(".bar" + bar.toString()).show();
+}
+
+function time_ws()
+{
+    var wsStart = 'ws://localhost:8000/time';
     socket = new WebSocket(wsStart);
 
     socket.onmessage = function (e) {
         data = JSON.parse(e['data']);
-            console.log(data);
+
+    };
+
+    socket.onopen = function (e) {
+        console.log("open", e)
+    };
+
+    socket.onerror = function (e) {
+        console.log("error", e)
+    };
+
+    socket.onclose = function (e) {
+        console.log("close", e)
+    };
+}
+
+function display_ws(){
+    var wsStart = 'ws://localhost:8000/display';
+    socket = new WebSocket(wsStart);
+
+    socket.onmessage = function (e) {
+        data = JSON.parse(e['data']);
         if(data['action'] === 'update_qtt')
         {
-            console.log(data);
+            let id = data['id'];
+            let qtt = data['qtt'];
+            $('#beer_stock_' + id).text(qtt);
+            if (qtt <= 0) {
+                $('#beer_tr_' + id).hide();
+            }
         }
         else if(data['action'] === 'update_price')
         {
-            console.log(data);
-        }
-        else if(data['action'] === 'play_sound')
-        {
-            console.log(data);
+            beers = JSON.parse(data['beers']);
+
+            $('.worth').remove();
+
+            for(var i = 0; i < beers.length; i++)
+            {
+                let id = beers[i]['pk'];
+                let price = beers[i]['fields']['price'];
+                let best_value = beers[i]['fields']['best_value'];
+                let best_price = beers[i]['fields']['best_value'];
+                let trend = beers[i]['fields']['trend'];
+
+                $('#beer_price_' + id).text(price + ' €');
+
+                let trend_elem = $('#beer_trend_image_' + id);
+                trend_elem.empty();
+
+                if (trend === 'UP') {
+                    trend_elem.append(`<i class="fas fa-caret-up fa-2x" style="color: red;"></i>`);
+                } else if (trend === 'EQUAL') {
+                    trend_elem.append(`<i class="fas fa-caret-right fa-2x" style="color: orange;"></i>`);
+                } else {
+                    trend_elem.append(`<i class="fas fa-caret-down fa-2x" style="color: green;"></i>`);
+                }
+
+                if (best_price === true) {
+                    $('#beer_tags_' + id).append(`<span class="badge badge-success worth" style="font-size: 16px;">Meilleur prix</span>`)
+                }
+                if (best_value === true) {
+                    $('#beer_tags_' + id).append(`<span class="badge badge-warning worth" style="font-size: 16px;">Meilleur prix / taule</span>`)
+                }
+
+                console.log(id, price, best_price, best_value, trend)
+            }
         }
     };
 
@@ -30,25 +101,6 @@ $(document).ready(function() {
     socket.onclose = function (e) {
         console.log("close", e)
     };
-});
-
-
-function hide_bar(bar) {
-    $(".bar" + bar.toString()).hide();
-}
-
-function show_bar(bar) {
-    $(".bar" + bar.toString()).show();
-}
-
-function update_price()
-{
-
-}
-
-function update_qtt()
-{
-
 }
 
 /*
@@ -107,9 +159,7 @@ function _update_stock(data) {
         }
 
         console.log(beer + ' ' + String(data.data[beer]['out_of_stock']))
-        if (data.data[beer]['out_of_stock'] === true) {
-            $('#beer_tr_' + beer).hide();
-        }
+
 
         if (data.data[beer]['best_price'] === true) {
             $('#beer_tags_' + beer).append(`<span class="badge badge-success worth" style="font-size: 16px;">Meilleur prix</span>`)

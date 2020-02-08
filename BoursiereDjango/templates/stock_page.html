@@ -46,12 +46,13 @@
     <tbody>
       {% for beer in beers %}
 
+        {% if beer.stock <= 0 %}
+        <tr hidden class="bar{{beer.bar}}" id="beer_tr_{{ beer.id }}">
+          {% else %}
+          <tr class="bar{{beer.bar}}" id="beer_tr_{{ beer.id }}">
+        {% endif %}
 
-        <tr class="bar{{beer.bar}}" id="beer_tr_{{ beer.id }}">
-
-
-
-                <th class="text-center align-middle" id="beer_name_{{ beer.id }}" scope="row"> {{beer.beer_name}} </th>
+            <th class="text-center align-middle" id="beer_name_{{ beer.id }}" scope="row"> {{beer.beer_name}} </th>
 
 
           <!-- <td class="text-center align-middle" id="beer_stock_{{ beer.id }}">{{beer.stock}}</td> -->
