@@ -4,6 +4,13 @@ import os
 import time
 import signal
 import sys
+from BoursiereDjango import settings
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "BoursiereDjango.settings")
+from django.core.wsgi import get_wsgi_application
+application = get_wsgi_application()
+from Beer.models import Settings
+
+
 
 python_os = 'python3'
 
@@ -22,7 +29,7 @@ def job():
     #os.system('py ./manage.py update_prices')
 
 signal.signal(signal.SIGINT, handler)
-schedule.every(15).minutes.do(job)
+schedule.every(Settings.objects.all()[0].quarter_time).minutes.do(job)
 
 job()
 print('Timer has been started!')
