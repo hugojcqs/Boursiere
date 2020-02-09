@@ -1,6 +1,41 @@
 var db = {};
 var current_quarter = 0;
+var first_run = true;
+$(document).ready(function() {
+    $.ajaxSetup({
+        beforeSend: function(xhr, settings) {
+            function getCookie(name) {
+                var cookieValue = null;
+                if (document.cookie && document.cookie != '') {
+                    var cookies = document.cookie.split(';');
+                    for (var i = 0; i < cookies.length; i++) {
+                        var cookie = jQuery.trim(cookies[i]);
+                        // Does this cookie string begin with the name we want?
+                        if (cookie.substring(0, name.length + 1) == (name + '=')) {
+                            cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                            break;
+                        }
+                    }
+                }
+                return cookieValue;
+            }
+            if (!(/^http:.*/.test(settings.url) || /^https:.*/.test(settings.url))) {
+                xhr.setRequestHeader("X-CSRFToken", getCookie('csrftoken'));
+            }
+        }
+    });
+    get_next_update_and_disable_past_history();
+});
 
+
+
+function _can_order() {
+    for (let key in db) {
+        if (db.hasOwnProperty(key)) {
+            if (db[key] > 0) return true;
+        }
+    }
+}
 
 
 function _disable_past_history() {
@@ -15,6 +50,36 @@ function _disable_past_history() {
     });
     get_next_update_and_disable_past_history();
 }
+
+
+function get_next_update_and_disable_past_history() {
+    $.post({
+        url: '/timer_to_next_up/',
+        data: {
+            'data': 'none'
+        },
+        async: true,
+        dataType: 'json',
+        success: function(data) {
+            let time_to_update = data.time_remaining;
+            current_quarter = data.quarter;
+            if (first_run) {
+                _disable_past_history();
+                first_run = false;
+            }
+            if (time_to_update > 0) {
+                setTimeout(_disable_past_history, time_to_update * 1000 - 1000);
+            } else {
+                setTimeout(get_next_update_and_disable_past_history, 20 * 1000);
+            }
+        },
+        error: function(xhr, status, error) {
+            //TODO : handle error in ajax request
+            console.log('Cannot update the stock page', status, error);
+        }
+    });
+}
+
 
 function set_clickable_order_button() {
     if (_can_order()) {
@@ -31,6 +96,8 @@ function plus(i, beer_name) {
     input.val(new_v_input);
     db[beer_name] = new_v_input;
     console.log(JSON.stringify(db));
+    set_clickable_order_button();
+    calculate_price();
 }
 
 function minus(i, beer_name) {
@@ -41,19 +108,76 @@ function minus(i, beer_name) {
         input.val(new_v_input);
         db[beer_name] = new_v_input;
         console.log(JSON.stringify(db));
+        set_clickable_order_button();
+        calculate_price();
     }
+
 }
 
 function calculate_price() {
+    $.post({
+        url: '/calculate_price/',
+        data: {
+            'data': JSON.stringify(db)
+        },
+        async: true,
+        dataType: 'json',
+        success: function(data) {
+            let elem = $("#total_price");
+            elem.text('Prix : ' + String(data['price']) + " €");
+            check_order_stock(data['now_stock']);
 
+        },
+        error: function(xhr, status, error) {
+            //TODO : handle error in ajax request
+            console.log('Cannot update the stock page', status, error);
+        }
+    });
 }
 
-function check_order_stock(data) {
+function check_order_stock(data){
+  // get all conserned beer
+  data = JSON.parse(data)
+  for(var beer_name in data){
+
+    let input = $("#input" + beer_name);   //get input of beer card
+    if(input.val() >= data[beer_name]){   //if input upper or equal than beer stock block plus button
+      $('#plus'+beer_name).css("pointer-events", "none"); // disable + button
+      $('#card_title_'+beer_name).css("text-decoration", "line-through");
+    } else {
+        $('#plus'+beer_name).css("pointer-events", "auto"); // enable + button
+        $('#card_title_'+beer_name).css("text-decoration", "none");
+    }
+
+
+  }
 
 }
 
 function make_order() {
+    if (!_can_order())
+        return;
 
+    get_next_update_and_disable_past_history();
+
+    $.post({
+        url: '/make_order/',
+        data: {
+            'data': JSON.stringify(db)
+        },
+        async: true,
+        dataType: 'json',
+        success: function(data) {
+            _add_history(data);
+            $(".input-number").val(0);
+            $("#total_price").text('Prix : 0 €');
+            db = {}
+        },
+        error: function(xhr, status, error) {
+            //TODO : handle error in ajax request
+            console.log('Cannot update the stock page', status, error);
+        }
+    });
 }
 
 function _add_history(json_) {
@@ -67,6 +191,25 @@ function _add_history(json_) {
 
 function delete_histo(token, quarter) {
 
+    $.post({
+        url: '/delete_histo/',
+        data: {
+            'data': String(token),
+            'quarter':quarter,
+        },
+        async: true,
+        dataType: 'json',
+        success: function(data) {
+            let elem = $('#' + String(token));
+            elem.remove();
+            //calculate_price();
+            window.location.reload(true)
+        },
+        error: function(xhr, status, error) {
+            //TODO : handle error in ajax request
+            console.log('Cannot update the history page', status, JSON.parse(xhr.responseText)['reason']);
+        }
+    });
 }
 
 function hide_bar(bar) {

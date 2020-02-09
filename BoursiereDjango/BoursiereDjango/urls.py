@@ -19,7 +19,7 @@ from Beer import views as BeerViews
 
 from Treso import views as TresoViews
 from SessionManager import views as SessionManagerViews
-
+from AJAXModule import views as AJAXModuleViews
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('beer_ordering/', BeerViews.beer_ordering_view, name='beer_ordering'),
@@ -32,6 +32,9 @@ urlpatterns = [
     path('delete_beer/', BeerViews.delete_beer_page, name='delete_beer_page'),
     path('del_beer/<id_beer>', BeerViews.delete_beer, name='delete_beer'),
     path('sound_page/', BeerViews.sound_page, name='sound_page'),
+    path('calculate_price/', AJAXModuleViews.calculate_price, name='calculate_price'),
+    path('make_order/', AJAXModuleViews.make_order, name='make_order'),
+    path('delete_histo/', AJAXModuleViews.delete_histo, name='delete_histo'),
 ]
 
 handler404 = BeerViews.error_404
