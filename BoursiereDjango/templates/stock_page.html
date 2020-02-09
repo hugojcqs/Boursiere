@@ -16,12 +16,7 @@
   <h2 class="font-weight-bold d-inline p-2 bg-dark text-white rounded"><span id="timer_sec">00</span></h2>
   --->
 
-  <h4 id="title_progress_bar" style="color: #3c498a;"> Mise à jour des prix<span id="title_progress_bar_dynamic" style="color: #5e75e6"></span>.</h4>
-  <div class="progress" style="height: 10px; border-radius: 27px; background-color: #cbd3ff">
-    <div class="progress-bar" role="progressbar" style=" width: 25%; background: rgba(134,153,255,1);" id="progress_bar"aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
-
-    <!-- TODO: $('#element').tooltip('update'), for update position of tooltip-->
-  </div>
+  <p id="timer"></p>
   <span></span>
 
 </div>
@@ -46,12 +41,13 @@
     <tbody>
       {% for beer in beers %}
 
+        {% if beer.stock <= 0 %}
+        <tr hidden class="bar{{beer.bar}}" id="beer_tr_{{ beer.id }}">
+          {% else %}
+          <tr class="bar{{beer.bar}}" id="beer_tr_{{ beer.id }}">
+        {% endif %}
 
-        <tr class="bar{{beer.bar}}" id="beer_tr_{{ beer.id }}">
-
-
-
-                <th class="text-center align-middle" id="beer_name_{{ beer.id }}" scope="row"> {{beer.beer_name}} </th>
+            <th class="text-center align-middle" id="beer_name_{{ beer.id }}" scope="row"> {{beer.beer_name}} </th>
 
 
           <!-- <td class="text-center align-middle" id="beer_stock_{{ beer.id }}">{{beer.stock}}</td> -->

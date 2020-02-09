@@ -1,5 +1,5 @@
 from django.core.management.base import BaseCommand
-from Beer.models import Timer, TresoFailsafe
+from Beer.models import Timer, TresoFailsafe, Settings
 import emoji
 
 
@@ -16,3 +16,9 @@ class Command(BaseCommand):
         except Exception as e:
             print(emoji.emojize('Timer initialisation - %s but it does now! :heavy_check_mark:' % e))
             TresoFailsafe.objects.create(id=1, is_activated=False)
+
+        try:
+            Settings.objects.get(id=1)
+        except Exception as e:
+            print(emoji.emojize('Settings initialisation - %s but it does now :heavy_check_mark:' % e))
+            Settings.objects.create().save()
