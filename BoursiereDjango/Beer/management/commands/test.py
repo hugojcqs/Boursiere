@@ -8,13 +8,12 @@ from django.core.management.base import BaseCommand
 from Beer.models import Beer, TresoFailsafe, Timer
 import emoji
 import datetime
-
+from .ws_notifier import *
+import time
 from django.http import JsonResponse
 
 
 class Command(BaseCommand):
     def handle(self, *args, **options):
-        Beer.update_prices()
-        beers = Beer.objects.all()
-        print('sent')
+        WSNotifier.notify_next_update(time.time() + 60)
 

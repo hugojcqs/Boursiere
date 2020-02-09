@@ -1,10 +1,11 @@
 from django.db import models
 from datetime import datetime
 from django.db.models import Min, Max
+from .ws_notifier import WSNotifier
 from asgiref.sync import async_to_sync
 from channels.layers import get_channel_layer
 import json
-from .ws_notifier import *
+
 
 class Beer(models.Model):
     beer_name = models.CharField(max_length=100)
@@ -63,21 +64,13 @@ class Beer(models.Model):
     def _stop_timer():
         timer = Timer.objects.get(id=1)
         timer.timer_is_started = False
-        timer.next_update = (datetime.timestamp(datetime.now()) + Settings.objects.all()[0].quarter_time * 60+1)
+        timer.next_update = (datetime.timestamp(datetime.now()) + Settings.objects.get(pk=1).quarter_time * 60+1)
         timer.save()
 
     @staticmethod
-    def update_prices(do_round=True):
+    def update_prices(do_round=True): # TODO : refactor and change name to update_price_with_notification
 
         Beer.reset_beers()
-
-        # Moved timer modification to the
-        timer = Timer.objects.get(id=1)
-        timer.timer_is_started = True
-        timer.current_quarter += 1
-        timer.next_update = (datetime.timestamp(datetime.now()) + Settings.objects.all()[0].quarter_time*60)
-        timer.save()
-
         out_stock = []
         for beer in Beer.objects.all():  # for each beer
             new_price = beer.compute_price()
@@ -124,6 +117,15 @@ class Beer(models.Model):
             # TODO: remove it from beer
             out_beer.out_of_stock = True
             out_beer.save()
+
+        timer = Timer.objects.get(id=1)
+        timer.timer_is_started = True
+        timer.current_quarter += 1
+        timer.next_update = (datetime.timestamp(datetime.now()) + Settings.objects.get(pk=1).quarter_time*60)
+        timer.save()
+
+        WSNotifier.notify_next_update(timer.next_update)
+        WSNotifier.notify_price_update(Beer.objects.all())
 
     @staticmethod
     def get_trend(q_qarder, q_current_qarder):

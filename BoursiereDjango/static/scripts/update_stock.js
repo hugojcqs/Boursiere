@@ -1,4 +1,4 @@
-
+let interval;
 $(document).ready(function() {
     time_ws();
     display_ws();
@@ -13,26 +13,49 @@ function show_bar(bar) {
     $(".bar" + bar.toString()).show();
 }
 
+function update_time(next_update)
+{
+    clearInterval(interval);
+    interval = setInterval(function(){
+        // Time calculations for days, hours, minutes and seconds
+        var now = Math.floor(new Date().getTime() / 1000);
+        var distance = next_update - now;
+        var minutes = Math.floor((distance % (60 * 60)) / 60);
+        var seconds = Math.floor(distance % 60);
+        if(minutes <= 0 && seconds <= 0)
+        {
+            clearInterval(interval);
+            minutes = 0;
+            seconds = 0;
+        }
+        // Output the result in an element with id="demo"
+        document.getElementById("timer").innerHTML = minutes + "m " + seconds + "s ";
+    }, 1000);
+}
+
 function time_ws()
 {
     var wsStart = 'ws://localhost:8000/time';
-    socket = new WebSocket(wsStart);
+    let socket = new WebSocket(wsStart);
 
     socket.onmessage = function (e) {
-        data = JSON.parse(e['data']);
+        let data = JSON.parse(e['data']);
+        let next_update = data['next_update'];
+
+        update_time(next_update);
 
     };
 
     socket.onopen = function (e) {
-        console.log("open", e)
+
     };
 
     socket.onerror = function (e) {
-        console.log("error", e)
+
     };
 
     socket.onclose = function (e) {
-        console.log("close", e)
+
     };
 }
 
@@ -85,21 +108,21 @@ function display_ws(){
                     $('#beer_tags_' + id).append(`<span class="badge badge-warning worth" style="font-size: 16px;">Meilleur prix / taule</span>`)
                 }
 
-                console.log(id, price, best_price, best_value, trend)
+
             }
         }
     };
 
     socket.onopen = function (e) {
-        console.log("open", e)
+
     };
 
     socket.onerror = function (e) {
-        console.log("error", e)
+
     };
 
     socket.onclose = function (e) {
-        console.log("close", e)
+
     };
 }
 
