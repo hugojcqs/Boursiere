@@ -1,59 +1,9 @@
+let interval;
 $(document).ready(function() {
-    console.log("integer picker ready!");
+    time_ws();
+    display_ws();
 });
 
-var db = {};
-
-/////TODO : Verify the way that the page is updated is good enough
-///// Solution bourrin
-$(document).ready(function() {
-    $.ajaxSetup({
-        beforeSend: function(xhr, settings) {
-            function getCookie(name) {
-                var cookieValue = null;
-                if (document.cookie && document.cookie != '') {
-                    var cookies = document.cookie.split(';');
-                    for (var i = 0; i < cookies.length; i++) {
-                        var cookie = jQuery.trim(cookies[i]);
-                        // Does this cookie string begin with the name we want?
-                        if (cookie.substring(0, name.length + 1) == (name + '=')) {
-                            cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-                            break;
-                        }
-                    }
-                }
-                return cookieValue;
-            }
-            if (!(/^http:.*/.test(settings.url) || /^https:.*/.test(settings.url))) {
-                xhr.setRequestHeader("X-CSRFToken", getCookie('csrftoken'));
-            }
-        }
-    });
-    update_stock_ajax();
-});
-
-
-var timeout = setInterval(function() {
-    update_stock_ajax()
-}, 2000);
-
-function update_stock_ajax() {
-    $.post({
-        url: '/update_stock/',
-        data: {
-            'data': 'empty_request',
-        },
-        async: true,
-        dataType: 'json',
-        success: function(data) {
-            _update_stock(data);
-        },
-        error: function(xhr, status, error) {
-            //TODO : handle error in ajax request
-            console.log('Cannot update the stock page', status, error);
-        }
-    });
-}
 
 function hide_bar(bar) {
     $(".bar" + bar.toString()).hide();
@@ -63,7 +13,120 @@ function show_bar(bar) {
     $(".bar" + bar.toString()).show();
 }
 
+function update_time(next_update)
+{
+    clearInterval(interval);
+    interval = setInterval(function(){
+        // Time calculations for days, hours, minutes and seconds
+        var now = Math.floor(new Date().getTime() / 1000);
+        var distance = next_update - now;
+        var minutes = Math.floor((distance % (60 * 60)) / 60);
+        var seconds = Math.floor(distance % 60);
+        if(minutes <= 0 && seconds <= 0)
+        {
+            clearInterval(interval);
+            minutes = 0;
+            seconds = 0;
+        }
+        // Output the result in an element with id="demo"
+        document.getElementById("timer").innerHTML = minutes + "m " + seconds + "s ";
+    }, 1000);
+}
 
+function time_ws()
+{
+    var wsStart = 'ws://localhost:8000/time';
+    let socket = new WebSocket(wsStart);
+
+    socket.onmessage = function (e) {
+        let data = JSON.parse(e['data']);
+        let next_update = data['next_update'];
+
+        update_time(next_update);
+
+    };
+
+    socket.onopen = function (e) {
+
+    };
+
+    socket.onerror = function (e) {
+
+    };
+
+    socket.onclose = function (e) {
+
+    };
+}
+
+function display_ws(){
+    var wsStart = 'ws://localhost:8000/display';
+    socket = new WebSocket(wsStart);
+
+    socket.onmessage = function (e) {
+        data = JSON.parse(e['data']);
+        if(data['action'] === 'update_qtt')
+        {
+            let id = data['id'];
+            let qtt = data['qtt'];
+            $('#beer_stock_' + id).text(qtt);
+            if (qtt <= 0) {
+                $('#beer_tr_' + id).hide();
+            }
+        }
+        else if(data['action'] === 'update_price')
+        {
+            beers = JSON.parse(data['beers']);
+
+            $('.worth').remove();
+
+            for(var i = 0; i < beers.length; i++)
+            {
+                let id = beers[i]['pk'];
+                let price = beers[i]['fields']['price'];
+                let best_value = beers[i]['fields']['best_value'];
+                let best_price = beers[i]['fields']['best_value'];
+                let trend = beers[i]['fields']['trend'];
+
+                $('#beer_price_' + id).text(price + ' €');
+
+                let trend_elem = $('#beer_trend_image_' + id);
+                trend_elem.empty();
+
+                if (trend === 'UP') {
+                    trend_elem.append(`<i class="fas fa-caret-up fa-2x" style="color: red;"></i>`);
+                } else if (trend === 'EQUAL') {
+                    trend_elem.append(`<i class="fas fa-caret-right fa-2x" style="color: orange;"></i>`);
+                } else {
+                    trend_elem.append(`<i class="fas fa-caret-down fa-2x" style="color: green;"></i>`);
+                }
+
+                if (best_price === true) {
+                    $('#beer_tags_' + id).append(`<span class="badge badge-success worth" style="font-size: 16px;">Meilleur prix</span>`)
+                }
+                if (best_value === true) {
+                    $('#beer_tags_' + id).append(`<span class="badge badge-warning worth" style="font-size: 16px;">Meilleur prix / taule</span>`)
+                }
+
+
+            }
+        }
+    };
+
+    socket.onopen = function (e) {
+
+    };
+
+    socket.onerror = function (e) {
+
+    };
+
+    socket.onclose = function (e) {
+
+    };
+}
+
+/*
 function sound(src) {
     this.sound = document.createElement("audio");
     this.sound.src = src;
@@ -78,6 +141,8 @@ function sound(src) {
         this.sound.pause();
     };
 }
+*
+
 
 
 function _update_stock(data) {
@@ -117,9 +182,7 @@ function _update_stock(data) {
         }
 
         console.log(beer + ' ' + String(data.data[beer]['out_of_stock']))
-        if (data.data[beer]['out_of_stock'] === true) {
-            $('#beer_tr_' + beer).hide();
-        }
+
 
         if (data.data[beer]['best_price'] === true) {
             $('#beer_tags_' + beer).append(`<span class="badge badge-success worth" style="font-size: 16px;">Meilleur prix</span>`)
@@ -130,3 +193,4 @@ function _update_stock(data) {
 
     }
 }
+*/

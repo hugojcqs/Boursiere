@@ -93,9 +93,3 @@ def error_500(request):
 
 def sound_page(request):
     return render(request, 'sound_page.html')
-
-
-
-def test(request):
-    rdn = ['cat1.jpg', 'cat2.jpg', 'cat3.jpg', 'cat4.jpg', 'cat5.jpg', 'cat6.jpg']
-    return render(request, 'test.html', {'image': '../static/images/'+random.choice(rdn)})
