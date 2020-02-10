@@ -6,24 +6,10 @@
 
 ### Requirements  pour pip
 
-```python
-Django==2.2.3                                         
-django-crispy-forms==1.7.2
-django-csp==3.5
-jsonify==0.5
-Pillow==6.0.0
-python-crontab==2.3.8
-python-dateutil==2.8.0
-pytz==2018.4
-schedule==0.6.0
-six==1.11.0
-sqlparse==0.3.0
-```
-
 Pour installer les dépendances ci-dessus, enregistrer le texte ci-dessus dans un fichier et exécuter la commande suivante.
 
 ```bash
-pip install -r <nom_du_fichier>.txt
+pip install -r requirements.txt
 ```
 
 ### Gestion de la base de données :floppy_disk:
