@@ -69,10 +69,16 @@ function display_ws(){
         {
             let id = data['id'];
             let qtt = data['qtt'];
-            $('#beer_stock_' + id).text(qtt);
+            let beer = $('#beer_tr_' + id);
+            let beer_stock = $('#beer_stock_' + id);
             if (qtt <= 0) {
-                $('#beer_tr_' + id).hide();
+                beer.hide();
             }
+            else
+            {
+                beer.show();
+            }
+            beer_stock.text(qtt);
         }
         else if(data['action'] === 'update_price')
         {
@@ -100,15 +106,14 @@ function display_ws(){
                 } else {
                     trend_elem.append(`<i class="fas fa-caret-down fa-2x" style="color: green;"></i>`);
                 }
+            }
 
-                if (best_price === true) {
-                    $('#beer_tags_' + id).append(`<span class="badge badge-success worth" style="font-size: 16px;">Meilleur prix</span>`)
-                }
-                if (best_value === true) {
-                    $('#beer_tags_' + id).append(`<span class="badge badge-warning worth" style="font-size: 16px;">Meilleur prix / taule</span>`)
-                }
-
-
+            let best_beer = data['best_beer'];
+            $('#beer_tags_' + best_beer).append(`<span class="badge badge-warning worth" style="font-size: 16px;">Meilleur prix / taule</span>`)
+            let best_prices = data['best_prices'];
+            for(let i = 0; i < best_prices.length; i++)
+            {
+                $('#beer_tags_' + best_prices[i]).append(`<span class="badge badge-success worth" style="font-size: 16px;">Meilleur prix</span>`)
             }
         }
     };

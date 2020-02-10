@@ -35,6 +35,7 @@ urlpatterns = [
     path('calculate_price/', AJAXModuleViews.calculate_price, name='calculate_price'),
     path('make_order/', AJAXModuleViews.make_order, name='make_order'),
     path('delete_histo/', AJAXModuleViews.delete_histo, name='delete_histo'),
+    path('timer_to_next_up/', AJAXModuleViews.timer_to_next_up, name='timer_to_next_up')
 ]
 
 handler404 = BeerViews.error_404

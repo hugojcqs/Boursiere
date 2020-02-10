@@ -32,10 +32,10 @@ class WSNotifier:
         )
 
     @staticmethod
-    def notify_price_update(beers, best_price_ids, best_beer_id):
+    def notify_price_update(beers):
         beers = serializers.serialize('json', beers)
 
-        message = {'action': 'update_price', 'beers': beers, 'best_prices':best_price_ids, 'best_beer':best_beer_id}
+        message = {'action': 'update_price', 'beers': beers}
 
         channel_layer = get_channel_layer()
         async_to_sync(channel_layer.group_send)(

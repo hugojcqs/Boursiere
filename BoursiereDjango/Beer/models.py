@@ -108,8 +108,8 @@ class Beer(models.Model):
             # SAVING EACH BEER OBJECT
 
             beer.save()
-        Beer.set_best_value_beer()
-        Beer.set_best_price()
+        best_beer = Beer.set_best_value_beer()
+        best_prices = Beer.set_best_price()
 
         # SET BEER TO OUT OF STOCK
 
@@ -125,7 +125,7 @@ class Beer(models.Model):
         timer.save()
 
         WSNotifier.notify_next_update(timer.next_update)
-        WSNotifier.notify_price_update(Beer.objects.all())
+        WSNotifier.notify_price_update(Beer.objects.all(), best_prices, best_beer)
 
     @staticmethod
     def get_trend(q_qarder, q_current_qarder):
@@ -159,10 +159,12 @@ class Beer(models.Model):
     @staticmethod
     def set_best_price():
         beers_min = Beer.objects.filter(price=Beer.objects.all().aggregate(Min('price'))['price__min'])
-        print("Bière la moins chère : ", beers_min)
+        print("Bières les moins chères : ", beers_min)
+        beer_list = []
         for beer in beers_min:
-            beer.best_price = True
-            beer.save()
+            beer_list.append(beer.pk)
+        return beer_list
+
 
     @staticmethod
     def set_best_value_beer():
@@ -176,11 +178,10 @@ class Beer(models.Model):
             if index <= best_index:
                 best_index = index
                 beer_index_list.append((index, beer))
-            beer.save()
 
         beer = min(beer_index_list, key=lambda t: t[0])[1]
-        beer.best_value = True
-        beer.save()
+        print("Bières les moins chères : ", beer)
+        return beer.pk
 
     def __str__(self):
         return self.beer_name
