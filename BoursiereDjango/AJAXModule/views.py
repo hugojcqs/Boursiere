@@ -6,7 +6,7 @@ import json
 from datetime import datetime
 import random
 import pprint
-
+from .ws_notifier import *
 """
 ###########################################
 Private function used by the (ajax) views
@@ -25,8 +25,6 @@ def _calculate_price(json_):
         beer_db = Beer.objects.get(id=beer)
         if beer_db is None:
             return -1
-        pprint.pprint(json_)
-        print("DEBUUUGGG", json_[beer])
         total += beer_db.price * json_[beer]
     return round(total, 1)
 
@@ -117,6 +115,8 @@ def make_order(request):
                 item_str += '%d %s - ' % (nb_beer, beer)
                 beer_db.save()
 
+                WSNotifier.notify_change_in_stock(beer, beer_db.stock)
+
         item_str = item_str[0:len(item_str) - 2]  # remove the last '-' from the string
 
         h = History.objects.create()
@@ -128,6 +128,7 @@ def make_order(request):
         h.history_json = request.POST.get('data')
         h.text = item_str
         h.save()
+
 
         return JsonResponse(
             {'status': True, 'time': time, 'token': token, 'text': item_str, 'total_price': round(total, 1)})
@@ -156,6 +157,7 @@ def delete_histo(request):
             if beer_db is None:
                 return JsonResponse(status=520, data={'status': False, 'reason': 'The beer %s does not exist!' % beer})
             beer_db.stock += json_[beer]
+            WSNotifier.notify_change_in_stock(beer, beer_db.stock)
             if beer_db.stock > 0:
                 beer_db.out_of_stock = False
 

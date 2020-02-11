@@ -1,6 +1,11 @@
 from django.db import models
 from datetime import datetime
 from django.db.models import Min, Max
+from .ws_notifier import WSNotifier
+from asgiref.sync import async_to_sync
+from channels.layers import get_channel_layer
+import json
+
 
 class Beer(models.Model):
     beer_name = models.CharField(max_length=100)
@@ -49,26 +54,23 @@ class Beer(models.Model):
 
     def change_stock(self, number):
         self.stock -= number
+        self.save()
+        WSNotifier.notify_change_in_stock(self.pk, self.stock)
+        # TODO : notify the change of stock using websocket
+
+
 
     @staticmethod
     def _stop_timer():
         timer = Timer.objects.get(id=1)
         timer.timer_is_started = False
-        timer.next_update = (datetime.timestamp(datetime.now()) + 15 * 60 + 3)
+        timer.next_update = (datetime.timestamp(datetime.now()) + Settings.objects.get(pk=1).quarter_time * 60+1)
         timer.save()
 
     @staticmethod
-    def _update_prices(do_round=True):
+    def update_prices(do_round=True): # TODO : refactor and change name to update_price_with_notification
 
         Beer.reset_beers()
-
-        # Moved timer modification to the
-        timer = Timer.objects.get(id=1)
-        timer.timer_is_started = True
-        timer.current_quarter += 1
-        timer.next_update = (datetime.timestamp(datetime.now()) + 15*60)
-        timer.save()
-
         out_stock = []
         for beer in Beer.objects.all():  # for each beer
             new_price = beer.compute_price()
@@ -106,8 +108,8 @@ class Beer(models.Model):
             # SAVING EACH BEER OBJECT
 
             beer.save()
-            Beer.set_best_value_beer()
-            Beer.set_best_price()
+        best_beer = Beer.set_best_value_beer()
+        best_prices = Beer.set_best_price()
 
         # SET BEER TO OUT OF STOCK
 
@@ -115,6 +117,15 @@ class Beer(models.Model):
             # TODO: remove it from beer
             out_beer.out_of_stock = True
             out_beer.save()
+
+        timer = Timer.objects.get(id=1)
+        timer.timer_is_started = True
+        timer.current_quarter += 1
+        timer.next_update = (datetime.timestamp(datetime.now()) + Settings.objects.get(pk=1).quarter_time*60)
+        timer.save()
+
+        WSNotifier.notify_next_update(timer.next_update)
+        WSNotifier.notify_price_update(Beer.objects.all(), best_prices, best_beer)
 
     @staticmethod
     def get_trend(q_qarder, q_current_qarder):
@@ -148,10 +159,12 @@ class Beer(models.Model):
     @staticmethod
     def set_best_price():
         beers_min = Beer.objects.filter(price=Beer.objects.all().aggregate(Min('price'))['price__min'])
-        print("Bière la moins chère : ", beers_min)
+        print("Bières les moins chères : ", beers_min)
+        beer_list = []
         for beer in beers_min:
-            beer.best_price = True
-            beer.save()
+            beer_list.append(beer.pk)
+        return beer_list
+
 
     @staticmethod
     def set_best_value_beer():
@@ -165,12 +178,10 @@ class Beer(models.Model):
             if index <= best_index:
                 best_index = index
                 beer_index_list.append((index, beer))
-            beer.save()
 
         beer = min(beer_index_list, key=lambda t: t[0])[1]
-        beer.best_value = True
-        beer.save()
-
+        print("Bières les moins chères : ", beer)
+        return beer.pk
 
     def __str__(self):
         return self.beer_name
@@ -199,3 +210,7 @@ class Timer(models.Model):
 
 class TresoFailsafe(models.Model):
     is_activated = models.BooleanField(null=False, default=False)
+
+
+class Settings(models.Model):
+    quarter_time = models.IntegerField(default=15)

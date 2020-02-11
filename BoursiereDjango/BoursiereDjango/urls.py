@@ -16,31 +16,31 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from Beer import views as BeerViews
-from AJAXModule import views as AJAXModuleViews
+
 from Treso import views as TresoViews
 from SessionManager import views as SessionManagerViews
-
+from AJAXModule import views as AJAXModuleViews
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('beer_ordering/', BeerViews.beer_ordering_view, name='beer_ordering'),
     path('add_beer/', BeerViews.add_beer, name='add_beer'),
     path('', BeerViews.root),
-    path('activate_failsafe/', AJAXModuleViews.activate_failsafe, name='activate_failsafe'),
     path('login/', SessionManagerViews.login_page, name='login_page'),
     path('logout/', SessionManagerViews.logout_page, name='logout_page'),
-    path('calculate_price/', AJAXModuleViews.calculate_price, name='calculate_price'),
-    path('make_order/', AJAXModuleViews.make_order, name='make_order'),
-    path('delete_histo/', AJAXModuleViews.delete_histo, name='delete_histo'),
     path('stock_page/', BeerViews.stock_page, name='stock_page'),
-    path('update_stock/', AJAXModuleViews.update_stock, name='update_stock'),
     path('dashboard/', TresoViews.dashboard, name='dashboard'),
-    path('update_price_failsafe/', AJAXModuleViews.update_price_failsafe, name='update_price_failsafe'),
-    path('timer_to_next_up/', AJAXModuleViews.timer_to_next_up, name='timer_to_next_up'),
     path('delete_beer/', BeerViews.delete_beer_page, name='delete_beer_page'),
     path('del_beer/<id_beer>', BeerViews.delete_beer, name='delete_beer'),
     path('sound_page/', BeerViews.sound_page, name='sound_page'),
+<<<<<<< HEAD
     path('treso_page/', BeerViews.treso_page, name="treso_page"),
     #path('test/', BeerViews.test, name='test_page'),
+=======
+    path('calculate_price/', AJAXModuleViews.calculate_price, name='calculate_price'),
+    path('make_order/', AJAXModuleViews.make_order, name='make_order'),
+    path('delete_histo/', AJAXModuleViews.delete_histo, name='delete_histo'),
+    path('timer_to_next_up/', AJAXModuleViews.timer_to_next_up, name='timer_to_next_up')
+>>>>>>> 323052a7c7f221f51d077e4d6688febe268184ec
 ]
 
 handler404 = BeerViews.error_404

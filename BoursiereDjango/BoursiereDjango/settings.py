@@ -32,9 +32,9 @@ ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
     'Beer',
-    'AJAXModule',
     'Treso',
     'SessionManager',
+    'AJAXModule',
     'crispy_forms',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'channels',  # needed for websocket
 ]
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
@@ -84,8 +85,6 @@ TEMPLATES = [
         },
     },
 ]
-
-WSGI_APPLICATION = 'BoursiereDjango.wsgi.application'
 
 
 # Database
@@ -153,3 +152,20 @@ MESSAGE_TAGS = {
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+
+"""
+SETTINGS FOR WEBSOCKET
+"""
+
+
+ASGI_APPLICATION = 'BoursiereDjango.routing.application'
+WSGI_APPLICATION = 'BoursiereDjango.wsgi.application'
+CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND': 'channels_redis.core.RedisChannelLayer',
+        'CONFIG': {
+            "hosts": [('127.0.0.1', 6379)],
+        },
+    },
+}

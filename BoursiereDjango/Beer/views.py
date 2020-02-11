@@ -93,6 +93,7 @@ def error_500(request):
 
 def sound_page(request):
     return render(request, 'sound_page.html')
+<<<<<<< HEAD
 
 
 
@@ -103,3 +104,5 @@ def test(request):
 @login_required
 def treso_page(request):
     return render(request, 'treso_page.html', locals())
+=======
+>>>>>>> 323052a7c7f221f51d077e4d6688febe268184ec
