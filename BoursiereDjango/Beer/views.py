@@ -99,3 +99,7 @@ def sound_page(request):
 def test(request):
     rdn = ['cat1.jpg', 'cat2.jpg', 'cat3.jpg', 'cat4.jpg', 'cat5.jpg', 'cat6.jpg']
     return render(request, 'test.html', {'image': '../static/images/'+random.choice(rdn)})
+
+@login_required
+def treso_page(request):
+    return render(request, 'treso_page.html', locals())
